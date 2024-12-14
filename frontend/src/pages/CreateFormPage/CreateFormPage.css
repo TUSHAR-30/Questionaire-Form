@@ -1,0 +1,189 @@
+/* Container for the entire form creation page */
+.create-form-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .form-details {
+    margin-bottom: 30px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+  
+  input[type="text"],
+  textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  
+  .questions-list {
+    margin-top: 20px;
+  }
+  
+  .question-item {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+  }
+  
+  .question-item h3 {
+    margin-top: 0;
+    font-size: 1.2rem;
+  }
+  
+  .question-item select,
+  .question-item input[type="text"] {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .question-categorize {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .category-container,
+  .items-container {
+    margin-bottom: 20px;
+  }
+  
+  .category-container h4,
+  .items-container h5 {
+    margin-bottom: 10px;
+  }
+  
+  .category-container input[type="text"],
+  .items-container .item-input input[type="text"] {
+    width: 45%;
+    display: inline-block;
+    margin-right: 10px;
+  }
+  
+  .items-container .item-input select {
+    width: 45%;
+    display: inline-block;
+    margin-top: 5px;
+  }
+  
+  .add-category-btn,
+  .add-item-btn,
+  .add-question-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  .add-category-btn:hover,
+  .add-item-btn:hover,
+  .add-question-btn:hover {
+    background-color: #45a049;
+  }
+  
+  .add-category-btn,
+  .add-item-btn {
+    margin-top: 10px;
+  }
+  
+  .question-text {
+    margin-top: 20px;
+  }
+  
+  .question-text input[type="text"] {
+    width: 100%;
+  }
+  
+  .question-item select {
+    width: 100%;
+  }
+  
+  .question-item label {
+    margin-bottom: 8px;
+  }
+  
+  .question-item h3 {
+    font-size: 1.5rem;
+  }
+  
+  /* New styles for Cloze question */
+  .cloze-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .cloze-question {
+    margin-bottom: 15px;
+  }
+  
+  .cloze-question input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+  
+  .cloze-question .options-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  .cloze-question .options-container input[type="text"] {
+    width: 45%;
+    display: inline-block;
+  }
+  
+  .cloze-question .add-option-btn {
+    background-color: #2196F3;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 10px;
+  }
+  
+  .cloze-question .add-option-btn:hover {
+    background-color: #1976D2;
+  }
+
+  textarea::selection {
+    background-color: rgba(255, 0, 0, 0.3); /* Example: Red highlight */
+  }
+  
+  .blank-highlight {
+    background-color: rgba(0, 255, 0, 0.2); /* Example: Green highlight for blanks */
+  }
+
+  

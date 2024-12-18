@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 
-function FormMetaData() {
-    const [formTitle, setFormTitle] = useState('');
-    const [formDescription, setFormDescription] = useState('');
+function FormMetaData({formTitle, setFormTitle,formDescription, setFormDescription}) {
+   
 
     const handleFormTitleChange = (e) => {
         setFormTitle(e.target.value);

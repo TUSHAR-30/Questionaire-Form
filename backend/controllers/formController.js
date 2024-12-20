@@ -1,4 +1,4 @@
-const Form = require('../models/form');
+const Form = require('../Models/form');
 const {validateQuestionSchema}=require("../utils")
 
 // Create form

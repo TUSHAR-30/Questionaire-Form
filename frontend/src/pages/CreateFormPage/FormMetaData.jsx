@@ -1,6 +1,6 @@
 import React from 'react'
 
-function FormMetaData({formTitle, setFormTitle,formDescription, setFormDescription}) {
+function FormMetaData({formTitle, setFormTitle,formDescription, setFormDescription , isPreview}) {
    
 
     const handleFormTitleChange = (e) => {
@@ -18,7 +18,8 @@ function FormMetaData({formTitle, setFormTitle,formDescription, setFormDescripti
                 <input
                     type="text"
                     value={formTitle}
-                    onChange={handleFormTitleChange}
+                    onChange={ handleFormTitleChange}
+                    disabled={isPreview}
                 />
             </label>
             <label>
@@ -26,6 +27,8 @@ function FormMetaData({formTitle, setFormTitle,formDescription, setFormDescripti
                 <textarea
                     value={formDescription}
                     onChange={handleFormDescriptionChange}
+                    disabled={isPreview}
+
                 />
             </label>
         </div>

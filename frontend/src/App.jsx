@@ -8,27 +8,30 @@ import SignupPage from './pages/SignupPage/SignupPage';
 import CreateFormPage from './pages/CreateFormPage/CreateFormPage';
 import Navbar from './assets/Navbar/Navbar'
 import "./App.css"
+import FormsPage from './pages/FormsPage/FormsPage';
+import FormPage from './pages/FormsPage/FormPage';
+import { EditFormProvider } from './Context/EditFormContext';
 
 function App() {
-  const [isAuthenticated,setIsAuthenticated]=useState(false);
-  const [user,setUser]=useState({})
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState({})
 
   useEffect(() => {
     async function fetchUserProfile() {
-        try {
-            const response = await axios.get(`${SERVER_URL}/profile`, {
-                withCredentials: true
-            });
-            const data=response.data
-            console.log(data)
-            setUser(data)
-            setIsAuthenticated(true)
-        } catch (error) {
-            console.log(error);
-        }
+      try {
+        const response = await axios.get(`${SERVER_URL}/profile`, {
+          withCredentials: true
+        });
+        const data = response.data
+        console.log(data)
+        setUser(data)
+        setIsAuthenticated(true)
+      } catch (error) {
+        console.log(error);
+      }
     }
-    fetchUserProfile(); 
-}, [])
+    fetchUserProfile();
+  }, [])
 
   return (
     <div className='app'>
@@ -36,8 +39,16 @@ function App() {
       <Routes>
         <Route path="/dragforms" element={<HomePage />} />
         <Route path="/dragforms/createform" element={<CreateFormPage />} />
-        <Route path="/dragforms/login" element={<LoginPage setUser={setUser} setIsAuthenticated={setIsAuthenticated}/>} />
-        <Route path="/dragforms/signup" element={<SignupPage setUser={setUser} setIsAuthenticated={setIsAuthenticated}/>} />
+        <Route path="/dragforms/forms" element={<FormsPage />} />
+        <Route path="/dragforms/form/:formId"
+          element={
+            <EditFormProvider>
+              <FormPage />
+            </EditFormProvider>
+          }
+        />
+        <Route path="/dragforms/login" element={<LoginPage setUser={setUser} setIsAuthenticated={setIsAuthenticated} />} />
+        <Route path="/dragforms/signup" element={<SignupPage setUser={setUser} setIsAuthenticated={setIsAuthenticated} />} />
         <Route path="*" element={<div>No page found</div>} />
       </Routes>
     </div>

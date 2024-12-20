@@ -1,9 +1,12 @@
 import React, { useContext } from 'react'
 import CreateFormContext from '../../Context/CreateFormContext'
+import EditFormContext from '../../Context/EditFormContext';
+import { useLocation } from 'react-router-dom';
 
 function CategorizeQuestion({ question, questionIndex }) {
-    const { questions, setQuestions } = useContext(CreateFormContext)
-
+    const location = useLocation();
+    const currentPath = location.pathname;
+    const { questions, setQuestions } =currentPath=="/dragforms/createform"?useContext(CreateFormContext):useContext(EditFormContext)
     const handleAddCategory = (questionIndex) => {
         const newQuestions = [...questions];
         newQuestions[questionIndex].categorize.categories.push('');

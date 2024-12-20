@@ -15,12 +15,15 @@ const formSchema = new mongoose.Schema({
         },
       ],
       cloze: {
-        question: { type: String, required: function () { return this.type === 'cloze'; } },
+        displayQuestion: { type: String, required: function () { return this.type === 'cloze'; } },
+        originalQuestion: { type: String, required: function () { return this.type === 'cloze'; } },
         answers: {
           type: [
             {
               itemSerialNumber: { type: Number, required: true },
               itemName: { type: String, required: true },
+              start:{ type: Number, required: true },
+              end:{ type: Number, required: true },
             },
           ],
           required: function () { return this.type === 'cloze'; },

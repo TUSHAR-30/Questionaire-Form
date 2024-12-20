@@ -45,11 +45,14 @@ function ClozeQuestionPreview({ question, questionIndex }) {
           <Droppable droppableId={`placeholder-${index}`}>
             {(provided, snapshot) => (
               <span
-                className={`placeholder ${snapshot.isDraggingOver ? "placeholder-hover" : ""}`}
+                className={`placeholder ${snapshot.isDraggingOver ? "placeholder-hover" : ""} 
+                ${question.cloze.blanks[question.cloze.blanks.findIndex((blank)=>(blank.blankSerialNumber==index))].droppedText?"draggable-blank-preview":""} `}
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
-                {question.cloze.blanks[index]?.droppedText || "________"}
+                {
+                  question.cloze.blanks[question.cloze.blanks.findIndex((blank)=>(blank.blankSerialNumber==index))].droppedText || "________" 
+                }
                 {provided.placeholder}
               </span>
             )}
@@ -65,6 +68,8 @@ function ClozeQuestionPreview({ question, questionIndex }) {
     const { source, destination } = result;
     if (destination.droppableId.startsWith("placeholder-")) {
       const placeholderIndex = parseInt(destination.droppableId.split("-")[1], 10);
+      console.log(source);
+      console.log(destination)
       handleBlankDropped(source.index, placeholderIndex, questionIndex);
     }
   };
@@ -72,15 +77,15 @@ function ClozeQuestionPreview({ question, questionIndex }) {
   const handleBlankDropped = (sourceIndex, placeholderIndex, questionIndex) => {
     const updatedQuestions = [...questions];
     const question = updatedQuestions[questionIndex];
-    const blank = question.cloze.blanks[sourceIndex];
+    const sourceBlank = question.cloze.blanks[sourceIndex];
 
-    // Update the dropped text in the placeholder
-    question.cloze.blanks[placeholderIndex].droppedText = blank.text;
-    question.cloze.blanks[sourceIndex].isDropped = true;
+    const destinationBlank=question.cloze.blanks.find((blank)=>(blank.blankSerialNumber==placeholderIndex))
+    if(!destinationBlank.droppedText){
+      destinationBlank.droppedText=sourceBlank.text
+      question.cloze.blanks[sourceIndex].isDropped = true;
+    }
 
 
-    // Remove the blank from the blanks array after it has been dropped
-    // question.cloze.blanks = question.cloze.blanks.filter((_, index) => index !== sourceIndex);
 
     // Update state with the new questions array
     setQuestions(updatedQuestions);
@@ -92,11 +97,11 @@ function ClozeQuestionPreview({ question, questionIndex }) {
         <p className="display-question-preview">
           {renderDisplayTextWithPlaceholders()}
         </p>
-        <div className="blanks-container-preview">
+        <div>
           <Droppable droppableId="blanks-container" direction="horizontal">
             {(provided) => (
               <div
-                className="blanks-container"
+                className="blanks-container-preview"
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
@@ -125,6 +130,11 @@ function ClozeQuestionPreview({ question, questionIndex }) {
 }
 
 export default ClozeQuestionPreview;
+
+
+
+
+
 
 
 

@@ -79,37 +79,6 @@
 
 
 
-/* ClozeQuestioinPreview Styles */
-.cloze-container-Preview {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.blanks-container-preview {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-
-}
-
-.blank-preview {
-    padding: 5px;
-    padding-left: 8px;
-    background-color: lightblue;
-    border-radius: 5px;
-    width: 120px;
-    text-align: center;
-    overflow: auto;
-    font-size: 13px;
-    user-select: none;
-}
-
-.blank-preview::-webkit-scrollbar {
-    height: 0px;
-}
-
-
 /* ComprehensionQuestioinPreview Styles */
 .comprehension-container-Preview {
     display: flex;
@@ -118,18 +87,20 @@
 }
 
 .description-container-Preview {
-    background-color:rgb(214, 227, 239) ;
+    background-color: rgb(214, 227, 239);
     padding: 8px;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
-.description-title-container-Preview{
+
+.description-title-container-Preview {
     display: flex;
     flex-direction: column;
     gap: 4px;
 }
+
 .description-title-label-Preview {
     font-size: 14px;
     text-align: center;
@@ -142,7 +113,7 @@
     border-radius: 4px;
 }
 
-.description-content-container-Preview{
+.description-content-container-Preview {
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -161,51 +132,52 @@
     border-radius: 4px;
 }
 
-.questions-container-Preview{
-    background-color: rgb(214, 227, 239) ;
+.questions-container-Preview {
+    background-color: rgb(214, 227, 239);
     padding: 8px;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
-.questions-container-Preview > span{
+
+.questions-container-Preview>span {
     text-align: center;
 }
 
-.sub-question-questionNumber-Preview{
+.sub-question-questionNumber-Preview {
     font-style: italic;
-    font-family:cursive;
+    font-family: cursive;
 }
 
-.sub-question-container-Preview{
+.sub-question-container-Preview {
     border-radius: 4px;
     padding-block: 8px;
     padding-inline: 4px;
-    background-color:white;
+    background-color: white;
 }
 
-.sub-question-options-container-Preview{
+.sub-question-options-container-Preview {
     display: flex;
     flex-direction: column;
     gap: 4px;
 }
 
-.sub-question-option-Preview{
+.sub-question-option-Preview {
     padding: 4px;
     display: flex;
     gap: 5px;
     border-radius: 4px;
-    background-color:rgb(214, 227, 239) ;
+    background-color: rgb(214, 227, 239);
     cursor: pointer;
 }
 
-.sub-question-option-Preview > p{
+.sub-question-option-Preview>p {
     text-wrap: nowrap;
     overflow-x: auto;
 }
 
-.sub-question-option-Preview > p::-webkit-scrollbar{
+.sub-question-option-Preview>p::-webkit-scrollbar {
     height: 0;
 }
 
@@ -224,64 +196,73 @@
 
 
 
-
-
-/* Container holding the cloze question */
+/* cloze question styles */
 .cloze-container-preview {
     display: flex;
     flex-direction: column;
-    align-items: center;
-  }
-  
-  /* Style for the question text */
-  .display-question-preview {
+    gap: 16px;
+}
+
+.display-question-preview {
     font-size: 18px;
     line-height: 1.5;
-    position: relative; /* Keeps it in place */
-  }
-  
-  /* Placeholder for blank positions */
-  .placeholder {
+    position: relative;
+    /* Keeps it in place */
+}
+
+.placeholder {
     display: inline-block;
-    width: 90px;
+    width: 93px;
     height: 20px;
     background-color: #f0f0f0;
-    margin: 0 5px;
-    text-align: center;
     line-height: 20px;
     border: 1px dashed #ccc;
     cursor: pointer;
-  }
-  
-  /* Style when dragging over the placeholder */
-  .placeholder-hover {
-    background-color: #e0e0e0;
-    border-color: #888;
-  }
-  
-  /* Container for the draggable blanks */
-  .blanks-container-preview {
-    display: flex;
-    margin-top: 20px;
-  }
-  
-  /* Style for the draggable blank elements */
-  .draggable-blank-preview {
-    background-color: #007bff;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    margin-right: 10px;
-    cursor: grab;
-  }
-  .draggable-blank-preview.hide{
-    display: none;
-  }
+}
 
-  /* Placeholder for the blanks container */
-  .blanks-container {
+.placeholder-hover {
+    background-color: #e0e0e0;
+    border:1px solid #888;
+}
+
+.blanks-container-preview{
     display: flex;
-    justify-content: flex-start;
+    flex-direction: column;
     gap: 10px;
-  }
-  
+}
+
+.blanks-container-preview .draggable-blank-preview.hide {
+    display: none;
+}
+
+.draggable-blank-preview {
+    padding: 5px;
+    padding-left: 8px;
+    background-color: lightblue;
+    border-radius: 5px;
+    width: 93px;
+    text-align: center;
+    overflow: auto;
+    font-size: 13px;
+    user-select: none;
+    height: 28px;
+    transform: translateY(25%);
+}
+.placeholder.draggable-blank-preview{
+    padding: 2px;
+    height: 24px;
+}
+
+.draggable-blank-preview::-webkit-scrollbar {
+    height: 0px;
+}
+
+
+
+
+
+
+
+
+
+

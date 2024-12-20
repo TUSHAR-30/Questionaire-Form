@@ -168,9 +168,13 @@ import CreateFormContext from '../../Context/CreateFormContext';
 import { BiSolidRightArrow } from "react-icons/bi";
 import { BiSolidDownArrow } from "react-icons/bi";
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { useLocation } from 'react-router-dom';
+import EditFormContext from '../../Context/EditFormContext';
 
 function ComprehensionQuestion({ question, questionIndex }) {
-  const { questions, setQuestions } = useContext(CreateFormContext);
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const { questions, setQuestions } = currentPath == "/dragforms/createform" ? useContext(CreateFormContext) : useContext(EditFormContext)
   const [isComprehensionExpanded, setIsComprehensionExpanded] = useState(true);
   const [isQuestionsExpanded, setIsQuestionsExpanded] = useState(true);
 

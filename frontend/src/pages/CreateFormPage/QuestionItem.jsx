@@ -7,9 +7,13 @@ import { MdOutlineDeleteOutline } from "react-icons/md";
 import { BiSolidRightArrow } from "react-icons/bi";
 import { BiSolidDownArrow } from "react-icons/bi";
 import CreateFormContext from '../../Context/CreateFormContext';
+import { useLocation } from 'react-router-dom';
+import EditFormContext from '../../Context/EditFormContext';
 
 function QuestionItem({ question, questionIndex }) {
-    const { questions, setQuestions } = useContext(CreateFormContext)
+    const location = useLocation();
+    const currentPath = location.pathname;
+    const { questions, setQuestions } =currentPath=="/dragforms/createform"?useContext(CreateFormContext):useContext(EditFormContext)
     const [isExpanded, setIsExpanded] = useState(true);
 
     const toggleAccordion = () => {

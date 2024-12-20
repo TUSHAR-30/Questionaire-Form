@@ -1,5 +1,5 @@
-const Submission = require('../models/submission');
-const Form = require('../models/form');
+const Submission = require('../Models/submission');
+const Form = require('../Models/form');
 
 // Submit form data
 exports.submitForm = async (req, res) => {

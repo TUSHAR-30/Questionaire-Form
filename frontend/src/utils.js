@@ -82,10 +82,13 @@ const validateCategorize = (question) => {
 
 const validateCloze = (question) => {
   const cloze={
-      question: question.cloze.originalText,
+      displayQuestion: question.cloze.displayText,
+      originalQuestion:question.cloze.originalText,
       answers: question.cloze.blanks.map((blank) => ({
         itemSerialNumber: blank.blankSerialNumber,
         itemName: blank.text,
+        start:blank.start,
+        end:blank.end
       })),
   };
   return cloze;

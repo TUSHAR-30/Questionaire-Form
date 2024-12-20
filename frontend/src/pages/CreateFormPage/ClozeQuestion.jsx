@@ -142,9 +142,13 @@
 import React, { useContext, useEffect, useRef } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import CreateFormContext from '../../Context/CreateFormContext';
+import { useLocation } from 'react-router-dom';
+import EditFormContext from '../../Context/EditFormContext';
 
 function ClozeQuestion({ question, questionIndex }) {
-    const { questions, setQuestions } = useContext(CreateFormContext);
+    const location = useLocation();
+    const currentPath = location.pathname;
+    const { questions, setQuestions } =currentPath=="/dragforms/createform"?useContext(CreateFormContext):useContext(EditFormContext)
     const textareaRef = useRef(null);
 
     const handleClozeQuestionTextChange = (questionIndex, newText) => {
@@ -207,7 +211,7 @@ function ClozeQuestion({ question, questionIndex }) {
         }
 
         const newBlank = {
-            id: String(Date.now()), // Unique ID for each blank
+            id: `${Date.now()}-${Math.random()}`,
             text: selectedText,
             start,
             end,
@@ -220,7 +224,7 @@ function ClozeQuestion({ question, questionIndex }) {
             .sort((a, b) => a.start - b.start)
             .map((blank, index) => ({
                 ...blank,
-                blankSerialNumber: index + 1, // Add blankSerialNumber
+                blankSerialNumber: index, // Add blankSerialNumber
             }));
 
         // Replace the original blanks with updated ones (preserving display order)

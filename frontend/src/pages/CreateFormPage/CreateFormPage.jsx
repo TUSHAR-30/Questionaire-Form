@@ -6,34 +6,35 @@ import "./CreateFormPage.css";
 import transformDataToBackendFormat from '../../utils';
 import axios from 'axios';
 import { SERVER_URL } from '../../../config';
+import Preview from '../../assets/Preview/Preview';
 
 const CreateFormPage = () => {
   const { questions, setQuestions } = useContext(CreateFormContext)
+  const [isPreview, setIsPreview] = useState(false);
   const [formTitle, setFormTitle] = useState('');
   const [formDescription, setFormDescription] = useState('');
 
   const handleAddQuestion = () => {
     setQuestions([
       ...questions,
-        {
-          type: 'categorize', // Default question type
-          categorize: { categories: [], items: [] }, // Nested under "categorize"
-          cloze: { blanks: [] },
-          comprehension: {
-            description: { title: '', content: '' },
-            questions: [{ question: '', answer: '', options: [] }],
-          },
+      {
+        type: 'categorize', // Default question type
+        categorize: { categories: [], items: [] }, // Nested under "categorize"
+        cloze: { blanks: [] },
+        comprehension: {
+          description: { title: '', content: '' },
+          questions: [{ question: '', answer: '', options: [] }],
         },
+      },
     ]);
   };
 
   const handleSaveForm = async () => {
-    const transformedQuestions =transformDataToBackendFormat(questions)
-    console.log(transformedQuestions)
-      // Check if all questions were filtered out (invalid input)
-      if (transformedQuestions.length === 0) {
-        alert('Form cannot be submitted. Please ensure all fields are valid.');
-        return;
+    const transformedQuestions = transformDataToBackendFormat(questions)
+    // Check if all questions were filtered out (invalid input)
+    if (transformedQuestions.length === 0) {
+      alert('Form cannot be submitted. Please ensure all fields are valid.');
+      return;
     }
 
     const formData = {
@@ -47,7 +48,7 @@ const CreateFormPage = () => {
       const response = await axios.post(`${SERVER_URL}/form`, formData, { withCredentials: true });
       console.log('Form submitted successfully:', response.data);
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.log('Error submitting form:', error);
     }
   };
 
@@ -59,13 +60,20 @@ const CreateFormPage = () => {
       </div>
       <h2>Form</h2>
 
-      <div>
-        <button>Create</button>
-        <button>Preview</button>
+      <div className='createAndPreview-Toggle'>
+        <button className={`${isPreview?"":"active"}`} onClick={()=>setIsPreview(false)}>Create</button>
+        <button className={`${isPreview?"active":""}`} onClick={()=>setIsPreview(true)}>Preview</button>
       </div>
-      <FormMetaData formTitle={formTitle} setFormTitle={setFormTitle} formDescription={formDescription} setFormDescription={setFormDescription} />
-      <QuestionsList />
-      <button className="add-question-btn" onClick={handleAddQuestion}>Add New Question</button>
+      <FormMetaData formTitle={formTitle} setFormTitle={setFormTitle} formDescription={formDescription} setFormDescription={setFormDescription} isPreview={isPreview}/>
+      {isPreview ? (
+        <Preview />
+      ) : (
+        <>
+          <QuestionsList />
+          <button className="add-question-btn" onClick={handleAddQuestion}>Add New Question</button>
+        </>
+      )
+      }
     </div>
   );
 };

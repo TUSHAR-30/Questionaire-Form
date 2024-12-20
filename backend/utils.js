@@ -41,14 +41,14 @@ exports.validateQuestionSchema = function(question) {
   }
   
   function validateClozeQuestion(cloze) {
-    if (!cloze || !cloze.question) {
+    if (!cloze || !cloze.displayQuestion || !cloze.originalQuestion) {
       throw new Error('Cloze questions must have a question.');
     }
     if (!cloze.answers || cloze.answers.length === 0) {
       throw new Error('Cloze questions must have answers.');
     }
     cloze.answers.forEach(answer => {
-      if (answer.itemSerialNumber === undefined || !answer.itemName) {
+      if (answer.itemSerialNumber === undefined || !answer.itemName || answer.start==undefined || answer.end==undefined) {
         throw new Error('Each answer in Cloze questions must have itemSerialNumber and itemName.');
       }
     });

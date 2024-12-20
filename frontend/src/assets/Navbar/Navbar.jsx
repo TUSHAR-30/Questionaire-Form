@@ -41,6 +41,7 @@ const Navbar = ({ isAuthenticated, user,setUser,setIsAuthenticated }) => {
                                 <div className="dropdown">
                                     <ul>
                                         <li onClick={() => console.log("Profile clicked")}>User Profile</li>
+                                        <li onClick={()=>navigate("/dragforms/forms")}>Forms</li>
                                         <li onClick={handleLogout}>Logout</li>
                                     </ul>
                                 </div>

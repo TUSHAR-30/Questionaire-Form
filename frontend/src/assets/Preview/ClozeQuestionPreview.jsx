@@ -29,10 +29,10 @@ import EditFormContext from "../../Context/EditFormContext";
 function ClozeQuestionPreview({ question, questionIndex }) {
   const location = useLocation();
   const currentPath = location.pathname;
-  const { questions, setQuestions } =currentPath === "/dragforms/createform"? useContext(CreateFormContext): useContext(EditFormContext);
+  const { questions, setQuestions } = currentPath === "/dragforms/createform" ? useContext(CreateFormContext) : useContext(EditFormContext);
 
   //Util function to calculate index
-  function findIndex(question,index){
+  function findIndex(question, index) {
     return question.cloze.blanks.findIndex((blank) => (blank.droppedAt === index))
   }
 
@@ -43,35 +43,86 @@ function ClozeQuestionPreview({ question, questionIndex }) {
       <span key={index}>
         {part}
         {index < question.cloze.blanks.length && (
-          <Droppable droppableId={`placeholder-${index}`} >
+           <Droppable droppableId={`placeholder-${index}`} >
             {(provided, snapshot) => (
               <span
-                className={`placeholder ${snapshot.isDraggingOver ? "placeholder-hover" : ""} 
-                ${question.cloze.blanks[findIndex(question,index)]?.text ? "draggable-blank-preview" : ""} 
-                `}
+                className={`placeholder ${snapshot.isDraggingOver ? "placeholder-hover" : ""} ` }
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
-                {
-                  question.cloze.blanks[findIndex(question,index)]?.text || "________"
-                }
+                <Draggable draggableId={String(index)} index={index}>
+                  {
+                    (provided) => (
+                      <span
+                        className={`  ${question.cloze.blanks[findIndex(question, index)]?.text ? "draggable-blank-preview" : ""} `}
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        {question.cloze.blanks[findIndex(question, index)]?.text || "________"}
+                      </span>
+                    )
+                  }
+                </Draggable>
                 {provided.placeholder}
+
               </span>
             )}
           </Droppable>
+         
         )}
       </span>
     ));
   };
 
+
   const handleDragEnd = (result) => {
     if (!result.destination) return;
 
     const { source, destination } = result;
-    if (destination.droppableId.startsWith("placeholder-")) {
+
+    //move blank from blank-container to placeholder
+    if (destination.droppableId.startsWith("placeholder-") && source.droppableId.startsWith("blanks-container")) {
       const placeholderIndex = parseInt(destination.droppableId.split("-")[1], 10);
       handleBlankDropped(source.index, placeholderIndex, questionIndex);
     }
+
+    //move blank from placeholder to blank-container
+    if (source.droppableId.startsWith("placeholder-") && destination.droppableId.startsWith("blanks-container")) {
+      const updatedQuestions = [...questions];
+      const question = updatedQuestions[questionIndex];
+      const index = findIndex(question, source.index);
+      if (index != -1) {
+        question.cloze.blanks[index].droppedAt = null;
+      }
+      setQuestions(updatedQuestions);
+    }
+
+    //move placeholder blank to the placeholder blank
+    if (source.droppableId.startsWith("placeholder-") && destination.droppableId.startsWith("placeholder-")){
+      const updatedQuestions = [...questions];
+      const question = updatedQuestions[questionIndex];
+
+      const draggedBlankIndex=findIndex(question, source.index);
+      let draggedBlank;
+      if(draggedBlankIndex!=-1){
+        draggedBlank=question.cloze.blanks[draggedBlankIndex];
+      }
+
+
+      const destinationBlankIndex=findIndex(question, destination.index);
+      let destinationBlank;
+      if(destinationBlankIndex!=-1){
+        destinationBlank=question.cloze.blanks[destinationBlankIndex];
+      }
+
+      if(draggedBlank) draggedBlank.droppedAt=destination.index;
+      if(destinationBlank) destinationBlank.droppedAt=source.index
+
+      setQuestions(updatedQuestions);
+
+    }
+
   };
 
   const handleBlankDropped = (sourceIndex, placeholderIndex, questionIndex) => {
@@ -80,8 +131,8 @@ function ClozeQuestionPreview({ question, questionIndex }) {
     const sourceBlank = question.cloze.blanks[sourceIndex];
 
     //if the blank is already occupied , then remove it and add the new one
-    const index=findIndex(question,placeholderIndex)
-    if(index!=-1) question.cloze.blanks[index].droppedAt=null;
+    const index = findIndex(question, placeholderIndex)
+    if (index != -1) question.cloze.blanks[index].droppedAt = null;
 
     sourceBlank.droppedAt = placeholderIndex;
 

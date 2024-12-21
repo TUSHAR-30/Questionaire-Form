@@ -29,29 +29,31 @@ import EditFormContext from "../../Context/EditFormContext";
 function ClozeQuestionPreview({ question, questionIndex }) {
   const location = useLocation();
   const currentPath = location.pathname;
-  const { questions, setQuestions } =
-    currentPath === "/dragforms/createform"
-      ? useContext(CreateFormContext)
-      : useContext(EditFormContext);
+  const { questions, setQuestions } =currentPath === "/dragforms/createform"? useContext(CreateFormContext): useContext(EditFormContext);
+
+  //Util function to calculate index
+  function findIndex(question,index){
+    return question.cloze.blanks.findIndex((blank) => (blank.droppedAt === index))
+  }
 
   // Function to parse displayText and replace blanks with droppable placeholders
   const renderDisplayTextWithPlaceholders = () => {
     const parts = question.cloze.displayText.split("________");
-    console.log(question.cloze.blanks)
     return parts.map((part, index) => (
       <span key={index}>
         {part}
         {index < question.cloze.blanks.length && (
-          <Droppable droppableId={`placeholder-${index}`}>
+          <Droppable droppableId={`placeholder-${index}`} >
             {(provided, snapshot) => (
               <span
                 className={`placeholder ${snapshot.isDraggingOver ? "placeholder-hover" : ""} 
-                ${question.cloze.blanks[question.cloze.blanks.findIndex((blank)=>(blank.blankSerialNumber==index))].droppedText?"draggable-blank-preview":""} `}
+                ${question.cloze.blanks[findIndex(question,index)]?.text ? "draggable-blank-preview" : ""} 
+                `}
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
                 {
-                  question.cloze.blanks[question.cloze.blanks.findIndex((blank)=>(blank.blankSerialNumber==index))].droppedText || "________" 
+                  question.cloze.blanks[findIndex(question,index)]?.text || "________"
                 }
                 {provided.placeholder}
               </span>
@@ -68,8 +70,6 @@ function ClozeQuestionPreview({ question, questionIndex }) {
     const { source, destination } = result;
     if (destination.droppableId.startsWith("placeholder-")) {
       const placeholderIndex = parseInt(destination.droppableId.split("-")[1], 10);
-      console.log(source);
-      console.log(destination)
       handleBlankDropped(source.index, placeholderIndex, questionIndex);
     }
   };
@@ -79,13 +79,11 @@ function ClozeQuestionPreview({ question, questionIndex }) {
     const question = updatedQuestions[questionIndex];
     const sourceBlank = question.cloze.blanks[sourceIndex];
 
-    const destinationBlank=question.cloze.blanks.find((blank)=>(blank.blankSerialNumber==placeholderIndex))
-    if(!destinationBlank.droppedText){
-      destinationBlank.droppedText=sourceBlank.text
-      question.cloze.blanks[sourceIndex].isDropped = true;
-    }
+    //if the blank is already occupied , then remove it and add the new one
+    const index=findIndex(question,placeholderIndex)
+    if(index!=-1) question.cloze.blanks[index].droppedAt=null;
 
-
+    sourceBlank.droppedAt = placeholderIndex;
 
     // Update state with the new questions array
     setQuestions(updatedQuestions);
@@ -98,7 +96,7 @@ function ClozeQuestionPreview({ question, questionIndex }) {
           {renderDisplayTextWithPlaceholders()}
         </p>
         <div>
-          <Droppable droppableId="blanks-container" direction="horizontal">
+          <Droppable droppableId="blanks-container" direction="vertical">
             {(provided) => (
               <div
                 className="blanks-container-preview"
@@ -112,7 +110,7 @@ function ClozeQuestionPreview({ question, questionIndex }) {
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
-                        className={`draggable-blank-preview ${blank.isDropped?"hide":""}`}
+                        className={`draggable-blank-preview ${(blank.droppedAt || blank.droppedAt === 0) ? "hide" : ""}`}
                       >
                         {blank.text}
                       </span>

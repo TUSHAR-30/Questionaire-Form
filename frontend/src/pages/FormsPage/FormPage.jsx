@@ -55,10 +55,6 @@ function FormPage() {
         }
     }
 
-    useEffect(() => {
-        console.log(questions)
-    }, [questions])
-
     return (
         <div className="created-questions-list-Preview">
             {isEditBtnClicked ? (

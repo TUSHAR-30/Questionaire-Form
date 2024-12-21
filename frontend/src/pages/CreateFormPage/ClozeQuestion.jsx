@@ -266,7 +266,6 @@ function ClozeQuestion({ question, questionIndex }) {
 
     const onDragEnd = (result) => {
         if (!result.destination) return;
-
         const newQuestions = [...questions];
         const blanks = Array.from(newQuestions[questionIndex].cloze.blanks);
         const [movedBlank] = blanks.splice(result.source.index, 1);

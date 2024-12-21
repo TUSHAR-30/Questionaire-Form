@@ -252,10 +252,10 @@
     user-select: none;
     height: 28px;
 }
-.placeholder.draggable-blank-preview{
+.placeholder .draggable-blank-preview{
     padding: 2px;
     height: 24px;
-    transform: translateY(25%);
+    display: block;
 }
 
 .draggable-blank-preview::-webkit-scrollbar {

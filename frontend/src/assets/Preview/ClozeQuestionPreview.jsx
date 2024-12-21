@@ -43,33 +43,41 @@ function ClozeQuestionPreview({ question, questionIndex }) {
       <span key={index}>
         {part}
         {index < question.cloze.blanks.length && (
-           <Droppable droppableId={`placeholder-${index}`} >
+          <Droppable droppableId={`placeholder-${index}`} >
             {(provided, snapshot) => (
               <span
-                className={`placeholder ${snapshot.isDraggingOver ? "placeholder-hover" : ""} ` }
+                className={`placeholder ${snapshot.isDraggingOver ? "placeholder-hover" : ""} `}
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
-                <Draggable draggableId={String(index)} index={index}>
-                  {
-                    (provided) => (
-                      <span
-                        className={`  ${question.cloze.blanks[findIndex(question, index)]?.text ? "draggable-blank-preview" : ""} `}
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        {question.cloze.blanks[findIndex(question, index)]?.text || "________"}
-                      </span>
-                    )
-                  }
-                </Draggable>
+                {question.cloze.blanks[findIndex(question, index)]?.text ? (
+                  <Draggable 
+                  // draggableId={String(index)} 
+                  draggableId={`placeholder-${index}`}
+                  index={index}>
+                    {
+                      (provided) => (
+                        <span
+                          className={`  ${question.cloze.blanks[findIndex(question, index)]?.text ? "draggable-blank-preview" : ""} `}
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          {question.cloze.blanks[findIndex(question, index)]?.text || "________"}
+                        </span>
+                      )
+                    }
+                  </Draggable>
+                ) : (
+                  <span>{"________"}</span>
+                )}
+
                 {provided.placeholder}
 
               </span>
             )}
           </Droppable>
-         
+
         )}
       </span>
     ));
@@ -99,25 +107,25 @@ function ClozeQuestionPreview({ question, questionIndex }) {
     }
 
     //move placeholder blank to the placeholder blank
-    if (source.droppableId.startsWith("placeholder-") && destination.droppableId.startsWith("placeholder-")){
+    if (source.droppableId.startsWith("placeholder-") && destination.droppableId.startsWith("placeholder-")) {
       const updatedQuestions = [...questions];
       const question = updatedQuestions[questionIndex];
 
-      const draggedBlankIndex=findIndex(question, source.index);
+      const draggedBlankIndex = findIndex(question, source.index);
       let draggedBlank;
-      if(draggedBlankIndex!=-1){
-        draggedBlank=question.cloze.blanks[draggedBlankIndex];
+      if (draggedBlankIndex != -1) {
+        draggedBlank = question.cloze.blanks[draggedBlankIndex];
       }
 
-
-      const destinationBlankIndex=findIndex(question, destination.index);
+      const destinationPlaceholderIndex = parseInt(destination.droppableId.split("-")[1], 10);
+      const destinationBlankIndex = findIndex(question, destinationPlaceholderIndex);
       let destinationBlank;
-      if(destinationBlankIndex!=-1){
-        destinationBlank=question.cloze.blanks[destinationBlankIndex];
+      if (destinationBlankIndex != -1) {
+        destinationBlank = question.cloze.blanks[destinationBlankIndex];
       }
-
-      if(draggedBlank) draggedBlank.droppedAt=destination.index;
-      if(destinationBlank) destinationBlank.droppedAt=source.index
+     
+      if (draggedBlank) draggedBlank.droppedAt = destinationPlaceholderIndex;
+      if (destinationBlank) destinationBlank.droppedAt = source.index
 
       setQuestions(updatedQuestions);
 

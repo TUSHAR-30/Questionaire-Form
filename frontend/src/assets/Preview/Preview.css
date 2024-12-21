@@ -217,7 +217,8 @@
     background-color: #f0f0f0;
     line-height: 20px;
     border: 1px dashed #ccc;
-    cursor: pointer;
+    border-radius: 5px;
+    user-select: none;
 }
 
 .placeholder-hover {

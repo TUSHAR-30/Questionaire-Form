@@ -20,13 +20,13 @@
 
 
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useLocation } from "react-router-dom";
 import CreateFormContext from "../../Context/CreateFormContext";
 import EditFormContext from "../../Context/EditFormContext";
 
-function ClozeQuestionPreview({ question, questionIndex }) {
+function ClozeQuestionPreview({ question, questionIndex , isDragEnabled  }) {
   const location = useLocation();
   const currentPath = location.pathname;
   const { questions, setQuestions } = currentPath === "/dragforms/createform" ? useContext(CreateFormContext) : useContext(EditFormContext);
@@ -52,7 +52,7 @@ function ClozeQuestionPreview({ question, questionIndex }) {
               >
                 {question.cloze.blanks[findIndex(question, index)]?.text ? (
                   <Draggable 
-                  // draggableId={String(index)} 
+                  isDragDisabled={!isDragEnabled}
                   draggableId={`placeholder-${index}`}
                   index={index}>
                     {
@@ -148,6 +148,15 @@ function ClozeQuestionPreview({ question, questionIndex }) {
     setQuestions(updatedQuestions);
   };
 
+   //I am setting the items droppedAt as null when the first time the preview page is loaded.
+    //I am doing this because when the user is editing a form he will see all items at item-container when user is switching between preview mode and editedpreview mode. The changes made by user in preview mode will not reflect back in the editedpreviewmode.
+    useEffect(()=>{
+      const updatedQuestions = [...questions];
+      const question = updatedQuestions[questionIndex];
+      question.cloze.blanks.map((blank)=>blank.droppedAt=null)
+      setQuestions(JSON.parse(JSON.stringify(questions)))
+  },[])
+
   return (
     <div className="cloze-container-preview">
       <DragDropContext onDragEnd={handleDragEnd}>
@@ -163,7 +172,7 @@ function ClozeQuestionPreview({ question, questionIndex }) {
                 {...provided.droppableProps}
               >
                 {question.cloze.blanks.map((blank, index) => (
-                  <Draggable key={blank.id} draggableId={blank.id} index={index}>
+                  <Draggable isDragDisabled={!isDragEnabled} key={blank.id} draggableId={blank.id} index={index}>
                     {(provided) => (
                       <span
                         ref={provided.innerRef}

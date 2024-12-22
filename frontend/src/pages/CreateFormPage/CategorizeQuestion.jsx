@@ -7,11 +7,24 @@ function CategorizeQuestion({ question, questionIndex }) {
     const location = useLocation();
     const currentPath = location.pathname;
     const { questions, setQuestions } =currentPath=="/dragforms/createform"?useContext(CreateFormContext):useContext(EditFormContext)
+
     const handleAddCategory = (questionIndex) => {
         const newQuestions = [...questions];
         newQuestions[questionIndex].categorize.categories.push('');
         setQuestions(newQuestions);
     };
+
+    const handledeleteCategory=(questionIndex, categoryIndex)=>{
+        const newQuestions = [...questions];
+        newQuestions[questionIndex].categorize.categories=newQuestions[questionIndex].categorize.categories.filter((category,index)=>index!=categoryIndex)
+        setQuestions(newQuestions);
+    }
+
+    const handledeleteItem=(questionIndex,itemIndex)=>{
+        const newQuestions = [...questions];
+        newQuestions[questionIndex].categorize.items=newQuestions[questionIndex].categorize.items.filter((item,index)=>index!=itemIndex)
+        setQuestions(newQuestions);
+    }
 
     const handleCategoryChange = (questionIndex, categoryIndex, newCategory) => {
         const newQuestions = [...questions];
@@ -52,8 +65,8 @@ function CategorizeQuestion({ question, questionIndex }) {
 
                 <div className='input-category-container'>
                     {question.categorize.categories.map((category, categoryIndex) => (
-                        <input
-                            key={categoryIndex}
+                        <div  key={categoryIndex} className='input-category'>
+                         <input
                             type="text"
                             value={category}
                             onChange={(e) =>
@@ -65,7 +78,10 @@ function CategorizeQuestion({ question, questionIndex }) {
                             }
                             placeholder={`Category ${categoryIndex + 1}`}
                         />
+                        <span className='deleteItembtn' onClick={()=>handledeleteCategory(questionIndex,categoryIndex)}>-</span>
+                        </div>
                     ))}
+
                 </div>
             </div>
 
@@ -79,6 +95,7 @@ function CategorizeQuestion({ question, questionIndex }) {
                         Add New Item
                     </button>
                 </div>
+                <div className='input-category-container'>
                 {question.categorize.items.map((item, itemIndex) => (
                     <div key={itemIndex} className="item-input">
                         <input
@@ -105,13 +122,17 @@ function CategorizeQuestion({ question, questionIndex }) {
                         >
                             <option value="">Select Category</option>
                             {question.categorize.categories.map((category, categoryIndex) => (
-                                <option key={categoryIndex} value={category}>
+                                category.trim() && <option key={categoryIndex} value={category}>
                                     {category}
                                 </option>
                             ))}
                         </select>
+                        <span className='deleteItembtn' onClick={()=>handledeleteItem(questionIndex,itemIndex)}>-</span>
+
                     </div>
                 ))}
+                </div>
+              
             </div>
         </div>
     )

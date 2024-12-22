@@ -29,7 +29,7 @@ function FormPage() {
     };
 
     async function handleEditForm() {
-        const transformedQuestions = transformDataToBackendFormat(questions)
+        const transformedQuestions = transformDataToBackendFormat(questions,formTitle,formDescription)
         // Check if all questions were filtered out (invalid input)
         if (transformedQuestions.length === 0) {
             alert('Form cannot be submitted. Please ensure all fields are valid.');
@@ -86,7 +86,7 @@ function FormPage() {
                 {questions?.map((question, questionIndex) => (
                     isEditBtnClicked ? (
                         isPreview ? (
-                            <PreviewQuestionItem key={questionIndex} question={question} questionIndex={questionIndex} isDragEnabled={true}/>
+                            <PreviewQuestionItem key={questionIndex} question={question} questionIndex={questionIndex} isDragEnabled={false}/>
 
                         ) : (
                             <QuestionItem key={questionIndex} question={question} questionIndex={questionIndex} />

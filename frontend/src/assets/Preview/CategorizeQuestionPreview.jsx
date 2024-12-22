@@ -122,7 +122,7 @@ function CategorizeQuestionPreview({ question, questionIndex , isDragEnabled }) 
                             {...provided.droppableProps}
                         >
                             {question.categorize.items.filter((item)=>item.name.trim()).map((item, index) => (
-                                <Draggable isDragDisabled={!isDragEnabled} key={`${item.name}-${index}`} draggableId={`${item.name}-${index}`} index={index}>
+                                <Draggable isDragDisabled={!isDragEnabled} key={`${item.name}-${index}`} draggableId={`${item.name}`} index={index}>
                                     {(provided) => (
                                         <div
                                             key={index}

@@ -13,7 +13,7 @@ function PreviewQuestionItem({ question, questionIndex }) {
 
             <div className='item-content-Preview'>
                 {question.type == "categorize" && 
-                    <CategorizeQuestionPreview question={question}  />
+                    <CategorizeQuestionPreview question={question}  questionIndex={questionIndex}/>
                 }
                 {question.type == "cloze" && (
                     <ClozeQuestionPreview question={question} questionIndex={questionIndex} />    

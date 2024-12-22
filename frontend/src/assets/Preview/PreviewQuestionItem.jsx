@@ -3,7 +3,7 @@ import CategorizeQuestionPreview from './CategorizeQuestionPreview'
 import ClozeQuestionPreview from './ClozeQuestionPreview'
 import ComprehensionQuestionPreview from './ComprehensionQuestionPreview'
 
-function PreviewQuestionItem({ question, questionIndex }) {
+function PreviewQuestionItem({ question, questionIndex , isDragEnabled }) {
     return (
         <div className='question-item-Preview'>
             <div className='item-header-Preview'>
@@ -13,13 +13,13 @@ function PreviewQuestionItem({ question, questionIndex }) {
 
             <div className='item-content-Preview'>
                 {question.type == "categorize" && 
-                    <CategorizeQuestionPreview question={question}  questionIndex={questionIndex}/>
+                    <CategorizeQuestionPreview question={question} questionIndex={questionIndex} isDragEnabled={isDragEnabled}/>
                 }
                 {question.type == "cloze" && (
-                    <ClozeQuestionPreview question={question} questionIndex={questionIndex} />    
+                    <ClozeQuestionPreview question={question} questionIndex={questionIndex} isDragEnabled={isDragEnabled}/>    
                 )}
                  {question.type == "comprehension" && (
-                    <ComprehensionQuestionPreview question={question} questionIndex={questionIndex}/>    
+                    <ComprehensionQuestionPreview question={question} questionIndex={questionIndex} isDragEnabled={isDragEnabled}/>    
                 )}
             </div>
 

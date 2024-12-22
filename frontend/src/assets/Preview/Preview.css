@@ -39,18 +39,14 @@
     display: flex;
     gap: 12px;
     justify-content: center;
+    flex-wrap: wrap;
+
 }
 
 .category-Preview {
     box-shadow: 1px 1px 3px gray;
     border-radius: 8px;
     width: 280px;
-}
-
-@media screen and (max-width:600px) {
-    .category-container-Preview {
-        flex-wrap: wrap;
-    }
 }
 
 .category-header-Preview {

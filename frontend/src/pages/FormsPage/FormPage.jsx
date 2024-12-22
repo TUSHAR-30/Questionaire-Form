@@ -86,14 +86,14 @@ function FormPage() {
                 {questions?.map((question, questionIndex) => (
                     isEditBtnClicked ? (
                         isPreview ? (
-                            <PreviewQuestionItem key={questionIndex} question={question} questionIndex={questionIndex} />
+                            <PreviewQuestionItem key={questionIndex} question={question} questionIndex={questionIndex} isDragEnabled={true}/>
 
                         ) : (
                             <QuestionItem key={questionIndex} question={question} questionIndex={questionIndex} />
                         )
 
                     ) : (
-                        <PreviewQuestionItem key={questionIndex} question={question} questionIndex={questionIndex} />
+                        <PreviewQuestionItem key={questionIndex} question={question} questionIndex={questionIndex} isDragEnabled={true}/>
                     )
                 ))}
                 {isEditBtnClicked && !isPreview && <button style={{ alignSelf: 'flex-end' }} className="add-question-btn" onClick={handleAddQuestion}>Add New Question</button>}

@@ -116,7 +116,6 @@ button.add-question-btn:hover {
 
 .question-item select {
   width: 100%;
-  margin-bottom: 10px;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -154,12 +153,22 @@ button.add-question-btn:hover {
   background-color: #fff;
 }
 
-/* SelectQuestionType.jsx styles */
-.selectquestiontype {
-  transform: translateY(15%);
+
+/* DeleteItembtn in question */
+.deleteItembtn{
+  box-shadow: 0 0 3px gray;
+  width: 18px;
+  height: 18px;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  cursor: pointer;
 }
-
-
+.hideDeletebtn{
+  display: none;
+}
 
 /* Categorize Question Styles */
 .question-categorize {
@@ -192,22 +201,35 @@ button.add-item-btn:hover {
 .input-category-container {
   display: flex;
   flex-direction: column;
+  gap: 4px;
 }
 
-.category-container input[type="text"] {
-  width: 100%;
+.input-category-container .input-category{
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.input-category-container input[type="text"] {
+  width:90%;
   max-width: 440px;
 }
 
 .items-container .item-input input[type="text"] {
   width: 48%;
-  margin-right: 2%;
+  margin-right: 1%;
   display: inline-block;
 }
 
 .items-container .item-input select {
   width: 48%;
   display: inline-block;
+}
+
+.items-container .item-input{
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 /* Responsive Adjustments */
@@ -246,6 +268,11 @@ textarea::selection {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  background-color: lightcyan;
+  padding: 8px;
+  min-height: 40px;
+  max-height: 150px;
+  overflow-y: auto;
 }
 
 .blanks-container .draggable-blank {

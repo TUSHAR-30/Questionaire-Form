@@ -1,4 +1,8 @@
-const transformDataToBackendFormat = (questions) => {
+const transformDataToBackendFormat = (questions,title,description) => {
+  if(!title.trim() || !description.trim()){
+    alert("Please enter form Title and Description");
+    throw new Error("Please enter form Title and Description")
+  }
   return questions
     .map((question) => {
       const commonFields = {
@@ -37,9 +41,10 @@ const validateCategorize = (question) => {
   );
 
     // Check for duplicate categories
-    const uniqueCategories = [...new Set(validCategories)];
+    const uniqueCategories = [...new Set(validCategories.map((category)=>category.trim()))];
     if (uniqueCategories.length !== validCategories.length) {
       alert('Categories must be unique.');
+      throw new Error("Categories must be unique")
       return null;
     }
 
@@ -49,9 +54,10 @@ const validateCategorize = (question) => {
   );
 
    // Check for duplicate items
-   const uniqueItemNames = [...new Set(validItems.map((item) => item.name))];
+   const uniqueItemNames = [...new Set(validItems.map((item) => item.name.trim()))];
    if (uniqueItemNames.length !== validItems.length) {
      alert('Items must be unique.');
+     throw new Error("Items must be unique")
      return null;
    }
 
@@ -59,12 +65,23 @@ const validateCategorize = (question) => {
    const hasItemsWithoutCategory=validItems.find((item)=>item.category.trim() == '')
    if(hasItemsWithoutCategory){
     alert('Each item should have a category.');
+    throw new Error("Each item should have a category.")
     return null;
    }
+
+   const categoriesWhichHasItem=[...new Set(validItems.map((item)=>item.category.trim() && item.category))]
+   if(categoriesWhichHasItem.length !==uniqueCategories.length){
+    alert("Each category should have atleast one item.")
+    throw new Error("Each category should have atleast one item.")
+   }
+   
+
 
   // Ensure there is at least one valid category and one valid item
   if (validCategories.length === 0 || validItems.length === 0) {
     // Skip this question as it's invalid
+    alert("Categorize question must have category and item");
+    throw new Error("Categorize question must have category and item")
     return null;
   }
 
@@ -81,6 +98,16 @@ const validateCategorize = (question) => {
 }
 
 const validateCloze = (question) => {
+  if(question.cloze.originalText.trim()===""){
+     alert("Cloze question must have question")
+     throw new Error("Cloze question must have question")
+  }
+   if(question.cloze.blanks.length==0){
+    alert("Cloze question must have blanks")
+    throw new Error("Cloze question must have blanks")
+   }
+      
+  
   const cloze={
       displayQuestion: question.cloze.displayText,
       originalQuestion:question.cloze.originalText,
@@ -99,7 +126,7 @@ const validateComprehension = (question) => {
 
   // Validate title and description
   if (!description.title.trim() || !description.content.trim()) {
-    alert('Title and description are required for comprehension questions.');
+    alert('Title and content are required for comprehension questions.');
     return null;
   }
 
@@ -107,7 +134,7 @@ const validateComprehension = (question) => {
   const validQuestions = questions.filter((q) => {
     // Check if question, answer, and at least one option are present
     if (!q.question.trim()) {
-      alert('Each comprehension question must have a question.');
+      alert('comprehension question must have a question.');
       return false;
     }
     if (!q.options || q.options.length === 0) {

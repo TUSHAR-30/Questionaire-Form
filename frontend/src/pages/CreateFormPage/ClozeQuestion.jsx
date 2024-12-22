@@ -139,7 +139,7 @@
 
 
 
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import CreateFormContext from '../../Context/CreateFormContext';
 import { useLocation } from 'react-router-dom';
@@ -148,8 +148,13 @@ import EditFormContext from '../../Context/EditFormContext';
 function ClozeQuestion({ question, questionIndex }) {
     const location = useLocation();
     const currentPath = location.pathname;
-    const { questions, setQuestions } =currentPath=="/dragforms/createform"?useContext(CreateFormContext):useContext(EditFormContext)
+    const { questions, setQuestions } = currentPath == "/dragforms/createform" ? useContext(CreateFormContext) : useContext(EditFormContext)
     const textareaRef = useRef(null);
+    const [isItemDragging,setisItemDragging]=useState(false)
+
+    const onDragStart = (start) => {
+        setisItemDragging(true);
+      };
 
     const handleClozeQuestionTextChange = (questionIndex, newText) => {
         const newQuestions = [...questions];
@@ -244,11 +249,25 @@ function ClozeQuestion({ question, questionIndex }) {
         setQuestions(newQuestions);
     };
 
+    const handleDeleteBlank =(blankId)=>{
+       const newQuestions = [...questions];
+       const question = newQuestions[questionIndex];
+       question.cloze.blanks=question.cloze.blanks.filter((blank,index)=>index!=blankId);
+
+        // Dynamically generate displayText from blanks
+        question.cloze.displayText = generateDisplayText(
+            question.cloze.originalText,
+            question.cloze.blanks
+        );
+
+        setQuestions(newQuestions);
+    }
+
     // Function to generate displayText dynamically
     const generateDisplayText = (originalText, blankstemp) => {
         let displayText = '';
         let currentIndex = 0;
-        let blanks=[...blankstemp]
+        let blanks = [...blankstemp]
 
         blanks.sort((a, b) => a.start - b.start).forEach((blank) => {
             // Add text before the blank
@@ -265,6 +284,8 @@ function ClozeQuestion({ question, questionIndex }) {
     };
 
     const onDragEnd = (result) => {
+        setisItemDragging(false);
+
         if (!result.destination) return;
         const newQuestions = [...questions];
         const blanks = Array.from(newQuestions[questionIndex].cloze.blanks);
@@ -274,7 +295,7 @@ function ClozeQuestion({ question, questionIndex }) {
         newQuestions[questionIndex].cloze.blanks = blanks;
         setQuestions(newQuestions);
     };
-    
+
     return (
         <div className="question-cloze">
             <label>
@@ -294,27 +315,40 @@ function ClozeQuestion({ question, questionIndex }) {
             <h4>Preview:</h4>
             <p>{question.cloze.displayText}</p>
             <h4>Blanks:</h4>
-            <DragDropContext onDragEnd={onDragEnd}>
+            <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
                 <Droppable droppableId={`blanks-${questionIndex}`}>
                     {(provided) => (
                         <div
-                            className="blanks-container"
+                            className={`blanks-container `}
                             {...provided.droppableProps}
                             ref={provided.innerRef}
                         >
+
                             {question.cloze.blanks.map((blank, index) => (
-                                <Draggable key={blank.id} draggableId={blank.id} index={index}>
-                                    {(provided) => (
-                                        <span
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                            className="draggable-blank"
-                                        >
-                                            {blank.text}
-                                        </span>
-                                    )}
-                                </Draggable>
+                                <div key={blank.id} style={{ display: "flex", gap: '40px', alignItems:"center" }}>
+                                    <Draggable key={blank.id} draggableId={blank.id} index={index}>
+                                        {(provided, snapshot) => (
+                                            <>
+                                                <div ref={provided.innerRef}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}
+                                                    className="draggable-blank"
+                                                >
+                                                    <span className="draggable-blank">
+                                                        {blank.text}
+                                                    </span>
+                                                </div>
+                                                <span 
+                                                className={`deleteItembtn  ${isItemDragging?"hideDeletebtn":""} `} 
+                                                onClick={()=>handleDeleteBlank(index)}
+                                                >-</span>
+                                            </>
+
+
+                                        )}
+                                    </Draggable>
+                                </div>
+
                             ))}
                             {provided.placeholder}
                         </div>

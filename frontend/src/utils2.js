@@ -30,8 +30,8 @@ const transformDataToFrontendFormat = (backendQuestions) => {
   // Transform categorize data
   const transformCategorizeToFrontend = (categorize) => {
     const categories = categorize.map((category) => category.categoryName);
-    const items = categorize.flatMap((category) =>
-      category.items.map((item) => ({
+    const items = categorize.flatMap((category,categoryIndex) =>
+      category.items.map((item,itemIndex) => ({
         name: item,
         category: category.categoryName,
       }))

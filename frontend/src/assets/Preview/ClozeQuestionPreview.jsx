@@ -58,7 +58,7 @@ function ClozeQuestionPreview({ question, questionIndex }) {
                     {
                       (provided) => (
                         <span
-                          className={`  ${question.cloze.blanks[findIndex(question, index)]?.text ? "draggable-blank-preview" : ""} `}
+                          className={`  ${question.cloze.blanks[findIndex(question, index)]?.text ? "draggable-item-preview" : ""} `}
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
@@ -158,7 +158,7 @@ function ClozeQuestionPreview({ question, questionIndex }) {
           <Droppable droppableId="blanks-container" direction="vertical">
             {(provided) => (
               <div
-                className="blanks-container-preview"
+                className="items-container-preview"
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
@@ -169,7 +169,7 @@ function ClozeQuestionPreview({ question, questionIndex }) {
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
-                        className={`draggable-blank-preview ${(blank.droppedAt || blank.droppedAt === 0) ? "hide" : ""}`}
+                        className={`draggable-item-preview ${(blank.droppedAt || blank.droppedAt === 0) ? "hide" : ""}`}
                       >
                         {blank.text}
                       </span>

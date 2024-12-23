@@ -1,13 +1,12 @@
-import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
-import { BrowserRouter } from 'react-router-dom'
-import { CreateFormProvider } from './Context/CreateFormContext.jsx'
-import './index.css'
+import { createRoot } from 'react-dom/client';
+import { RouterProvider } from 'react-router-dom';
+import AppProvider from './App';
+import router from './router.jsx';
+import './index.css';
 
 createRoot(document.getElementById('root')).render(
-  <BrowserRouter>
-    <CreateFormProvider>
-        <App />
-    </CreateFormProvider>
-  </BrowserRouter>
-)
+  <AppProvider>
+      <RouterProvider router={router} />
+  </AppProvider>
+);
+

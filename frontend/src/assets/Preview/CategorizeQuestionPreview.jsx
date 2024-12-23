@@ -35,7 +35,7 @@ import { useLocation } from 'react-router-dom';
 function CategorizeQuestionPreview({ question, questionIndex , isDragEnabled }) {
     const location = useLocation();
     const currentPath = location.pathname;
-    const { questions, setQuestions } = currentPath === "/dragforms/createform" ? useContext(CreateFormContext) : useContext(EditFormContext);
+    const { questions, setQuestions } = currentPath === "/createform" ? useContext(CreateFormContext) : useContext(EditFormContext);
 
     function handleDragEnd(result) {
         if (!result.destination) return;

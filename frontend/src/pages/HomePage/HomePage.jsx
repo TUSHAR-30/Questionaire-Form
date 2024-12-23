@@ -13,7 +13,7 @@ const HomePage = () => {
             Create, share, and analyze forms with ease. Explore cool features
             like categorization, cloze questions, and comprehension quizzes.
           </p>
-          <a className="cta-button" onClick={()=>navigate("/dragforms/createform")}>
+          <a className="cta-button" onClick={()=>navigate("/createform")}>
             Get Started
           </a>
         </div>

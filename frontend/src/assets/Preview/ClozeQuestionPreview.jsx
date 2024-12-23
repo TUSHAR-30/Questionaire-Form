@@ -29,7 +29,7 @@ import EditFormContext from "../../Context/EditFormContext";
 function ClozeQuestionPreview({ question, questionIndex , isDragEnabled  }) {
   const location = useLocation();
   const currentPath = location.pathname;
-  const { questions, setQuestions } = currentPath === "/dragforms/createform" ? useContext(CreateFormContext) : useContext(EditFormContext);
+  const { questions, setQuestions } = currentPath === "/createform" ? useContext(CreateFormContext) : useContext(EditFormContext);
 
   //Util function to calculate index
   function findIndex(question, index) {

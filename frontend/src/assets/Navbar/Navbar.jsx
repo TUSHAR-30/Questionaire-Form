@@ -4,8 +4,11 @@ import { FaUserCircle } from "react-icons/fa";
 import axios from 'axios';
 import { SERVER_URL } from '../../../config';
 import "./Navbar.css"; 
+import { useAppContext } from "../../App";
 
-const Navbar = ({ isAuthenticated, user,setUser,setIsAuthenticated }) => {
+const Navbar = () => {
+
+    const { isAuthenticated, user,setUser,setIsAuthenticated } = useAppContext();
     const [showDropdown, setShowDropdown] = useState(false);
     const navigate = useNavigate();
 
@@ -27,7 +30,7 @@ const Navbar = ({ isAuthenticated, user,setUser,setIsAuthenticated }) => {
     return (
         <nav className="navbar">
             <div className="navbar-left">
-                <h1 className="webapp-name" onClick={() =>navigate("/dragforms")}>MyWebApp</h1>
+                <h1 className="webapp-name" onClick={() =>navigate("/")}>MyWebApp</h1>
             </div>
 
             <div className="navbar-right">
@@ -40,20 +43,20 @@ const Navbar = ({ isAuthenticated, user,setUser,setIsAuthenticated }) => {
                             {showDropdown && (
                                 <div className="dropdown">
                                     <ul>
-                                        <li onClick={() => console.log("Profile clicked")}>User Profile</li>
-                                        <li onClick={()=>navigate("/dragforms/forms")}>Forms</li>
+                                        {/* <li onClick={() => console.log("Profile clicked")}>User Profile</li> */}
+                                        <li onClick={()=>navigate("/forms")}>Forms</li>
                                         <li onClick={handleLogout}>Logout</li>
                                     </ul>
                                 </div>
                             )}
                         </div>
-                        <button className="create-form-btn" onClick={() => console.log("Create Form clicked")}>Create Form</button>
+                        <button className="create-form-btn" onClick={() => navigate("/createform")}>Create Form</button>
                     </>
                 ) :
                     (
                         <>
-                            <button className="login-btn" onClick={() =>navigate("/dragforms/login")}>Login</button>
-                            <button className="login-btn" onClick={() =>navigate("/dragforms/signup")}>Signup</button>
+                            <button className="login-btn" onClick={() =>navigate("/login")}>Login</button>
+                            <button className="login-btn" onClick={() =>navigate("/signup")}>Signup</button>
                         </>
 
 

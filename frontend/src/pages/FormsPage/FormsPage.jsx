@@ -10,7 +10,7 @@ function FormsPage() {
     const [forms,setForms]=useState([])
 
     function handleFormClick(formId){
-        navigate(`/dragforms/form/${formId}`)
+        navigate(`/form/${formId}`)
     }
 
     useEffect(() => {

@@ -148,7 +148,7 @@ import EditFormContext from '../../Context/EditFormContext';
 function ClozeQuestion({ question, questionIndex }) {
     const location = useLocation();
     const currentPath = location.pathname;
-    const { questions, setQuestions } = currentPath == "/dragforms/createform" ? useContext(CreateFormContext) : useContext(EditFormContext)
+    const { questions, setQuestions } = currentPath == "/createform" ? useContext(CreateFormContext) : useContext(EditFormContext)
     const textareaRef = useRef(null);
     const [isItemDragging,setisItemDragging]=useState(false)
 

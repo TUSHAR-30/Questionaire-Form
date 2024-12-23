@@ -72,7 +72,7 @@ const SignupPage = ({ setUser,setIsAuthenticated}) => {
 
             setUser(response.data.user);
             setIsAuthenticated(true)
-            navigate("/dragforms/");
+            navigate("/");
         } catch (error) {
             console.log(error.response.data.message);
         }
@@ -126,7 +126,7 @@ const SignupPage = ({ setUser,setIsAuthenticated}) => {
                     <button type="submit" className="signup-button">Sign Up</button>
                 </form>
                 <p className="login-text">
-                    Already have an account? <a onClick={() => navigate("/dragforms/login")}>Login</a>
+                    Already have an account? <a onClick={() => navigate("/login")}>Login</a>
                 </p>
             </div>
         </div>

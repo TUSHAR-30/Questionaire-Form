@@ -13,7 +13,7 @@ import EditFormContext from '../../Context/EditFormContext';
 function QuestionItem({ question, questionIndex }) {
     const location = useLocation();
     const currentPath = location.pathname;
-    const { questions, setQuestions } =currentPath=="/dragforms/createform"?useContext(CreateFormContext):useContext(EditFormContext)
+    const { questions, setQuestions } =currentPath=="/createform"?useContext(CreateFormContext):useContext(EditFormContext)
     const [isExpanded, setIsExpanded] = useState(true);
 
     const toggleAccordion = () => {

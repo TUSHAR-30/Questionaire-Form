@@ -16,7 +16,7 @@ const LoginPage = ({setUser,setIsAuthenticated}) => {
             const response = await axios.post(`${SERVER_URL}/login`, {email,password},{ withCredentials: true } );
             setUser(response.data.user);
             setIsAuthenticated(true)
-            navigate("/dragforms/");
+            navigate("/");
         } catch (error) {
             console.log(error.response.data);
         }
@@ -52,7 +52,7 @@ const LoginPage = ({setUser,setIsAuthenticated}) => {
                     <button type="submit" className="login-button">Login</button>
                 </form>
                 <p className="signup-text">
-                    Don't have an account? <a onClick={()=>navigate("/dragforms/signup")}>Sign up</a>
+                    Don't have an account? <a onClick={()=>navigate("/signup")}>Sign up</a>
                 </p>
             </div>
         </div>

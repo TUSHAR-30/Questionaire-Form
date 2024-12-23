@@ -3,10 +3,12 @@ import { useNavigate } from "react-router-dom";
 import './LoginPage.css';
 import axios from 'axios';
 import { SERVER_URL } from '../../../config';
+import { useAppContext } from '../../App';
 
 
-const LoginPage = ({setUser,setIsAuthenticated}) => {
+const LoginPage = () => {
     const navigate = useNavigate();
+    const { setUser,setIsAuthenticated } = useAppContext();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 

@@ -9,8 +9,10 @@ export const useAppContext = () => useContext(AppContext);
 function AppProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState({});
+  const [loading, setLoading] = useState(true); // New loading state
 
   useEffect(() => {
+
     async function fetchUserProfile() {
       try {
         const response = await axios.get(`${SERVER_URL}/profile`, {
@@ -22,13 +24,16 @@ function AppProvider({ children }) {
         setIsAuthenticated(true);
       } catch (error) {
         console.log('Error fetching profile:', error);
+      }finally {
+        setLoading(false); // Loading complete
       }
     }
+
     fetchUserProfile();
   }, []);
 
   return (
-    <AppContext.Provider value={{ isAuthenticated, user, setUser, setIsAuthenticated }}>
+    <AppContext.Provider value={{ isAuthenticated , user , setUser , setIsAuthenticated , loading }}>
       {children}
     </AppContext.Provider>
   );

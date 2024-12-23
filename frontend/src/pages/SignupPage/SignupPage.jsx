@@ -4,9 +4,11 @@ import axios from 'axios';
 import { SERVER_URL } from '../../../config';
 
 import './SignupPage.css';
+import { useAppContext } from '../../App';
 
-const SignupPage = ({ setUser,setIsAuthenticated}) => {
+const SignupPage = () => {
     const navigate = useNavigate();
+    const { setUser,setIsAuthenticated } = useAppContext();
     const [formData, setFormData] = useState({
         name: '',
         email: '',

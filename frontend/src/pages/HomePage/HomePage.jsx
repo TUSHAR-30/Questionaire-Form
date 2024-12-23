@@ -1,7 +1,9 @@
 import React from "react";
 import "./HomePage.css";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
+  const navigate = useNavigate();
   return (
     <div className="homepage">
       <header className="header">
@@ -11,7 +13,7 @@ const HomePage = () => {
             Create, share, and analyze forms with ease. Explore cool features
             like categorization, cloze questions, and comprehension quizzes.
           </p>
-          <a href="/dragforms/createform" className="cta-button">
+          <a className="cta-button" onClick={()=>navigate("/dragforms/createform")}>
             Get Started
           </a>
         </div>

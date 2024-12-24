@@ -28,7 +28,7 @@
     color: #555;
 }
 
-.login-page input {
+.login-page .login-container .form-group > input {
     width: 100%;
     padding: 0.75rem;
     border: 1px solid #ccc;
@@ -40,6 +40,17 @@
     border-color: #007bff;
     outline: none;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.toggle-passwordVisibility-container{
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    font-size: 14px;
+    margin-top: 22px;
+}
+.toggle-passwordVisibility-container input{
+    cursor: pointer;
 }
 
 .login-button {

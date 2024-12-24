@@ -1,84 +1,133 @@
+const { body, validationResult } = require('express-validator');
 const User = require('../Models/user');
 const jwt = require('jsonwebtoken');
+const sendOtp = require('../utils/sendOtp'); // OTP utility function
+const OTP = require('../Models/otp'); // OTP model
 
 
-exports.registerUser = async (req, res) => {
-  const { email, password ,profile } = req.body;
 
-  try {
+// Regex Patterns
+const regexPatterns = {
+  name: /^(?=.*[a-zA-Z]).{1,}$/, // At least one alphabet, allows anything else.
+  email: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/, // Basic email validation with a minimum of 2 characters after the last dot.
+  password: /^(?=.*[A-Za-z])(?=.*\d).{8,}$/, // At least 8 characters, with at least one alphabet and one number.
+};
+
+// Registration validation middleware
+const validateRegister = [
+  // Email validation
+  body('email')
+    .matches(regexPatterns.email)
+    .withMessage('Invalid email address'),
+
+  // Password validation
+  body('password')
+    .matches(regexPatterns.password)
+    .withMessage('Password must be at least 8 characters long and contain at least one letter and one number'),
+
+  // Name validation
+  body('profile.name')
+    .matches(regexPatterns.name)
+    .withMessage('Name must contain at least one alphabet and can contain any other characters')
+    .notEmpty()
+    .withMessage('Name is required')
+    .isString()
+    .withMessage('Name must be a string'),
+];
+
+exports.registerUser = [
+  validateRegister,
+
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        errors: errors
+      });
+    }
+
+    const { email, password, profile } = req.body;
+
+    try {
       // Check if the user already exists
       const existingUser = await User.findOne({ email });
       if (existingUser) {
-          return res.status(400).json({ message: 'User already exists' });
+        return res.status(409).json({ message: 'User already exists' });
       }
 
       // Create a new user
-      const newUser = await User.create({  email, password , profile });
+      const newUser = await User.create({ email, password, profile });
 
       // Generate a JWT token for the new user
-      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: process.env.LOGIN_EXPIRES });
+      const token = jwt.sign(
+        { id: newUser._id },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.LOGIN_EXPIRES }
+      );
 
-     // Send token as a cookie
-     res.cookie('token', token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'None',
-      expires: new Date(
-        Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
-    )
-  });
+      // Send token as a cookie
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'None',
+        expires: new Date(
+          Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+        ),
+      });
 
       res.status(201).json({
-          message: 'Registration successful',
-          user:newUser,
-          token,
+        message: 'Registration successful',
+        user: newUser,
+        token,
       });
-  } catch (err) {
+    } catch (err) {
       console.error('Error during registration:', err);
-      res.status(500).json({ error: err.message });
-  }
-};
+      res.status(500).json({ error: 'Server error' });
+    }
+  },
+];
+
 
 
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-      const user = await User.findOne({ email });
-      if (!user || !(await user.comparePassword(password))) {
-          return res.status(400).json({ message: 'Invalid email or password' });
-      }
+    const user = await User.findOne({ email });
+    if (!user || !(await user.comparePassword(password))) {
+      return res.status(400).json({ message: 'Invalid email or password' });
+    }
 
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: process.env.LOGIN_EXPIRES});
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: process.env.LOGIN_EXPIRES });
 
-      // Send token as a cookie
-      res.cookie('token', token, {
-          httpOnly: true,
-          secure: true,
-          sameSite: 'None',
-          expires: new Date(
-            Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
-        )
-      });
+    // Send token as a cookie
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'None',
+      expires: new Date(
+        Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+      )
+    });
 
-      res.status(200).json({ message: 'Login successful', token,user });
+    res.status(200).json({ message: 'Login successful', token, user });
   } catch (err) {
-      console.error('Error during login:', err);
-      res.status(500).json({ error: err.message });
+    console.error('Error during login:', err);
+    res.status(500).json({ error: err.message });
   }
 };
 
 exports.logoutUser = (req, res) => {
   res
-      .status(200)
-      .cookie("token", "", {
-        expires: new Date(Date.now()),
-        httpOnly: true,
-      })
-      .json({
-        success: true,
-        message: "User Logged Out!",
-      });
+    .status(200)
+    .cookie("token", "", {
+      expires: new Date(Date.now()),
+      httpOnly: true,
+    })
+    .json({
+      success: true,
+      message: "User Logged Out!",
+    });
 };
 
 

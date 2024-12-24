@@ -80,6 +80,7 @@ import Navbar from './assets/Navbar/Navbar';
 import ProtectedRoute from "./components/ProtectedRoute"
 import { EditFormProvider } from './Context/EditFormContext';
 import { CreateFormProvider } from './Context/CreateFormContext';
+import Error404Page from './pages/Error404Page/Error404Page';
 
 // Layout Component
 const Layout = () => {
@@ -114,7 +115,7 @@ const router = createBrowserRouter([
           { path: 'signup', element: <SignupPage /> },
         ],
       },
-      { path: '*', element: <div>No page found</div> },
+      { path: '*', element: <Error404Page /> },
     ],
   },
 ]);

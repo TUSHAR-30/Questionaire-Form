@@ -8,13 +8,15 @@ import { useAppContext } from '../../App';
 
 const SignupPage = () => {
     const navigate = useNavigate();
-    const { setUser,setIsAuthenticated } = useAppContext();
+    const { setUser, setIsAuthenticated } = useAppContext();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         password: '',
     });
     const [errors, setErrors] = useState({});
+    const [isPasswordVisible, setisPasswordVisible] = useState(false);
+
 
     const regexPatterns = {
         name: /^(?=.*[a-zA-Z]).{1,}$/, // At least one alphabet, allows anything else.
@@ -40,9 +42,9 @@ const SignupPage = () => {
         const errorMessage = validateField(name, value);
 
         setFormData((prevData) => ({ ...prevData, [name]: value }));
-            if((Object.keys(errors).length!=0)){
-                setErrors((prevErrors) => ({ ...prevErrors, [name]: errorMessage }));
-            }
+        if ((Object.keys(errors).length != 0)) {
+            setErrors((prevErrors) => ({ ...prevErrors, [name]: errorMessage }));
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -65,20 +67,35 @@ const SignupPage = () => {
             const response = await axios.post(`${SERVER_URL}/register`, {
                 email: formData.email,
                 password: formData.password,
-                profile:{
+                profile: {
                     name: formData.name,
                 }
             },
-            { withCredentials: true } // Enables sending cookies
+                { withCredentials: true } // Enables sending cookies
             );
 
             setUser(response.data.user);
             setIsAuthenticated(true)
             navigate("/");
         } catch (error) {
-            console.log(error.response.data.message);
-        }
+            if (error.response) {
+                const { status, data } = error.response;
 
+                if (status === 409) {
+                    alert("User already exists");
+                } else if (status === 500) {
+                    alert("Error during registration");
+                } else if (status === 403) {
+                    alert("You are already logged in");
+                } else if (status === 400) {
+                   alert("Invalid credentials")
+                } else {
+                    alert("An unexpected error occurred");
+                }
+            } else {
+                alert("Network error or server is unreachable");
+            }
+        }
     };
 
     return (
@@ -97,7 +114,7 @@ const SignupPage = () => {
                             placeholder="Enter your name"
                             required
                         />
-                     <div className={`error ${errors.name?"show-error":""}`}>{errors.name}</div>
+                        <div className={`error ${errors.name ? "show-error" : ""}`}>{errors.name}</div>
                     </div>
                     <div className="form-group">
                         <label htmlFor="email">Email</label>
@@ -110,12 +127,12 @@ const SignupPage = () => {
                             placeholder="Enter your email"
                             required
                         />
-                     <div className={`error ${errors.email?"show-error":""}`}>{errors.email}</div>
+                        <div className={`error ${errors.email ? "show-error" : ""}`}>{errors.email}</div>
                     </div>
                     <div className="form-group">
                         <label htmlFor="password">Password</label>
                         <input
-                            type="password"
+                            type={isPasswordVisible ? 'text' : 'password'}
                             id="password"
                             name="password"
                             value={formData.password}
@@ -123,7 +140,11 @@ const SignupPage = () => {
                             placeholder="Create a password"
                             required
                         />
-                     <div className={`error ${errors.password?"show-error":""}`}>{errors.password}</div>
+                        <div className={`error ${errors.password ? "show-error" : ""}`}>{errors.password}</div>
+                        <div className='toggle-passwordVisibility-container'>
+                            <input type='checkbox' checked={isPasswordVisible} onChange={() => setisPasswordVisible(!isPasswordVisible)} />
+                            <span>Show Password</span>
+                        </div>
                     </div>
                     <button type="submit" className="signup-button">Sign Up</button>
                 </form>

@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
     phone: { type: String },
     address: { type: String },
   },
+  isVerified: { type: Boolean, default: false }, // New field to track email verification status
 });
 
 // Hash the password before saving the user

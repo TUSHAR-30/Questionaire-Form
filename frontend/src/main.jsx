@@ -5,8 +5,9 @@ import router from './router.jsx';
 import './index.css';
 
 createRoot(document.getElementById('root')).render(
-  <AppProvider>
+    <AppProvider>
       <RouterProvider router={router} />
-  </AppProvider>
+    </AppProvider>
+
 );
 

@@ -10,7 +10,7 @@ const routes = require('./routes');
 
 const app = express();
 app.use(cors({
-  origin: [ process.env.FRONTEND_URL_LOCAL ],
+  origin: [ process.env.FRONTEND_URL_LOCAL ,FRONTEND_URL_DEPLOYED],
   methods: ["GET", "PUT", "DELETE", "POST", "PATCH"],
   credentials: true,
 }));

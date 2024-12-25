@@ -20,6 +20,10 @@ const { authenticate } = require('./middlewares/authMiddleware');
 const { decodeToken } = require('./middlewares/tokenDecodeMiddleware');
 const verifyOtp = require('./controllers/otpController');
 
+router.get('/',(req,res)=>{
+    return res.send("Hello,world")
+})
+
 // Form routes
 router.post('/form', authenticate, createForm);
 router.put('/form/:formId', authenticate, updateForm);

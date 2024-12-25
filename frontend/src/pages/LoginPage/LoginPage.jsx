@@ -12,9 +12,12 @@ const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isPasswordVisible,setisPasswordVisible]=useState(false);
+    const [loading, setLoading] = useState(false); // Loading state
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true)
         try {
             const response = await axios.post(`${SERVER_URL}/login`, { email, password }, { withCredentials: true });
             setUser(response.data.user);
@@ -34,11 +37,18 @@ const LoginPage = () => {
             else {
                 alert("An unexpected error occurred");
             }
+        }finally {
+            setLoading(false); // Set loading to false after the request finishes
         }
     };
 
     return (
         <div className="login-page">
+             {loading && (
+                <div className="loading-overlay">
+                    <div className="spinner"></div>
+                </div>
+            )}
             <div className="login-container">
                 <h2>Login</h2>
                 <form onSubmit={handleSubmit}>

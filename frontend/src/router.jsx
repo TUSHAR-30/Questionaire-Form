@@ -81,6 +81,7 @@ import ProtectedRoute from "./components/ProtectedRoute"
 import { EditFormProvider } from './Context/EditFormContext';
 import { CreateFormProvider } from './Context/CreateFormContext';
 import Error404Page from './pages/Error404Page/Error404Page';
+import VerifyOTPPage from './pages/VerifyOTPPage/VerifyOTPPage';
 
 // Layout Component
 const Layout = () => {
@@ -101,6 +102,7 @@ const router = createBrowserRouter([
     children: [
       { path: '', element: <HomePage /> }, // Renders HomePage for '/'
       { path: 'form/:formId', element: (<EditFormProvider><FormPage /></EditFormProvider>) },
+      { path: 'verify-otp', element:<VerifyOTPPage />},
       {
         element: <ProtectedRoute isPrivate={true} />, // Controls private routes
         children: [
@@ -112,7 +114,7 @@ const router = createBrowserRouter([
         element: <ProtectedRoute isPrivate={false} />, // Controls public routes
         children: [
           { path: 'login', element: <LoginPage /> }, // Renders LoginPage for '/login'
-          { path: 'signup', element: <SignupPage /> },
+          { path: 'signup', element:<SignupPage />  },
         ],
       },
       { path: '*', element: <Error404Page /> },

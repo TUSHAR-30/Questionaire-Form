@@ -6,6 +6,8 @@ import "./FormsPage.css"
 
 function FormsPage() {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false); // Loading state
+
 
     const [forms,setForms]=useState([])
 
@@ -15,12 +17,15 @@ function FormsPage() {
 
     useEffect(() => {
         async function getUserForms(){
+            setLoading(true)
             try{
                 const response = await axios.get(`${SERVER_URL}/forms`,{ withCredentials: true } );
                 console.log(response.data.forms)
                 setForms(response.data.forms)
             }catch(err){
                 console.log(err)
+            }finally{
+                setLoading(false)
             }
         }
 
@@ -29,6 +34,11 @@ function FormsPage() {
     }, [])
     return (
         <div className='formspage'>
+             {loading && (
+                <div className="loading-overlay">
+                    <div className="spinner"></div>
+                </div>
+            )}
             <h2>Your Forms</h2>
             <div className='formsDashboard'>
             {forms.map((form,index)=>(

@@ -7,6 +7,7 @@ const EditFormContext = createContext();
 
 // Create the provider component
 export function EditFormProvider({ children }) {
+    const [loading,setLoading]=useState(false)
     const [formTitle, setFormTitle] = useState('');
     const [formDescription, setFormDescription] = useState('');
     const [questions, setQuestions] = useState([]);
@@ -14,12 +15,16 @@ export function EditFormProvider({ children }) {
     const [updatedFormTitle,setUpdatedFormTitle]=useState("")
     const [updatedFormDescription,setUpdatedFormDescription]=useState("")
     const { formId } = useParams(); 
+    const [formAuthorId,setformAuthorId]=useState(null);
 
     useEffect(() => {
         async function getForm() {
+            setLoading(true)
             try {
                 const response = await axios.get(`${SERVER_URL}/form/${formId}`, { withCredentials: true });
                 const questions = transformDataToFrontendFormat(response.data.questions)
+                const formAuthorId=response.data.userId;
+                setformAuthorId(formAuthorId)
                 setQuestions(JSON.parse(JSON.stringify(questions)));
                 setUpdatedQuestions(JSON.parse(JSON.stringify(questions)));
                 setFormTitle(response.data.title);
@@ -28,6 +33,8 @@ export function EditFormProvider({ children }) {
                 setUpdatedFormDescription(response.data.description)
             } catch (err) {
                 console.log(err)
+            } finally{
+                setLoading(false)
             }
         }
 
@@ -36,8 +43,14 @@ export function EditFormProvider({ children }) {
     }, [])
 
     return (
-        <EditFormContext.Provider value={{ questions,updatedQuestions, formTitle , updatedFormTitle, formDescription, updatedFormDescription ,formId , setQuestions , setUpdatedQuestions ,setFormTitle , setUpdatedFormTitle, setFormDescription ,setUpdatedFormDescription }}>
-            {children}
+        <EditFormContext.Provider value={{ questions,updatedQuestions, formTitle , updatedFormTitle, formDescription, updatedFormDescription ,formId ,formAuthorId, setQuestions , setUpdatedQuestions ,setFormTitle , setUpdatedFormTitle, setFormDescription ,setUpdatedFormDescription }}>
+             {loading ? (
+                <div className="loading-overlay">
+                    <div className="spinner"></div>
+                </div>
+            ):
+            children
+            }
         </EditFormContext.Provider>
     )
 }

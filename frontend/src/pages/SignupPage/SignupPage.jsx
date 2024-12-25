@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { SERVER_URL } from '../../../config';
 
 import './SignupPage.css';
 import { useAppContext } from '../../App';
+import SignupDetailsContext from '../../Context/SignupDetailsContext';
 
 const SignupPage = () => {
     const navigate = useNavigate();
-    const { setUser, setIsAuthenticated } = useAppContext();
+    const {setSignupdetails}=useContext(SignupDetailsContext)
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -16,6 +17,7 @@ const SignupPage = () => {
     });
     const [errors, setErrors] = useState({});
     const [isPasswordVisible, setisPasswordVisible] = useState(false);
+    const [loading, setLoading] = useState(false); // Loading state
 
 
     const regexPatterns = {
@@ -63,20 +65,27 @@ const SignupPage = () => {
             return;
         }
 
+        setLoading(true); // Set loading to true when request starts
+
         try {
-            const response = await axios.post(`${SERVER_URL}/register`, {
+            const details={
                 email: formData.email,
                 password: formData.password,
                 profile: {
                     name: formData.name,
                 }
-            },
+            }
+
+            const response = await axios.post(`${SERVER_URL}/register`,details ,
                 { withCredentials: true } // Enables sending cookies
             );
 
-            setUser(response.data.user);
-            setIsAuthenticated(true)
-            navigate("/");
+            // After successful registration, the backend will handle OTP
+            if (response.status === 201) {
+                setSignupdetails(details)
+                alert('OTP sent to your email!');
+                navigate("/verify-otp");
+            }
         } catch (error) {
             if (error.response) {
                 const { status, data } = error.response;
@@ -88,18 +97,25 @@ const SignupPage = () => {
                 } else if (status === 403) {
                     alert("You are already logged in");
                 } else if (status === 400) {
-                   alert("Invalid credentials")
+                    alert("Invalid credentials")
                 } else {
                     alert("An unexpected error occurred");
                 }
             } else {
                 alert("Network error or server is unreachable");
             }
+        } finally {
+            setLoading(false); // Set loading to false after the request finishes
         }
     };
 
     return (
         <div className="signup-page">
+             {loading && (
+                <div className="loading-overlay">
+                    <div className="spinner"></div>
+                </div>
+            )}
             <div className="signup-container">
                 <h2>Sign Up</h2>
                 <form onSubmit={handleSubmit}>

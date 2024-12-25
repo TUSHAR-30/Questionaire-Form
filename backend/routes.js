@@ -18,6 +18,7 @@ const {
 const { submitForm, getSubmissions } = require('./controllers/submissionController');
 const { authenticate } = require('./middlewares/authMiddleware');
 const { decodeToken } = require('./middlewares/tokenDecodeMiddleware');
+const verifyOtp = require('./controllers/otpController');
 
 // Form routes
 router.post('/form', authenticate, createForm);
@@ -33,6 +34,10 @@ router.put('/updateProfile', authenticate, updateUserProfile);
 router.post('/register',authenticate, registerUser);
 router.post('/login',authenticate, loginUser);
 router.get('/logout', authenticate, logoutUser);
+
+//Otp routes
+router.post('/verify-otp',verifyOtp)
+
 
 // Submission routes
 router.post('/submitForm/:formId',decodeToken, submitForm);

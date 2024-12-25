@@ -2,7 +2,6 @@ const { body, validationResult } = require('express-validator');
 const User = require('../Models/user');
 const jwt = require('jsonwebtoken');
 const sendOtp = require('../utils/sendOtp'); // OTP utility function
-const OTP = require('../Models/otp'); // OTP model
 
 
 
@@ -46,7 +45,7 @@ exports.registerUser = [
       });
     }
 
-    const { email, password, profile } = req.body;
+    const { email } = req.body;
 
     try {
       // Check if the user already exists
@@ -55,31 +54,9 @@ exports.registerUser = [
         return res.status(409).json({ message: 'User already exists' });
       }
 
-      // Create a new user
-      const newUser = await User.create({ email, password, profile });
+      await sendOtp(email);  // The OTP function is called here in the backend
+      res.status(201).json({ message: 'OTP sent to your email!' });
 
-      // Generate a JWT token for the new user
-      const token = jwt.sign(
-        { id: newUser._id },
-        process.env.JWT_SECRET,
-        { expiresIn: process.env.LOGIN_EXPIRES }
-      );
-
-      // Send token as a cookie
-      res.cookie('token', token, {
-        httpOnly: true,
-        secure: true,
-        sameSite: 'None',
-        expires: new Date(
-          Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
-        ),
-      });
-
-      res.status(201).json({
-        message: 'Registration successful',
-        user: newUser,
-        token,
-      });
     } catch (err) {
       console.error('Error during registration:', err);
       res.status(500).json({ error: 'Server error' });

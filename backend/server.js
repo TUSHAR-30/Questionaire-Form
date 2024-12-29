@@ -19,7 +19,7 @@ app.use(cookieParser());
 
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/questionnaireApp', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.CONN_STR, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.log(err));
 

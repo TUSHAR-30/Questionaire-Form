@@ -104,9 +104,9 @@ exports.logoutUser = (req, res) => {
       // path: "/",
       sameSite: "None",
     })
-    // .header('Cache-Control', 'no-cache, no-store, must-revalidate')
-    // .header('Pragma', 'no-cache')
-    // .header('Expires', '0')
+    .header('Cache-Control', 'no-cache, no-store, must-revalidate')
+    .header('Pragma', 'no-cache')
+    .header('Expires', '0')
     .json({
       success: true,
       message: "User Logged Out!",

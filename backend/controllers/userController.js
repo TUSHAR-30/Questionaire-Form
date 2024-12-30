@@ -101,9 +101,12 @@ exports.logoutUser = (req, res) => {
       expires: new Date(Date.now()),
       httpOnly: true,
       secure: true,
-      path: "/", 
-      sameSite: "None", 
+      // path: "/",
+      sameSite: "None",
     })
+    // .header('Cache-Control', 'no-cache, no-store, must-revalidate')
+    // .header('Pragma', 'no-cache')
+    // .header('Expires', '0')
     .json({
       success: true,
       message: "User Logged Out!",

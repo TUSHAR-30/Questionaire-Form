@@ -7,8 +7,10 @@ import transformDataToBackendFormat from '../../transformDataToBackendFormat';
 import axios from 'axios';
 import { SERVER_URL } from '../../../config';
 import Preview from '../../assets/Preview/Preview';
+import { useNavigate } from 'react-router-dom';
 
 const CreateFormPage = () => {
+  const navigate=useNavigate()
   const { questions, setQuestions } = useContext(CreateFormContext)
   const [isPreview, setIsPreview] = useState(false);
   const [formTitle, setFormTitle] = useState('');
@@ -49,7 +51,8 @@ const CreateFormPage = () => {
     try {
       const response = await axios.post(`${SERVER_URL}/form`, formData, { withCredentials: true });
       console.log('Form submitted successfully:', response.data);
-      alert("form created successfully")
+      alert("form created successfully");
+      navigate(`/form/${response.data._id}`)
     } catch (error) {
       console.log('Error submitting form:', error);
     } finally{

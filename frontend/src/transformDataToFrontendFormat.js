@@ -29,14 +29,8 @@ const transformDataToFrontendFormat = (backendQuestions) => {
   
   // Transform categorize data
   const transformCategorizeToFrontend = (categorize) => {
-    const categories = categorize.map((category) => category.categoryName);
-    const items = categorize.flatMap((category,categoryIndex) =>
-      category.items.map((item,itemIndex) => ({
-        name: item,
-        category: category.categoryName,
-      }))
-    );
-    return { categories, items };
+    const {categories, items}=categorize;
+    return {categories, items}
   };
   
   // Transform cloze data
@@ -44,12 +38,12 @@ const transformDataToFrontendFormat = (backendQuestions) => {
     return {
       displayText: cloze.displayQuestion,
       originalText:cloze.originalQuestion,
-      blanks: cloze.answers.map((answer) => ({
-        blankSerialNumber: answer.itemSerialNumber,
-        text: answer.itemName,
+      blanks: cloze.blanks.map((blank) => ({
+        blankSerialNumber: blank.itemSerialNumber,
+        text: blank.itemName,
         id:`${Date.now()}-${Math.random()}`,
-        start:answer.start,
-        end:answer.end
+        start:blank.start,
+        end:blank.end
       })),
     };
   };

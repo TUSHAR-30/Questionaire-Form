@@ -17,7 +17,7 @@ const formSchema = new mongoose.Schema({
       cloze: {
         displayQuestion: { type: String, required: function () { return this.type === 'cloze'; } },
         originalQuestion: { type: String, required: function () { return this.type === 'cloze'; } },
-        answers: {
+        blanks: {
           type: [
             {
               itemSerialNumber: { type: Number, required: true },

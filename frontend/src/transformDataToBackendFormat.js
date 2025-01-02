@@ -111,7 +111,7 @@ const validateCloze = (question) => {
   const cloze={
       displayQuestion: question.cloze.displayText,
       originalQuestion:question.cloze.originalText,
-      answers: question.cloze.blanks.map((blank) => ({
+      blanks: question.cloze.blanks.map((blank) => ({
         itemSerialNumber: blank.blankSerialNumber,
         itemName: blank.text,
         start:blank.start,

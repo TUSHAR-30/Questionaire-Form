@@ -4,21 +4,65 @@ const jwt = require('jsonwebtoken');
 
 const { validateQuestionSchema } = require("../utils")
 
-async function requestedRouteClient(req,form) {
+async function requestedRouteClient(req, form) {
   const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
   if (!token) return false
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(decoded.id).select('-password');
-    if (!user)  return false ;
-    if(user._id.toString() != form.userId.toString()) return false;
+    if (!user) return false;
+    if (user._id.toString() != form.userId.toString()) return false;
     return true;
   } catch (err) {
-    console.log("err",err)
+    console.log("err", err)
     return false;
   }
 
 }
+
+const processFormResponse = (form, isAuthor) => {
+  // Clone the form object to avoid mutating the original data
+  const processedForm = JSON.parse(JSON.stringify(form));
+
+  processedForm.questions = processedForm.questions.map((question) => {
+    if (question.type === 'cloze' && !isAuthor) {
+      // Remove specific fields from 'cloze' question type
+      delete question.cloze.originalQuestion;
+      question.cloze.blanks.forEach((blank) => {
+        delete blank.itemSerialNumber;
+        delete blank.start;
+        delete blank.end;
+      });
+    }
+
+    if (question.type === 'comprehension' && !isAuthor) {
+      // Remove 'answer' field from 'comprehension' question type
+      question.comprehension.questions.forEach((q) => {
+        delete q.answer;
+      });
+    }
+
+    if (question.type === 'categorize') {
+      // Transform categorize array into an object
+      const categories = question.categorize.map((cat) => cat.categoryName);
+      const items = question.categorize.flatMap((cat) =>  cat.items.map((item,itemIndex) => ({
+        name: item,
+        category: isAuthor?cat.categoryName:undefined,
+      }))
+    )
+
+      question.categorize = {
+        categories,
+        items,
+      };
+    }
+
+    return question;
+  });
+
+  return processedForm;
+};
+
 
 // Create form
 exports.createForm = async (req, res) => {
@@ -92,12 +136,13 @@ exports.deployForm = async (req, res) => {
 // Get form
 exports.getForm = async (req, res) => {
   try {
-    const form = await Form.findById(req.params.formId);
+    let form = await Form.findById(req.params.formId);
     if (!form) {
       return res.status(404).json({ message: `Form with ID ${req.params.formId} not found in your account` });
     }
-    const isAuthorRequest = await requestedRouteClient(req,form);
-    res.status(200).json(form);
+    const isAuthor = await requestedRouteClient(req, form);
+    const processedForm = processFormResponse(form, isAuthor);
+    res.status(200).json(processedForm);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

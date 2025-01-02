@@ -3,7 +3,7 @@ import FormMetaData from './FormMetaData';
 import QuestionsList from './QuestionsList';
 import CreateFormContext from '../../Context/CreateFormContext';
 import "./CreateFormPage.css";
-import transformDataToBackendFormat from '../../utils';
+import transformDataToBackendFormat from '../../transformDataToBackendFormat';
 import axios from 'axios';
 import { SERVER_URL } from '../../../config';
 import Preview from '../../assets/Preview/Preview';

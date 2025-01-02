@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import QuestionItem from '../CreateFormPage/QuestionItem';
 import PreviewQuestionItem from '../../assets/Preview/PreviewQuestionItem';
 import EditFormContext from '../../Context/EditFormContext';
-import transformDataToBackendFormat from '../../utils';
+import transformDataToBackendFormat from '../../transformDataToBackendFormat';
 import axios from 'axios';
 import { SERVER_URL } from '../../../config';
 import FormMetaData from '../CreateFormPage/FormMetaData';
@@ -29,6 +28,10 @@ function FormPage() {
             },
         ]);
     };
+
+    const handleSubmitForm=()=>{
+        console.log(questions)
+    }
 
     async function handleEditForm() {
         const transformedQuestions = transformDataToBackendFormat(questions, formTitle, formDescription)
@@ -107,6 +110,7 @@ function FormPage() {
                     )
                 ))}
                 {isEditBtnClicked && !isPreview && <button style={{ alignSelf: 'flex-end' }} className="add-question-btn" onClick={handleAddQuestion}>Add New Question</button>}
+                {formAuthorId!=user?._id && <button style={{ alignSelf: 'flex-end' }} className="add-question-btn" onClick={handleSubmitForm}>Submit Form</button>}
             </div>
 
         </div>

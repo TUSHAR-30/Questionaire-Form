@@ -20,7 +20,6 @@ function FormsPage() {
             setLoading(true)
             try{
                 const response = await axios.get(`${SERVER_URL}/forms`,{ withCredentials: true } );
-                console.log(response.data.forms)
                 setForms(response.data.forms)
             }catch(err){
                 console.log(err)

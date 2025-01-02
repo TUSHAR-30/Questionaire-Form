@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react'
-import transformDataToFrontendFormat from '../utils2';
+import transformDataToFrontendFormat from '../transformDataToFrontendFormat';
 import axios from 'axios';
 import { SERVER_URL } from '../../config';
 import { useParams } from 'react-router-dom';
@@ -23,6 +23,7 @@ export function EditFormProvider({ children }) {
             try {
                 const response = await axios.get(`${SERVER_URL}/form/${formId}`, { withCredentials: true });
                 const questions = transformDataToFrontendFormat(response.data.questions)
+                console.log(questions)
                 const formAuthorId=response.data.userId;
                 setformAuthorId(formAuthorId)
                 setQuestions(JSON.parse(JSON.stringify(questions)));

@@ -93,7 +93,7 @@ const validateCategorize = (question) => {
       .map((item) => item.name),
   }));
 
-  return categorize
+  return categorize;
 
 }
 

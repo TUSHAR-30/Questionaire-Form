@@ -8,14 +8,14 @@ import { useAppContext } from "../../App";
 
 const Navbar = () => {
 
-    const { isAuthenticated, user,setUser,setIsAuthenticated } = useAppContext();
+    const { isAuthenticated, user,setUser,setIsAuthenticated,loading } = useAppContext();
     const [showDropdown, setShowDropdown] = useState(false);
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(false); // Loading state
+    const [logoutloading, setlogoutLoading] = useState(false); // Loading state
 
 
      async function handleLogout(){
-        setLoading(true)
+        setlogoutLoading(true)
         try {
             const response = await axios.get(`${SERVER_URL}/logout`, { withCredentials: true } );
             console.log(response)
@@ -24,7 +24,7 @@ const Navbar = () => {
         } catch (error) {
             console.log(error.response.data.message);
         } finally{
-            setLoading(false)
+            setlogoutLoading(false)
         }
     };
 
@@ -34,7 +34,7 @@ const Navbar = () => {
 
     return (
         <nav className="navbar">
-             {loading && (
+             {logoutloading && (
                 <div className="loading-overlay">
                     <div className="spinner"></div>
                 </div>
@@ -43,7 +43,7 @@ const Navbar = () => {
                 <h1 className="webapp-name" onClick={() =>navigate("/")}>MyWebApp</h1>
             </div>
 
-            <div className="navbar-right">
+           {!loading && <div className="navbar-right">
                 {isAuthenticated ? (
                     <>
                         <div className="user-menu">
@@ -71,7 +71,7 @@ const Navbar = () => {
 
 
                     )}
-            </div>
+            </div>}
         </nav>
     );
 };

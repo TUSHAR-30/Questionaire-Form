@@ -40,7 +40,7 @@ router.post('/verify-otp',verifyOtp)
 
 
 // Submission routes
-router.post('/submitForm/:formId',decodeToken, submitForm);
+router.post('/submitForm/:formId', submitForm);
 router.get('/getSubmissions/:formId', authenticate, getSubmissions);
 
 module.exports = router;

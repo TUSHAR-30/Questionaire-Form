@@ -1,7 +1,6 @@
 import React from 'react'
 
-function FormMetaData({formTitle, setFormTitle,formDescription, setFormDescription , isPreview}) {
-   
+function FormMetaData({ formTitle, setFormTitle, formDescription, setFormDescription, isPreview }) {
 
     const handleFormTitleChange = (e) => {
         setFormTitle(e.target.value);
@@ -18,7 +17,7 @@ function FormMetaData({formTitle, setFormTitle,formDescription, setFormDescripti
                 <input
                     type="text"
                     value={formTitle}
-                    onChange={ handleFormTitleChange}
+                    onChange={handleFormTitleChange}
                     disabled={isPreview}
                 />
             </label>

@@ -1,121 +1,45 @@
-import React, { useContext, useState } from 'react';
-import { useNavigate } from "react-router-dom";
-import axios from 'axios';
-import { SERVER_URL } from '../../../config';
-
-import './SignupPage.css';
-import { useAppContext } from '../../App';
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import useAuthForm from '../../hooks/useAuthForm';
+import useAuth from '../../hooks/useAuth';
 import SignupDetailsContext from '../../Context/SignupDetailsContext';
+import './SignupPage.css';
 
 const SignupPage = () => {
-    const navigate = useNavigate();
-    const {setSignupdetails}=useContext(SignupDetailsContext)
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        password: '',
-    });
-    const [errors, setErrors] = useState({});
-    const [isPasswordVisible, setisPasswordVisible] = useState(false);
-    const [loading, setLoading] = useState(false); // Loading state
+    const { setSignupdetails } = useContext(SignupDetailsContext);
 
+    const { formData, errors, isPasswordVisible, handleChange, handleErors, togglePasswordVisibility, setErrors } = useAuthForm(
+        { name: '', email: '', password: '' },
+        (name, value) => validateField(name, value)
+    );
 
-    const regexPatterns = {
-        name: /^(?=.*[a-zA-Z]).{1,}$/, // At least one alphabet, allows anything else.
-        email: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/, // Basic email validation with a minimum of 2 characters after the last dot.
-        password: /^(?=.*[A-Za-z])(?=.*\d).{8,}$/, // At least 8 characters, with at least one alphabet and one number.
+    const { loading, signup } = useAuth();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        let finalErrors = {};
+        Object.keys(formData).forEach((key) => finalErrors = handleErors(key, formData[key]));
+        if (Object.values(finalErrors).some((error) => error)) return;
+
+        signup(formData, setSignupdetails);
     };
 
     const validateField = (name, value) => {
         switch (name) {
             case 'name':
-                return regexPatterns.name.test(value) ? '' : 'Enter valid name';
+                return /^(?=.*[a-zA-Z]).{1,}$/.test(value) ? '' : 'Enter valid name';
             case 'email':
-                return regexPatterns.email.test(value) ? '' : 'Enter a valid email address.';
+                return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value) ? '' : 'Enter a valid email address.';
             case 'password':
-                return regexPatterns.password.test(value) ? '' : 'Password must be at least 8 characters long and contain atleast 1 alphabet and 1 digit.';
+                return /^(?=.*[A-Za-z])(?=.*\d).{8,}$/.test(value) ? '' : 'Password must be at least 8 characters long and contain at least 1 alphabet and 1 digit.';
             default:
                 return '';
         }
     };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        const errorMessage = validateField(name, value);
-
-        setFormData((prevData) => ({ ...prevData, [name]: value }));
-        if ((Object.keys(errors).length != 0)) {
-            setErrors((prevErrors) => ({ ...prevErrors, [name]: errorMessage }));
-        }
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        // Final validation before submitting
-        const finalErrors = {};
-        Object.keys(formData).forEach((key) => {
-            finalErrors[key] = validateField(key, formData[key]);
-        });
-
-        setErrors(finalErrors);
-
-        // If there are errors, do not proceed
-        if (Object.values(finalErrors).some((error) => error)) {
-            return;
-        }
-
-        setLoading(true); // Set loading to true when request starts
-
-        try {
-            const details={
-                email: formData.email,
-                password: formData.password,
-                profile: {
-                    name: formData.name,
-                }
-            }
-
-            const response = await axios.post(`${SERVER_URL}/register`,details ,
-                { withCredentials: true } // Enables sending cookies
-            );
-
-            // After successful registration, the backend will handle OTP
-            if (response.status === 201) {
-                setSignupdetails(details)
-                alert('OTP sent to your email!');
-                navigate("/verify-otp");
-            }
-        } catch (error) {
-            if (error.response) {
-                const { status, data } = error.response;
-
-                if (status === 409) {
-                    alert("User already exists");
-                } else if (status === 500) {
-                    alert("Error during registration");
-                } else if (status === 403) {
-                    alert("You are already logged in");
-                } else if (status === 400) {
-                    alert("Invalid credentials")
-                } else {
-                    alert("An unexpected error occurred");
-                }
-            } else {
-                alert("Network error or server is unreachable");
-            }
-        } finally {
-            setLoading(false); // Set loading to false after the request finishes
-        }
-    };
-
     return (
         <div className="signup-page">
-             {loading && (
-                <div className="loading-overlay">
-                    <div className="spinner"></div>
-                </div>
-            )}
+            {loading && <div className="loading-overlay"><div className="spinner"></div></div>}
             <div className="signup-container">
                 <h2>Sign Up</h2>
                 <form onSubmit={handleSubmit}>
@@ -130,7 +54,7 @@ const SignupPage = () => {
                             placeholder="Enter your name"
                             required
                         />
-                        <div className={`error ${errors.name ? "show-error" : ""}`}>{errors.name}</div>
+                        <div className={`error ${errors.name ? 'show-error' : ''}`}>{errors.name}</div>
                     </div>
                     <div className="form-group">
                         <label htmlFor="email">Email</label>
@@ -143,7 +67,7 @@ const SignupPage = () => {
                             placeholder="Enter your email"
                             required
                         />
-                        <div className={`error ${errors.email ? "show-error" : ""}`}>{errors.email}</div>
+                        <div className={`error ${errors.email ? 'show-error' : ''}`}>{errors.email}</div>
                     </div>
                     <div className="form-group">
                         <label htmlFor="password">Password</label>
@@ -156,16 +80,16 @@ const SignupPage = () => {
                             placeholder="Create a password"
                             required
                         />
-                        <div className={`error ${errors.password ? "show-error" : ""}`}>{errors.password}</div>
-                        <div className='toggle-passwordVisibility-container'>
-                            <input type='checkbox' checked={isPasswordVisible} onChange={() => setisPasswordVisible(!isPasswordVisible)} />
+                        <div className={`error ${errors.password ? 'show-error' : ''}`}>{errors.password}</div>
+                        <div className="toggle-passwordVisibility-container">
+                            <input type="checkbox" checked={isPasswordVisible} onChange={togglePasswordVisibility} />
                             <span>Show Password</span>
                         </div>
                     </div>
                     <button type="submit" className="signup-button">Sign Up</button>
                 </form>
                 <p className="login-text">
-                    Already have an account? <a onClick={() => navigate("/login")}>Login</a>
+                    Already have an account? <Link to="/login">Login</Link>
                 </p>
             </div>
         </div>
@@ -173,4 +97,3 @@ const SignupPage = () => {
 };
 
 export default SignupPage;
-

@@ -76,7 +76,7 @@ import SignupPage from './pages/SignupPage/SignupPage';
 import CreateFormPage from './pages/CreateFormPage/CreateFormPage';
 import FormsPage from './pages/FormsPage/FormsPage';
 import FormPage from './pages/FormsPage/FormPage';
-import Navbar from './assets/Navbar/Navbar';
+import Navbar from './components/Navbar/Navbar';
 import ProtectedRoute from "./components/ProtectedRoute"
 import { EditFormProvider } from './Context/EditFormContext';
 import { CreateFormProvider } from './Context/CreateFormContext';

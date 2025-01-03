@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-import transformDataToFrontendFormat from '../transformDataToFrontendFormat';
+import transformDataToFrontendFormat from '../utils/transformDataToFrontendFormat';
 import axios from 'axios';
 import { SERVER_URL } from '../../config';
 import { useParams } from 'react-router-dom';

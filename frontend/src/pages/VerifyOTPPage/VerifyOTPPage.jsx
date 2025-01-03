@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
-import "./VerifyOTPPage.css";
 import axios from "axios";
 import { SERVER_URL } from "../../../config";
 import { useNavigate } from "react-router-dom";
 import SignupDetailsContext from "../../Context/SignupDetailsContext";
 import { useAppContext } from "../../App";
+import "./VerifyOTPPage.css";
 
 const VerifyOTPPage = () => {
     const navigate = useNavigate()
@@ -12,7 +12,6 @@ const VerifyOTPPage = () => {
     const { signupdetails, setSignupdetails } = useContext(SignupDetailsContext)
     const { setUser, setIsAuthenticated } = useAppContext();
     const [loading, setLoading] = useState(false); // Loading state
-
 
     const handleChange = (element, index) => {
         if (isNaN(element.value)) {

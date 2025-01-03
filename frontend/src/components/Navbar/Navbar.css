@@ -7,11 +7,16 @@
     color: white;
     width: 100%;
   }
+
+  .webapp-name-link {
+    text-decoration: none; /* Remove underline */
+}
   
-  .navbar-left .webapp-name {
+  .webapp-name {
     font-size: 1.5rem;
     font-weight: bold;
     cursor: pointer;
+    color: white; /* Ensures the color is white */
   }
   
   .navbar-right {

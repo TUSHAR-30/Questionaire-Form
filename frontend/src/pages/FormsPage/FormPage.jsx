@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import QuestionItem from '../CreateFormPage/QuestionItem';
-import PreviewQuestionItem from '../../assets/Preview/PreviewQuestionItem';
+import PreviewQuestionItem from '../../components/Preview/PreviewQuestionItem';
 import EditFormContext from '../../Context/EditFormContext';
-import transformDataToBackendFormat from '../../transformDataToBackendFormat';
+import transformDataToBackendFormat from '../../utils/transformDataToBackendFormat';
 import axios from 'axios';
 import { SERVER_URL } from '../../../config';
 import FormMetaData from '../CreateFormPage/FormMetaData';

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 import axios from 'axios';
@@ -10,11 +10,14 @@ const Navbar = () => {
 
     const { isAuthenticated, user,setUser,setIsAuthenticated,loading } = useAppContext();
     const [showDropdown, setShowDropdown] = useState(false);
+    const modalRef = useRef(null);  // Create a ref for the modal
+    const buttonRef = useRef(null);  // Create a ref for the button
     const navigate = useNavigate();
     const [logoutloading, setlogoutLoading] = useState(false); // Loading state
 
 
      async function handleLogout(){
+        setShowDropdown(false)
         setlogoutLoading(true)
         try {
             const response = await axios.get(`${SERVER_URL}/logout`, { withCredentials: true } );
@@ -32,6 +35,33 @@ const Navbar = () => {
         setShowDropdown(!showDropdown);
     };
 
+    useEffect(() => {
+        function handleClickOutside(event) {
+
+            // Check if the click is outside the modal or the button
+            if (modalRef.current &&
+                !modalRef.current.contains(event.target) &&
+                !buttonRef.current.contains(event.target)
+            ) {
+                setShowDropdown(false); // Close the modal on outside click
+            }
+        }
+
+        if (showDropdown) {
+            // Attach the event listener only when the modal is open
+            document.addEventListener("mousedown", handleClickOutside);
+        } else {
+            // Remove the event listener when the modal is closed
+            document.removeEventListener("mousedown", handleClickOutside);
+        }
+
+        // Cleanup function to remove the listener when the component unmounts
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [showDropdown]); // Re-run effect when isModalOpen changes
+
+
     return (
         <nav className="navbar">
              {logoutloading && (
@@ -47,14 +77,14 @@ const Navbar = () => {
                 {isAuthenticated ? (
                     <>
                         <div className="user-menu">
-                            <button className="user-icon" onClick={toggleDropdown}>
+                            <button className="user-icon" onClick={toggleDropdown} ref={buttonRef}>
                                 <FaUserCircle size={24} /> {user.profile.name}
                             </button>
                             {showDropdown && (
-                                <div className="dropdown">
+                                <div className="dropdown" ref={modalRef}>
                                     <ul>
                                         {/* <li onClick={() => console.log("Profile clicked")}>User Profile</li> */}
-                                        <li onClick={()=>navigate("/forms")}>Forms</li>
+                                        <li onClick={()=>{setShowDropdown(false); navigate("/forms")}}>Forms</li>
                                         <li onClick={handleLogout}>Logout</li>
                                     </ul>
                                 </div>

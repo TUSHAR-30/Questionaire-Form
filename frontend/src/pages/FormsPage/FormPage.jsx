@@ -9,11 +9,11 @@ import FormMetaData from '../CreateFormPage/FormMetaData';
 import { useAppContext } from "../../App";
 
 function FormPage() {
-    const { isAuthenticated, user} = useAppContext();
+    const { isAuthenticated, user } = useAppContext();
     const [isEditBtnClicked, setIsEditBtnClicked] = useState(false);
     const [isPreview, setIsPreview] = useState(false);
-    const { questions, updatedQuestions, formTitle, updatedFormTitle, formDescription, updatedFormDescription, formId, formAuthorId ,setQuestions, setUpdatedQuestions, setFormTitle, setUpdatedFormTitle, setFormDescription, setUpdatedFormDescription } = useContext(EditFormContext)
-    const [loading,setLoading]=useState(false)
+    const { questions, updatedQuestions, formTitle, updatedFormTitle, formDescription, updatedFormDescription, formId, formAuthorId, setQuestions, setUpdatedQuestions, setFormTitle, setUpdatedFormTitle, setFormDescription, setUpdatedFormDescription } = useContext(EditFormContext)
+    const [loading, setLoading] = useState(false)
     const handleAddQuestion = () => {
         setQuestions([
             ...questions,
@@ -29,8 +29,22 @@ function FormPage() {
         ]);
     };
 
-    const handleSubmitForm=()=>{
+    async function handleSubmitForm() {
         console.log(questions)
+        const formData = {
+            formId, userId:user._id, responses:questions
+        }
+        setLoading(true)
+        try {
+            const response = await axios.post(`${SERVER_URL}/submitForm/${formId}`, formData, { withCredentials: true });
+            console.log(response);
+            alert("Response Submitted Successfully")
+        } catch (err) {
+            console.log(err)
+            alert("Error occured while submitting form")
+        } finally{
+            setLoading(false)
+        }
     }
 
     async function handleEditForm() {
@@ -58,7 +72,7 @@ function FormPage() {
             alert("Form edited successfully")
         } catch (err) {
             console.log(err);
-        } finally{
+        } finally {
             setLoading(false)
         }
     }
@@ -88,7 +102,7 @@ function FormPage() {
                 </>
 
             ) : (
-                formAuthorId===user?._id && <div className='edit-form-btn-container'>
+                formAuthorId === user?._id && <div className='edit-form-btn-container'>
                     <span className='edit-form-btn' onClick={() => { setIsPreview(false); setIsEditBtnClicked(true) }}>Edit</span>
                 </div>
             )}
@@ -110,7 +124,7 @@ function FormPage() {
                     )
                 ))}
                 {isEditBtnClicked && !isPreview && <button style={{ alignSelf: 'flex-end' }} className="add-question-btn" onClick={handleAddQuestion}>Add New Question</button>}
-                {formAuthorId!=user?._id && <button style={{ alignSelf: 'flex-end' }} className="add-question-btn" onClick={handleSubmitForm}>Submit Form</button>}
+                {formAuthorId != user?._id && <button style={{ alignSelf: 'flex-end' }} className="add-question-btn" onClick={handleSubmitForm}>Submit Form</button>}
             </div>
 
         </div>

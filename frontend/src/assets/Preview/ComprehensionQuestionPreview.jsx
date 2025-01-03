@@ -1,6 +1,15 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
+import EditFormContext from '../../Context/EditFormContext';
 
 function ComprehensionQuestionPreview({ question, questionIndex }) {
+    const { questions, setQuestions }=useContext(EditFormContext)
+
+    const handleOptionSelection = (subquestionIndex, optionIndex) => {
+        const newQuestions = [...questions];
+        newQuestions[questionIndex].comprehension.questions[subquestionIndex].selectedOption = optionIndex; // Set the selected option as the answer
+        setQuestions(newQuestions);
+      };
+
     return (
         <div className='comprehension-container-Preview'>
             <div className='description-container-Preview'>
@@ -26,6 +35,8 @@ function ComprehensionQuestionPreview({ question, questionIndex }) {
                                         <input
                                             type="radio"
                                             name={`comprehension-${questionIndex}-${subquestionIndex}`}
+                                            // checked={selectedOption==optionIndex}
+                                            onChange={() => handleOptionSelection(subquestionIndex, optionIndex)}
                                         />
                                         <p>{option.text}</p>
                                     </label>

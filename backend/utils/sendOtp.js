@@ -6,15 +6,23 @@ const nodemailer = require('nodemailer'); // Email sending library
 // Utility function to send OTP
 async function sendOtp(email) {
   try {
-    // Generate random OTP (6 digits)
-    const otp = crypto.randomInt(100000, 999999).toString();
 
-    // Set OTP expiry time (e.g., 10 minutes)
-    const expiresAt = new Date();
-    expiresAt.setMinutes(expiresAt.getMinutes() + 2);
+    let otp;
+    const expiresAt = new Date(); // Set OTP expiry time (e.g., 10 minutes)
+    expiresAt.setMinutes(expiresAt.getMinutes() + 10);
 
-    // Save OTP in the database
-    await OTP.create({ email, otp, expiresAt });
+    // Check if an OTP already exists for the email
+    const existingOtp = await OTP.findOne({ email });
+
+    if (existingOtp) {
+      otp = existingOtp.otp;
+      existingOtp.expiresAt = expiresAt;
+      await existingOtp.save(); // Save the updated document
+    }
+    else {
+      otp = crypto.randomInt(100000, 999999).toString(); // Generate random OTP (6 digits)
+      await OTP.create({ email, otp, expiresAt });  // Save OTP in the database
+    }
 
     // Send OTP to user's email
     const transporter = nodemailer.createTransport({

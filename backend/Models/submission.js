@@ -2,9 +2,8 @@ const mongoose = require('mongoose');
 
 const submissionSchema = new mongoose.Schema({
   formId: { type: mongoose.Schema.Types.ObjectId, ref: 'Form', required: true },
-  // userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Optional: For logged-in users
-  // submissionId: { type: String }, // To identify non-logged-in submissions
-  submissionDate: { type: Date, default: Date.now }, // Timestamp of submission
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Optional: For logged-in users
+  submissionId: { type: String }, // To identify non-logged-in submissions
 
   responses: [
     {
@@ -52,6 +51,9 @@ const submissionSchema = new mongoose.Schema({
       },
     },
   ],
-});
+}, {
+  timestamps: true,
+}
+);
 
 module.exports = mongoose.model('Submission', submissionSchema);

@@ -10,19 +10,24 @@ exports.submitForm = async (req, res) => {
   }
 
   try {
-    const submission = new Submission({
-      formId:formId,
-      userId:userId,
+    const newSubmission = new Submission({
+      formId: formId,
+      userId: userId,
       submissionId: userId ? userId : `anon-${Date.now()}`,
-      responses:responses
+      responses: responses
     });
 
-    // Save submission to the database
-    const savedSubmission = await submission.save();
+    const existingSubmission = await Submission.findOne({ submissionId: newSubmission.submissionId });
+    let submission;
+    if (existingSubmission) {
+      submission= await existingSubmission.updateOne({ $set: { responses: newSubmission.responses } });
+    } else {
+      submission = await newSubmission.save();
+    }
 
     return res.status(201).json({
       message: 'Form submission saved successfully!',
-      submission: savedSubmission,
+      submission: submission,
     });
   } catch (err) {
     console.log(err)

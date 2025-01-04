@@ -11,7 +11,7 @@ async function sendOtp(email) {
 
     // Set OTP expiry time (e.g., 10 minutes)
     const expiresAt = new Date();
-    expiresAt.setMinutes(expiresAt.getMinutes() + 10);
+    expiresAt.setMinutes(expiresAt.getMinutes() + 2);
 
     // Save OTP in the database
     await OTP.create({ email, otp, expiresAt });

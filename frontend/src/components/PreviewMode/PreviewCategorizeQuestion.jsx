@@ -32,7 +32,7 @@ import CreateFormContext from '../../Context/CreateFormContext';
 import EditFormContext from '../../Context/EditFormContext';
 import { useLocation } from 'react-router-dom';
 
-function CategorizeQuestionPreview({ question, questionIndex , isDragEnabled }) {
+function PreviewCategorizeQuestion({ question, questionIndex , isDragEnabled }) {
     const location = useLocation();
     const currentPath = location.pathname;
     const { questions, setQuestions } = currentPath === "/createform" ? useContext(CreateFormContext) : useContext(EditFormContext);
@@ -146,4 +146,4 @@ function CategorizeQuestionPreview({ question, questionIndex , isDragEnabled }) 
     )
 }
 
-export default CategorizeQuestionPreview
+export default PreviewCategorizeQuestion

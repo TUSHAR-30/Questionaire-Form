@@ -145,7 +145,7 @@ import CreateFormContext from '../../Context/CreateFormContext';
 import { useLocation } from 'react-router-dom';
 import EditFormContext from '../../Context/EditFormContext';
 
-function ClozeQuestion({ question, questionIndex }) {
+function CreateClozeQuestion({ question, questionIndex }) {
     const location = useLocation();
     const currentPath = location.pathname;
     const { questions, setQuestions } = currentPath == "/createform" ? useContext(CreateFormContext) : useContext(EditFormContext)
@@ -359,4 +359,4 @@ function ClozeQuestion({ question, questionIndex }) {
     );
 }
 
-export default ClozeQuestion;
+export default CreateClozeQuestion;

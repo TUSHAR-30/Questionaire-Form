@@ -3,7 +3,7 @@ import CreateFormContext from '../../Context/CreateFormContext'
 import EditFormContext from '../../Context/EditFormContext';
 import { useLocation } from 'react-router-dom';
 
-function CategorizeQuestion({ question, questionIndex }) {
+function CreateCategorizeQuestion({ question, questionIndex }) {
     const location = useLocation();
     const currentPath = location.pathname;
     const { questions, setQuestions } =currentPath=="/createform"?useContext(CreateFormContext):useContext(EditFormContext)
@@ -138,4 +138,4 @@ function CategorizeQuestion({ question, questionIndex }) {
     )
 }
 
-export default CategorizeQuestion
+export default CreateCategorizeQuestion

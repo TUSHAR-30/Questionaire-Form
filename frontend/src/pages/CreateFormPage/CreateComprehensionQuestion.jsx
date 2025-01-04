@@ -171,7 +171,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useLocation } from 'react-router-dom';
 import EditFormContext from '../../Context/EditFormContext';
 
-function ComprehensionQuestion({ question, questionIndex }) {
+function CreateComprehensionQuestion({ question, questionIndex }) {
   const location = useLocation();
   const currentPath = location.pathname;
   const { questions, setQuestions } = currentPath == "/createform" ? useContext(CreateFormContext) : useContext(EditFormContext)
@@ -385,4 +385,4 @@ function ComprehensionQuestion({ question, questionIndex }) {
   );
 }
 
-export default ComprehensionQuestion;
+export default CreateComprehensionQuestion;

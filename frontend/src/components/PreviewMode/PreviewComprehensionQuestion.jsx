@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import EditFormContext from '../../Context/EditFormContext';
 
-function ComprehensionQuestionPreview({ question, questionIndex }) {
+function PreviewComprehensionQuestion({ question, questionIndex }) {
     const { questions, setQuestions }=useContext(EditFormContext)
 
     const handleOptionSelection = (subquestionIndex, optionIndex) => {
@@ -51,4 +51,4 @@ function ComprehensionQuestionPreview({ question, questionIndex }) {
     )
 }
 
-export default ComprehensionQuestionPreview
+export default PreviewComprehensionQuestion

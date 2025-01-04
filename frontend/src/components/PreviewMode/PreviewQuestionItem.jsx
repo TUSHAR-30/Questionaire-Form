@@ -1,7 +1,7 @@
 import React from 'react'
-import CategorizeQuestionPreview from './CategorizeQuestionPreview'
-import ClozeQuestionPreview from './ClozeQuestionPreview'
-import ComprehensionQuestionPreview from './ComprehensionQuestionPreview'
+import PreviewCategorizeQuestion from './PreviewCategorizeQuestion'
+import PreviewClozeQuestion from './PreviewClozeQuestion'
+import PreviewComprehensionQuestion from './PreviewComprehensionQuestion'
 
 function PreviewQuestionItem({ question, questionIndex , isDragEnabled }) {
     return (
@@ -13,13 +13,13 @@ function PreviewQuestionItem({ question, questionIndex , isDragEnabled }) {
 
             <div className='item-content-Preview'>
                 {question.type == "categorize" && 
-                    <CategorizeQuestionPreview question={question} questionIndex={questionIndex} isDragEnabled={isDragEnabled}/>
+                    <PreviewCategorizeQuestion question={question} questionIndex={questionIndex} isDragEnabled={isDragEnabled}/>
                 }
                 {question.type == "cloze" && (
-                    <ClozeQuestionPreview question={question} questionIndex={questionIndex} isDragEnabled={isDragEnabled}/>    
+                    <PreviewClozeQuestion question={question} questionIndex={questionIndex} isDragEnabled={isDragEnabled}/>    
                 )}
                  {question.type == "comprehension" && (
-                    <ComprehensionQuestionPreview question={question} questionIndex={questionIndex} isDragEnabled={isDragEnabled}/>    
+                    <PreviewComprehensionQuestion question={question} questionIndex={questionIndex} isDragEnabled={isDragEnabled}/>    
                 )}
             </div>
 

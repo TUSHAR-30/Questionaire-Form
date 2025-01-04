@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import SelectQuestionType from './SelectQuestionType';
-import CategorizeQuestion from './CategorizeQuestion';
-import ClozeQuestion from './ClozeQuestion';
-import ComprehensionQuestion from './ComprehensionQuestion';
+import CreateCategorizeQuestion from './CreateCategorizeQuestion';
+import CreateClozeQuestion from './CreateClozeQuestion';
+import CreateComprehensionQuestion from './CreateComprehensionQuestion';
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { BiSolidRightArrow } from "react-icons/bi";
 import { BiSolidDownArrow } from "react-icons/bi";
@@ -10,7 +10,7 @@ import CreateFormContext from '../../Context/CreateFormContext';
 import { useLocation } from 'react-router-dom';
 import EditFormContext from '../../Context/EditFormContext';
 
-function QuestionItem({ question, questionIndex }) {
+function CreateQuestionItem({ question, questionIndex }) {
     const location = useLocation();
     const currentPath = location.pathname;
     const { questions, setQuestions } =currentPath=="/createform"?useContext(CreateFormContext):useContext(EditFormContext)
@@ -50,13 +50,13 @@ function QuestionItem({ question, questionIndex }) {
             {isExpanded && (
                 <div className="question-item-content">
                     {question.type === 'cloze' && (
-                        <ClozeQuestion question={question} questionIndex={questionIndex} />
+                        <CreateClozeQuestion question={question} questionIndex={questionIndex} />
                     )}
                     {question.type === 'categorize' && (
-                        <CategorizeQuestion question={question} questionIndex={questionIndex} />
+                        <CreateCategorizeQuestion question={question} questionIndex={questionIndex} />
                     )}
                     {question.type === 'comprehension' && (
-                        <ComprehensionQuestion question={question} questionIndex={questionIndex} />
+                        <CreateComprehensionQuestion question={question} questionIndex={questionIndex} />
                     )}
                 </div>
             )}
@@ -64,4 +64,4 @@ function QuestionItem({ question, questionIndex }) {
     );
 }
 
-export default QuestionItem;
+export default CreateQuestionItem;

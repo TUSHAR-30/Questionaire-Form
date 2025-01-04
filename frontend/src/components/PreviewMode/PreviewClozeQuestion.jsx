@@ -26,7 +26,7 @@ import { useLocation } from "react-router-dom";
 import CreateFormContext from "../../Context/CreateFormContext";
 import EditFormContext from "../../Context/EditFormContext";
 
-function ClozeQuestionPreview({ question, questionIndex , isDragEnabled  }) {
+function PreviewClozeQuestion({ question, questionIndex , isDragEnabled  }) {
   const location = useLocation();
   const currentPath = location.pathname;
   const { questions, setQuestions } = currentPath === "/createform" ? useContext(CreateFormContext) : useContext(EditFormContext);
@@ -195,7 +195,7 @@ function ClozeQuestionPreview({ question, questionIndex , isDragEnabled  }) {
   );
 }
 
-export default ClozeQuestionPreview;
+export default PreviewClozeQuestion;
 
 
 

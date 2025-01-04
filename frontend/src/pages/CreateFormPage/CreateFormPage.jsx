@@ -1,7 +1,7 @@
 import React from 'react';
 import FormMetaData from './FormMetaData';
-import QuestionsList from './QuestionsList';
-import Preview from '../../components/Preview/Preview';
+import CreateMode from './CreateMode';
+import PreviewMode from '../../components/PreviewMode/PreviewMode';
 import useCreateForm from '../../hooks/useCreateForm';
 import "./CreateFormPage.css";
 
@@ -33,10 +33,10 @@ const CreateFormPage = () => {
       </div>
       <FormMetaData formTitle={formTitle} setFormTitle={setFormTitle} formDescription={formDescription} setFormDescription={setFormDescription} isPreview={isPreview} />
       {isPreview ? (
-        <Preview />
+        <PreviewMode />
       ) : (
         <>
-          <QuestionsList />
+          <CreateMode />
           <button className="add-question-btn" onClick={handleAddQuestion}>Add New Question</button>
         </>
       )

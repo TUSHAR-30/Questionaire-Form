@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
-import "./Preview.css"
+import "./PreviewMode.css"
 import CreateFormContext from '../../Context/CreateFormContext'
 import PreviewQuestionItem from './PreviewQuestionItem'
 
-function Preview() {
+function PreviewMode() {
     const { questions } =useContext(CreateFormContext)
 
     return (
@@ -15,4 +15,4 @@ function Preview() {
     )
 }
 
-export default Preview
+export default PreviewMode

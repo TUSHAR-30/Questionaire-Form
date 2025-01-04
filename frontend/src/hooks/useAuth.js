@@ -43,7 +43,7 @@ const useAuth = () => {
         try {
             const response = await axios.post(`${SERVER_URL}/register`, details, { withCredentials: true });
             if (response.status === 201) {
-                setSignupDetails(formData);
+                setSignupDetails(details);
                 alert('OTP sent to your email!');
                 navigate("/verify-otp");
             }

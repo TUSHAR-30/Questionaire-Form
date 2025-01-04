@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import QuestionItem from '../CreateFormPage/QuestionItem';
-import PreviewQuestionItem from '../../components/Preview/PreviewQuestionItem';
+import CreateQuestionItem from '../CreateFormPage/CreateQuestionItem';
+import PreviewQuestionItem from '../../components/PreviewMode/PreviewQuestionItem';
 import EditFormContext from '../../Context/EditFormContext';
 import transformDataToBackendFormat from '../../utils/transformDataToBackendFormat';
 import axios from 'axios';
@@ -116,7 +116,7 @@ function FormPage() {
                             <PreviewQuestionItem key={questionIndex} question={question} questionIndex={questionIndex} isDragEnabled={false} />
 
                         ) : (
-                            <QuestionItem key={questionIndex} question={question} questionIndex={questionIndex} />
+                            <CreateQuestionItem key={questionIndex} question={question} questionIndex={questionIndex} />
                         )
 
                     ) : (

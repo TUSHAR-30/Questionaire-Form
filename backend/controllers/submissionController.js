@@ -15,7 +15,7 @@ exports.submitForm = async (req, res) => {
       userId: userId,
       submissionId: userId ? userId : `anon-${Date.now()}`,
       responses: responses,
-      ipAddress: req.connection.remoteAddress || null,
+      ipAddress: req.headers['x-forwarded-for'].split(',')[0] || req.connection.remoteAddress || null,
       deviceInfo
     });
 

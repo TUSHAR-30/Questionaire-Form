@@ -35,9 +35,14 @@ function FormPage() {
     }
 
     async function handleSubmitForm() {
-        console.log(questions)
+        const deviceInfo = {
+            userAgent: navigator.userAgent, // Browser's User-Agent string
+            platform: navigator.platform,  // OS platform
+            language: navigator.language,  // Preferred language
+            screenResolution: `${window.screen.width}x${window.screen.height}`, // Screen resolution
+          };
         const formData = {
-            formId, userId: user._id, responses: questions
+            formId, userId: user._id, responses: questions , deviceInfo
         }
         setLoading(true)
         try {

@@ -2,7 +2,7 @@ const Submission = require('../Models/submission');
 
 // Submit form data
 exports.submitForm = async (req, res) => {
-  const { formId, userId, responses } = req.body;
+  const { formId, userId, responses, deviceInfo } = req.body;
 
   // Validate required fields
   if (!formId || !responses || !Array.isArray(responses)) {
@@ -14,7 +14,9 @@ exports.submitForm = async (req, res) => {
       formId: formId,
       userId: userId,
       submissionId: userId ? userId : `anon-${Date.now()}`,
-      responses: responses
+      responses: responses,
+      ipAddress:  req.ip || req.connection.remoteAddress || null,
+      deviceInfo
     });
 
     const existingSubmission = await Submission.findOne({ submissionId: newSubmission.submissionId });

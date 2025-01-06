@@ -4,7 +4,13 @@ const submissionSchema = new mongoose.Schema({
   formId: { type: mongoose.Schema.Types.ObjectId, ref: 'Form', required: true },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Optional: For logged-in users
   submissionId: { type: String }, // To identify non-logged-in submissions
-
+  ipAddress:{ type: String },
+  deviceInfo: {
+    userAgent: { type: String }, // Browser's User-Agent string
+    platform: { type: String }, // OS platform (e.g., "Win32", "MacIntel")
+    language: { type: String }, // User's preferred language
+    screenResolution: { type: String }, // Screen resolution (e.g., "1920x1080")
+  },
   responses: [
     {
       type: { type: String, required: true, enum: ['categorize', 'cloze', 'comprehension'] },

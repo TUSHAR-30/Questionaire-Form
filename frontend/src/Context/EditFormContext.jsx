@@ -20,6 +20,21 @@ export function EditFormProvider({ children }) {
     const { formId } = useParams();
     const [formAuthorId, setFormAuthorId] = useState(null);
 
+    const handleAddQuestion = () => {
+        setQuestions([
+            ...questions,
+            {
+                type: 'categorize', // Default question type
+                categorize: { categories: [], items: [] }, // Nested under "categorize"
+                cloze: { blanks: [] },
+                comprehension: {
+                    description: { title: '', content: '' },
+                    questions: [{ question: '', answer: '', options: [] }],
+                },
+            },
+        ]);
+    };
+
     useEffect(() => {
         async function getForm() {
             setLoading(true);
@@ -76,6 +91,7 @@ export function EditFormProvider({ children }) {
                 setUpdatedFormTitle,
                 setFormDescription,
                 setUpdatedFormDescription,
+                handleAddQuestion
             }}
         >
             {children}

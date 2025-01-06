@@ -42,7 +42,7 @@ const SignupPage = () => {
             {loading && <div className="loading-overlay"><div className="spinner"></div></div>}
             <div className="signup-container">
                 <h2>Sign Up</h2>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} >
                     <div className="form-group">
                         <label htmlFor="name">Name</label>
                         <input
@@ -52,6 +52,7 @@ const SignupPage = () => {
                             value={formData.name}
                             onChange={handleChange}
                             placeholder="Enter your name"
+                            autoComplete='name'
                             required
                         />
                         <div className={`error ${errors.name ? 'show-error' : ''}`}>{errors.name}</div>
@@ -65,6 +66,7 @@ const SignupPage = () => {
                             value={formData.email}
                             onChange={handleChange}
                             placeholder="Enter your email"
+                            autoComplete='email'
                             required
                         />
                         <div className={`error ${errors.email ? 'show-error' : ''}`}>{errors.email}</div>
@@ -78,6 +80,7 @@ const SignupPage = () => {
                             value={formData.password}
                             onChange={handleChange}
                             placeholder="Create a password"
+                            autoComplete='new-password'
                             required
                         />
                         <div className={`error ${errors.password ? 'show-error' : ''}`}>{errors.password}</div>

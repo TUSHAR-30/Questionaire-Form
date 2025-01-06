@@ -16,8 +16,23 @@ export function CreateFormProvider({ children }) {
         },
       ]);
 
+      const handleAddQuestion = () => {
+        setQuestions([
+          ...questions,
+          {
+            type: 'categorize', // Default question type
+            categorize: { categories: [], items: [] },
+            cloze: { blanks: [] },
+            comprehension: {
+              description: { title: '', content: '' },
+              questions: [{ question: '', answer: '', options: [] }],
+            },
+          },
+        ]);
+      };
+
     return (
-        <CreateFormContext.Provider value={{ questions, setQuestions }}>
+        <CreateFormContext.Provider value={{ questions, handleAddQuestion , setQuestions }}>
             {children}
         </CreateFormContext.Provider>
     )

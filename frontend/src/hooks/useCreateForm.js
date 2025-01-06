@@ -17,21 +17,6 @@ const useCreateForm = () => {
     setIsPreview(isPreview)
   }
 
-  const handleAddQuestion = () => {
-    setQuestions([
-      ...questions,
-      {
-        type: 'categorize', // Default question type
-        categorize: { categories: [], items: [] },
-        cloze: { blanks: [] },
-        comprehension: {
-          description: { title: '', content: '' },
-          questions: [{ question: '', answer: '', options: [] }],
-        },
-      },
-    ]);
-  };
-
   const handleSaveForm = async () => {
     const transformedQuestions = transformDataToBackendFormat(
       questions,
@@ -71,7 +56,6 @@ const useCreateForm = () => {
     formTitle,
     formDescription,
     loading,
-    handleAddQuestion,
     handleSaveForm,
     handleMode,
     setFormTitle,

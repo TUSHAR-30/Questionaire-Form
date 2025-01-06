@@ -1,8 +1,9 @@
 import React from 'react';
-import FormMetaData from './FormMetaData';
-import CreateMode from './CreateMode';
+import FormMetaData from '../../components/FormMetaData';
 import PreviewMode from '../../components/PreviewMode/PreviewMode';
 import useCreateForm from '../../hooks/useCreateForm';
+import ModeToggle from '../../components/ModeToggle';
+import CreateMode from '../../components/CreateMode/CreateMode';
 import "./CreateFormPage.css";
 
 const CreateFormPage = () => {
@@ -11,9 +12,8 @@ const CreateFormPage = () => {
     formTitle,
     formDescription,
     loading,
-    handleAddQuestion,
-    handleSaveForm,
     handleMode,
+    handleSaveForm,
     setFormTitle,
     setFormDescription,
   } = useCreateForm();
@@ -26,21 +26,9 @@ const CreateFormPage = () => {
         {/* <button>Save and Deploy</button> */}
       </div>
       <h2>Form</h2>
-
-      <div className='createAndPreview-Toggle'>
-        <button className={`${isPreview ? "" : "active"}`} onClick={() => handleMode(false)}>Create</button>
-        <button className={`${isPreview ? "active" : ""}`} onClick={() => handleMode(true)}>Preview</button>
-      </div>
+      <ModeToggle isPreview={isPreview} handleMode={handleMode} />
       <FormMetaData formTitle={formTitle} setFormTitle={setFormTitle} formDescription={formDescription} setFormDescription={setFormDescription} isPreview={isPreview} />
-      {isPreview ? (
-        <PreviewMode />
-      ) : (
-        <>
-          <CreateMode />
-          <button className="add-question-btn" onClick={handleAddQuestion}>Add New Question</button>
-        </>
-      )
-      }
+      {isPreview ? <PreviewMode /> : <CreateMode />}
     </div>
   );
 };

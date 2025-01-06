@@ -26,7 +26,7 @@ import { useLocation } from "react-router-dom";
 import CreateFormContext from "../../Context/CreateFormContext";
 import EditFormContext from "../../Context/EditFormContext";
 
-function PreviewClozeQuestion({ question, questionIndex , isDragEnabled  }) {
+function PreviewClozeQuestion({ question, questionIndex, isDragEnabled }) {
   const location = useLocation();
   const currentPath = location.pathname;
   const { questions, setQuestions } = currentPath === "/createform" ? useContext(CreateFormContext) : useContext(EditFormContext);
@@ -38,6 +38,7 @@ function PreviewClozeQuestion({ question, questionIndex , isDragEnabled  }) {
 
   // Function to parse displayText and replace blanks with droppable placeholders
   const renderDisplayTextWithPlaceholders = () => {
+    if (!question.cloze.displayText) return
     const parts = question.cloze.displayText.split("________");
     return parts.map((part, index) => (
       <span key={index}>
@@ -51,10 +52,10 @@ function PreviewClozeQuestion({ question, questionIndex , isDragEnabled  }) {
                 {...provided.droppableProps}
               >
                 {question.cloze.blanks[findIndex(question, index)]?.text ? (
-                  <Draggable 
-                  isDragDisabled={!isDragEnabled}
-                  draggableId={`placeholder-${index}`}
-                  index={index}>
+                  <Draggable
+                    isDragDisabled={!isDragEnabled}
+                    draggableId={`placeholder-${index}`}
+                    index={index}>
                     {
                       (provided) => (
                         <span
@@ -123,7 +124,7 @@ function PreviewClozeQuestion({ question, questionIndex , isDragEnabled  }) {
       if (destinationBlankIndex != -1) {
         destinationBlank = question.cloze.blanks[destinationBlankIndex];
       }
-     
+
       if (draggedBlank) draggedBlank.droppedAt = destinationPlaceholderIndex;
       if (destinationBlank) destinationBlank.droppedAt = source.index
 
@@ -148,50 +149,51 @@ function PreviewClozeQuestion({ question, questionIndex , isDragEnabled  }) {
     setQuestions(updatedQuestions);
   };
 
-   //I am setting the items droppedAt as null when the first time the preview page is loaded.
-    //I am doing this because when the user is editing a form he will see all items at item-container when user is switching between preview mode and editedpreview mode. The changes made by user in preview mode will not reflect back in the editedpreviewmode.
-    useEffect(()=>{
-      const updatedQuestions = [...questions];
-      const question = updatedQuestions[questionIndex];
-      question.cloze.blanks.map((blank)=>blank.droppedAt=null)
-      setQuestions(JSON.parse(JSON.stringify(questions)))
-  },[])
+  //I am setting the items droppedAt as null when the first time the preview page is loaded.
+  //I am doing this because when the user is editing a form he will see all items at item-container when user is switching between preview mode and editedpreview mode. The changes made by user in preview mode will not reflect back in the editedpreviewmode.
+  useEffect(() => {
+    const updatedQuestions = [...questions];
+    const question = updatedQuestions[questionIndex];
+    question.cloze.blanks.map((blank) => blank.droppedAt = null)
+    setQuestions(JSON.parse(JSON.stringify(questions)))
+  }, [])
 
   return (
-    <div className="cloze-container-preview">
-      <DragDropContext onDragEnd={handleDragEnd}>
-        <p className="display-question-preview">
-          {renderDisplayTextWithPlaceholders()}
-        </p>
-        <div>
-          <Droppable droppableId="blanks-container" direction="vertical">
-            {(provided) => (
-              <div
-                className="items-container-preview"
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-              >
-                {question.cloze.blanks.map((blank, index) => (
-                  <Draggable isDragDisabled={!isDragEnabled} key={blank.id} draggableId={blank.id} index={index}>
-                    {(provided) => (
-                      <span
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        className={`draggable-item-preview ${(blank.droppedAt || blank.droppedAt === 0) ? "hide" : ""}`}
-                      >
-                        {blank.text}
-                      </span>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </div>
-      </DragDropContext>
-    </div>
+      <div className="cloze-container-preview">
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <p className="display-question-preview">
+            {renderDisplayTextWithPlaceholders()}
+          </p>
+          <div>
+            <Droppable droppableId="blanks-container" direction="vertical">
+              {(provided) => (
+                <div
+                  className="items-container-preview"
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
+                  {question.cloze.blanks.map((blank, index) => (
+                    <Draggable isDragDisabled={!isDragEnabled} key={blank.id} draggableId={blank.id} index={index}>
+                      {(provided) => (
+                        <span
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          className={`draggable-item-preview ${(blank.droppedAt || blank.droppedAt === 0) ? "hide" : ""}`}
+                        >
+                          {blank.text}
+                        </span>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </div>
+        </DragDropContext>
+      </div>
+
   );
 }
 

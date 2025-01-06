@@ -15,7 +15,7 @@ exports.submitForm = async (req, res) => {
       userId: userId,
       submissionId: userId ? userId : `anon-${Date.now()}`,
       responses: responses,
-      ipAddress:  req.ip || req.connection.remoteAddress || null,
+      ipAddress: req.connection.remoteAddress || null,
       deviceInfo
     });
 

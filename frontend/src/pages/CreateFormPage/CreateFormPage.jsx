@@ -4,6 +4,7 @@ import PreviewMode from '../../components/PreviewMode/PreviewMode';
 import useCreateForm from '../../hooks/useCreateForm';
 import ModeToggle from '../../components/ModeToggle';
 import CreateMode from '../../components/CreateMode/CreateMode';
+import LoadingSpinner from '../../components/LoadingSpinner';
 import "./CreateFormPage.css";
 
 const CreateFormPage = () => {
@@ -20,7 +21,7 @@ const CreateFormPage = () => {
 
   return (
     <div className="create-form-container">
-      {loading && <div className="loading-overlay"><div className="spinner"></div></div>}
+      {loading && <LoadingSpinner />}
       <div className='saveAndDeploy-container'>
         <button onClick={handleSaveForm}>Save Form</button>
         {/* <button>Save and Deploy</button> */}

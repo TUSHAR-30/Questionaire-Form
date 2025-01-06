@@ -8,6 +8,7 @@ import ModeToggle from '../../components/ModeToggle';
 import FormMetaData from '../../components/FormMetaData';
 import CreateMode from '../../components/CreateMode/CreateMode';
 import PreviewMode from '../../components/PreviewMode/PreviewMode';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 
 function FormPage() {
@@ -83,7 +84,7 @@ function FormPage() {
 
     return (
         <div className="created-questions-list-Preview">
-            {loading && (<div className="loading-overlay"><div className="spinner"></div></div>)}
+            {loading && <LoadingSpinner /> }
             {isEditBtnClicked ? (
                 <>
                     <div className='saveAndCancel-container'>

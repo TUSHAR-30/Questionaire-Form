@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import useAuthForm from '../../hooks/useAuthForm';
 import useAuth from '../../hooks/useAuth';
 import SignupDetailsContext from '../../Context/SignupDetailsContext';
+import LoadingSpinner from '../../components/LoadingSpinner';
 import './SignupPage.css';
 
 const SignupPage = () => {
@@ -39,7 +40,7 @@ const SignupPage = () => {
 
     return (
         <div className="signup-page">
-            {loading && <div className="loading-overlay"><div className="spinner"></div></div>}
+            {loading && <LoadingSpinner />}
             <div className="signup-container">
                 <h2>Sign Up</h2>
                 <form onSubmit={handleSubmit} >

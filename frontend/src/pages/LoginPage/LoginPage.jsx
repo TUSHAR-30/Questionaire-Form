@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import useAuthForm from '../../hooks/useAuthForm';
 import useAuth from '../../hooks/useAuth';
+import LoadingSpinner from '../../components/LoadingSpinner';
 import './LoginPage.css';
 
 const LoginPage = () => {
@@ -30,7 +31,7 @@ const LoginPage = () => {
 
     return (
         <div className="login-page">
-            {loading && <div className="loading-overlay"><div className="spinner"></div></div>}
+            {loading && <LoadingSpinner />}
             <div className="login-container">
                 <h2>Login</h2>
                 <form onSubmit={handleSubmit}>

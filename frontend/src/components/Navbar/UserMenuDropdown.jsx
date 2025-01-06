@@ -5,6 +5,8 @@ import axios from 'axios';
 import { useAppContext } from '../../App';
 import useDropdown from '../../hooks/useDropdown';
 import { SERVER_URL } from '../../../config';
+import LoadingSpinner from '../LoadingSpinner';
+
 
 function UserMenuDropdown() {
     const navigate = useNavigate();
@@ -34,11 +36,7 @@ function UserMenuDropdown() {
 
     return (
         <div className="user-menu">
-             {logoutloading && (
-                <div className="loading-overlay">
-                    <div className="spinner"></div>
-                </div>
-            )}
+             {logoutloading && <LoadingSpinner /> }
             <button className="user-icon" onClick={toggleDropdown} ref={buttonRef}>
                 <FaUserCircle size={24} /> {user.profile.name}
             </button>

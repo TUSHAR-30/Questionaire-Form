@@ -4,6 +4,7 @@ import { SERVER_URL } from "../../../config";
 import { useNavigate } from "react-router-dom";
 import SignupDetailsContext from "../../Context/SignupDetailsContext";
 import { useAppContext } from "../../App";
+import LoadingSpinner from "../../components/LoadingSpinner";
 import "./VerifyOTPPage.css";
 
 const VerifyOTPPage = () => {
@@ -59,11 +60,7 @@ const VerifyOTPPage = () => {
 
     return (
         <div className="otp-page">
-             {loading && (
-                <div className="loading-overlay">
-                    <div className="spinner"></div>
-                </div>
-            )}
+             {loading && <LoadingSpinner /> }
             <div className="otp-container">
                 <h3>Do not refresh this page</h3>
                 <h2>Verify OTP</h2>

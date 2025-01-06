@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { SERVER_URL } from '../../../config';
-import { useNavigate } from 'react-router-dom';
+import LoadingSpinner from '../../components/LoadingSpinner';
 import "./FormsPage.css"
 
 function FormsPage() {
@@ -9,46 +10,42 @@ function FormsPage() {
     const [loading, setLoading] = useState(false); // Loading state
 
 
-    const [forms,setForms]=useState([])
+    const [forms, setForms] = useState([])
 
-    function handleFormClick(formId){
+    function handleFormClick(formId) {
         navigate(`/form/${formId}`)
     }
 
     useEffect(() => {
-        async function getUserForms(){
+        async function getUserForms() {
             setLoading(true)
-            try{
-                const response = await axios.get(`${SERVER_URL}/forms`,{ withCredentials: true } );
+            try {
+                const response = await axios.get(`${SERVER_URL}/forms`, { withCredentials: true });
                 setForms(response.data.forms)
-            }catch(err){
+            } catch (err) {
                 console.log(err)
-            }finally{
+            } finally {
                 setLoading(false)
             }
         }
 
         getUserForms()
-       
+
     }, [])
     return (
         <div className='formspage'>
-             {loading && (
-                <div className="loading-overlay">
-                    <div className="spinner"></div>
-                </div>
-            )}
+            {loading && <LoadingSpinner /> }
             <h2>Your Forms</h2>
             <div className='formsDashboard'>
-            {forms.map((form,index)=>(
-                <div key={index} className='formDashboard' onClick={()=>handleFormClick(form._id)}>
-                    <span>{index+1}.</span>
-                    <span>{form.title}</span>
-                    <span className='deploy-status'>{form.isDeployed?"Deployed":"Not Deployed"}</span>
-                </div>
-            ))}
+                {forms.map((form, index) => (
+                    <div key={index} className='formDashboard' onClick={() => handleFormClick(form._id)}>
+                        <span>{index + 1}.</span>
+                        <span>{form.title}</span>
+                        <span className='deploy-status'>{form.isDeployed ? "Deployed" : "Not Deployed"}</span>
+                    </div>
+                ))}
             </div>
-          
+
         </div>
     )
 }

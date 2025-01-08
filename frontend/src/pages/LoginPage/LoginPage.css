@@ -82,3 +82,23 @@
 .signup-text a:hover {
     text-decoration: underline;
 }
+
+.google-login-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: auto;
+    color: black;
+    border: 1px solid;
+    padding: 10px 20px;
+    margin-top: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 10px;
+    font-weight: 500;
+    background-color: white;
+}
+.google-login-button:hover {
+    background-color: #afb3bc;
+    color: white;
+}

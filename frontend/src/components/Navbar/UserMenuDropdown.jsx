@@ -38,7 +38,8 @@ function UserMenuDropdown() {
         <div className="user-menu">
              {logoutloading && <LoadingSpinner /> }
             <button className="user-icon" onClick={toggleDropdown} ref={buttonRef}>
-                <FaUserCircle size={24} /> {user.profile.name}
+                {/* <FaUserCircle size={20} /> */}
+                 {user.profile.name}
             </button>
             {showDropdown && (
                 <div className="dropdown" ref={dropdownRef}>

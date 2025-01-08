@@ -26,7 +26,6 @@
 
   .user-menu {
     position: relative;
-    border: 1px solid white;
   }
   
   
@@ -42,7 +41,6 @@
 
   .user-icon {
     background: none;
-    border: none;
     color: white;
     cursor: pointer;
     font-size: 1rem;
@@ -52,6 +50,9 @@
     align-items: center;
     gap: 5px;
     border: 1px solid white;
+    max-width: 150px;
+    overflow: hidden;
+    text-wrap: nowrap;
   }
 
   .dropdown {
@@ -89,6 +90,9 @@
   @media screen and (max-width:600px) {
     .navbar-left .webapp-name{
         font-size: 1rem;
+    }
+    .create-form-btn{
+      display: none;
     }
   }
   

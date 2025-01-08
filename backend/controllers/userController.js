@@ -51,7 +51,9 @@ exports.registerUser = [
       // Check if the user already exists
       const existingUser = await User.findOne({ email });
       if (existingUser) {
-        return res.status(409).json({ message: 'User already exists' });
+        if (existingUser.loginMethods.includes("email")) {
+          return res.status(409).json({ message: 'User already exists' });
+        }
       }
 
       await sendOtp(email);  // The OTP function is called here in the backend
@@ -71,7 +73,7 @@ exports.loginUser = async (req, res) => {
 
   try {
     const user = await User.findOne({ email });
-    if (!user || !(await user.comparePassword(password))) {
+    if (!user || !user.password || !(await user.comparePassword(password))) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
 

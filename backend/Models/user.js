@@ -3,13 +3,13 @@ const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  password: { type: String },
   profile: {
     name: { type: String, required: true },
     phone: { type: String },
     address: { type: String },
   },
-  isVerified: { type: Boolean, default: false }, // New field to track email verification status
+  loginMethods: { type: [String], default: [] } // Array of login methods
 });
 
 // Hash the password before saving the user

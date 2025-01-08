@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 
 const verifyOtp = async (req, res) => {
-    const { email,password,profile,otp } = req.body;
+    const { email, password, profile, otp } = req.body;
 
     try {
         // Find OTP in the database
@@ -23,12 +23,25 @@ const verifyOtp = async (req, res) => {
 
         await OTP.deleteOne({ email }); // Clean up OTP record
 
-        // Create a new user
-        const newUser = await User.create({ email, password, profile });
+        // Check if the user already exists
+        let user;
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            existingUser.loginMethods.push("email");
+            existingUser.password=password;
+            await existingUser.save();
+            user=existingUser;
+        }
+        else {
+            // Create a new user 
+            const newUser = await User.create({ email, password, profile,loginMethods:["email"] });
+            user=newUser
+        }
+
 
         //   Generate a JWT token for the new user
         const token = jwt.sign(
-            { id: newUser._id },
+            { id: user._id },
             process.env.JWT_SECRET,
             { expiresIn: process.env.LOGIN_EXPIRES }
         );
@@ -45,7 +58,7 @@ const verifyOtp = async (req, res) => {
 
         res.status(201).json({
             message: 'OTP verified.Registration successful',
-            user: newUser,
+            user,
             token,
         });
 

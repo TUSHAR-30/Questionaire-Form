@@ -1,9 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { SERVER_URL } from '../../../config';
 import useAuthForm from '../../hooks/useAuthForm';
 import useAuth from '../../hooks/useAuth';
+import { FcGoogle } from "react-icons/fc";
 import LoadingSpinner from '../../components/LoadingSpinner';
 import './LoginPage.css';
+
 
 const LoginPage = () => {
     const { formData, errors, isPasswordVisible, handleChange, togglePasswordVisibility, setErrors } = useAuthForm(
@@ -16,6 +19,10 @@ const LoginPage = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         login(formData);
+    };
+
+    const handleGoogleLogin = () => {
+        window.open(`${SERVER_URL}/auth/google/callback`,"_self");
     };
 
     const validateField = (name, value) => {
@@ -68,6 +75,10 @@ const LoginPage = () => {
                 <p className="signup-text">
                     Don't have an account? <Link to="/signup">Sign up</Link>
                 </p>
+                <button onClick={handleGoogleLogin} className="google-login-button">
+                <FcGoogle size={20}/>
+                    Login with Google
+                </button>
             </div>
         </div>
     );

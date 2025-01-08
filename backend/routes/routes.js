@@ -7,18 +7,18 @@ const {
     getForm,
     deleteForm,
     getForms,
-} = require('./controllers/formController');
+} = require('../controllers/formController');
 const {
     getUserProfile,
     updateUserProfile,
     registerUser,
     loginUser,
     logoutUser
-} = require('./controllers/userController');
-const { submitForm, getSubmissions } = require('./controllers/submissionController');
-const { authenticate } = require('./middlewares/authMiddleware');
-const { decodeToken } = require('./middlewares/tokenDecodeMiddleware');
-const verifyOtp = require('./controllers/otpController');
+} = require('../controllers/userController');
+const { submitForm, getSubmissions } = require('../controllers/submissionController');
+const { authenticate } = require('../middlewares/authMiddleware');
+const { decodeToken } = require('../middlewares/tokenDecodeMiddleware');
+const verifyOtp = require('../controllers/otpController');
 
 // Form routes
 router.post('/form', authenticate, createForm);

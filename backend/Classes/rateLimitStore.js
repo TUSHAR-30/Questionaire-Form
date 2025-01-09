@@ -7,6 +7,9 @@ class CustomStore {
   }
 
   async increment(key) {
+    console.log("logging xforwarded for header",req.headers['x-forwarded-for'])
+    console.log("logging req.ip",req.ip);
+
     const currentTime = Date.now();
     let entry = this.hits.get(key);
 
@@ -23,6 +26,8 @@ class CustomStore {
   }
 
   async decrement(key) {
+    console.log("logging xforwarded for header",req.headers['x-forwarded-for']);
+    console.log("logging req.ip",req.ip);
     const entry = this.hits.get(key);
 
     if (entry && entry.count > 0) {

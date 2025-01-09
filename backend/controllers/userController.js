@@ -80,7 +80,7 @@ exports.loginUser = async (req, res) => {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: process.env.LOGIN_EXPIRES });
 
     if (limiter.resetKey) {
-      await limiter.resetKey(req.ip);  // Reset the rate limit for the IP
+      await limiter.resetKey(req.ip,req);  // Reset the rate limit for the IP
     } else {
       console.log(`No rate limit entry for IP: ${req.ip}`);
     }

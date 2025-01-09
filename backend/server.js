@@ -18,6 +18,8 @@ mongoose.connect(process.env.CONN_STR, { useNewUrlParser: true, useUnifiedTopolo
 const app = express();
 app.use(morgan("dev"));
 
+app.set('trust proxy', true)
+
 // CORS setup
 app.use(cors({
   origin: [process.env.FRONTEND_URL_LOCAL, process.env.FRONTEND_URL_DEPLOYED],

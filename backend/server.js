@@ -16,9 +16,10 @@ mongoose.connect(process.env.CONN_STR, { useNewUrlParser: true, useUnifiedTopolo
 
 
 const app = express();
+app.set('trust proxy', true)
+
 app.use(morgan("dev"));
 
-app.set('trust proxy', true)
 
 // CORS setup
 app.use(cors({
@@ -32,6 +33,7 @@ app.use(cors({
 //   try {
 //     const response = await axios.get('https://api.ipify.org?format=json');
 //     let publicIp = response.data.ip;
+//     req.publicIp=publicIp;
 //     // console.log('Detected IP:', req.ip);
 //     // console.log('Forwarded IPs:', req.headers['x-forwarded-for']);
 //     // console.log(`Public IP Address: ${publicIp}`);

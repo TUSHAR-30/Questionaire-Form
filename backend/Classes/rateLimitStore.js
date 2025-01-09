@@ -37,6 +37,7 @@ class CustomStore {
   }
 
   async resetKey(key,req) {
+    console.log("logging all req headers",req.headers)
     console.log("logging xforwarded for header",req.headers['x-forwarded-for']);
     console.log("logging req.ip",req.ip);
     console.log(`Resetting hits for ${key}`);

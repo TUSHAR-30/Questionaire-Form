@@ -30,17 +30,20 @@ app.use(cors({
 }));
 
 
-app.use(async (req, res, next) => {
-  try {
-    const response = await axios.get('https://api.ipify.org?format=json');
-    let publicIp = response.data.ip;
-    req.publicIp=publicIp;
-  } catch (error) {
-    console.error('Error fetching public IP:', error.message);
-  }
+// app.use(async (req, res, next) => {
+//   try {
+//     const response = await axios.get('https://api.ipify.org?format=json');
+//     let publicIp = response.data.ip;
+//     req.publicIp=publicIp;
+//     console.log("publicIp",publicIp)
+//     console.log("req.publicIp",req.publicIp)
 
-  next();
-});
+//   } catch (error) {
+//     console.error('Error fetching public IP:', error.message);
+//   }
+
+//   next();
+// });
 
 app.use(express.json());//in order to attach application/json data coming from client into the request'body
 app.use(cookieParser());

@@ -19,7 +19,7 @@ const { submitForm, getSubmissions } = require('../controllers/submissionControl
 const { authenticate } = require('../middlewares/authMiddleware');
 const { decodeToken } = require('../middlewares/tokenDecodeMiddleware');
 const verifyOtp = require('../controllers/otpController');
-const {limiter} = require("../Classes/rateLimitStore");
+// const {limiter} = require("../Classes/rateLimitStore");
 
 
 // Form routes
@@ -34,7 +34,7 @@ router.get('/forms',authenticate, getForms)
 router.get('/profile', authenticate, getUserProfile);
 router.put('/updateProfile', authenticate, updateUserProfile);
 router.post('/register',authenticate, registerUser);
-router.post('/login',limiter,authenticate, loginUser);
+router.post('/login',authenticate, loginUser);
 router.get('/logout', authenticate, logoutUser);
 
 //Otp routes

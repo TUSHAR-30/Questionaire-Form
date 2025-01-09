@@ -16,7 +16,8 @@ mongoose.connect(process.env.CONN_STR, { useNewUrlParser: true, useUnifiedTopolo
 
 
 const app = express();
-app.set('trust proxy', true)
+app.set('trust proxy', 1);
+// app.set('trust proxy',true)
 
 app.use(morgan("dev"));
 

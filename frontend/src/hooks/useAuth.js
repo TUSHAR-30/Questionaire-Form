@@ -23,7 +23,9 @@ const useAuth = () => {
                 alert("Error during Login");
             } else if (error.status === 403) {
                 alert("You are already logged in");
-            } else {
+            } else if (error.status === 429) {
+                return {invalidSession:true};
+            }  else {
                 alert("An unexpected error occurred");
             }
         } finally {

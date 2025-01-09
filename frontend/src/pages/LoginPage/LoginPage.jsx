@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SERVER_URL } from '../../../config';
 import useAuthForm from '../../hooks/useAuthForm';
@@ -16,13 +16,17 @@ const LoginPage = () => {
 
     const { loading, login } = useAuth();
 
-    const handleSubmit = (e) => {
+    const [isInvalidSession, setisInvalidSession] = useState(false);
+
+
+    const handleSubmit = async(e) => {
         e.preventDefault();
-        login(formData);
+        const loginresult = await login(formData);
+        if (loginresult && loginresult.invalidSession) setisInvalidSession(true)
     };
 
     const handleGoogleLogin = () => {
-        window.open(`${SERVER_URL}/auth/google/callback`,"_self");
+        window.open(`${SERVER_URL}/auth/google/callback`, "_self");
     };
 
     const validateField = (name, value) => {
@@ -39,7 +43,7 @@ const LoginPage = () => {
     return (
         <div className="login-page">
             {loading && <LoadingSpinner />}
-            <div className="login-container">
+            {!isInvalidSession ? (<div className="login-container">
                 <h2>Login</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
@@ -76,10 +80,13 @@ const LoginPage = () => {
                     Don't have an account? <Link to="/signup">Sign up</Link>
                 </p>
                 <button onClick={handleGoogleLogin} className="google-login-button">
-                <FcGoogle size={20}/>
+                    <FcGoogle size={20} />
                     Login with Google
                 </button>
-            </div>
+            </div>)
+                :
+                (<div className='invalid-session'>We have already received too many login requests with wrong credentials from this IP address. Please try after some time.</div>)
+            }
         </div>
     );
 };

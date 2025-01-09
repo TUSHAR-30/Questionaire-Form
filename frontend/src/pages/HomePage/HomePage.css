@@ -22,6 +22,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-inline: 8px;
+
     /* animation: fadeIn 0.5s ease-in; */
   }
   
@@ -116,7 +118,7 @@ body {
   /* Responsiveness */
   @media (max-width: 768px) {
     .title {
-      font-size: 2.5rem;
+      font-size: 2rem;
     }
   
     .subtitle {
@@ -126,6 +128,12 @@ body {
     .cta-button {
       font-size: 0.9rem;
       padding: 8px 16px;
+    }
+  }
+
+  @media (max-width: 425px) {
+    .title {
+      font-size: 1.5rem;
     }
   }
   

@@ -16,7 +16,7 @@ mongoose.connect(process.env.CONN_STR, { useNewUrlParser: true, useUnifiedTopolo
 
 
 const app = express();
-app.set('trust proxy', 1);
+// app.set('trust proxy', 1);
 // app.set('trust proxy',true)
 
 app.use(morgan("dev"));
@@ -30,20 +30,17 @@ app.use(cors({
 }));
 
 
-// app.use(async (req, res, next) => {
-//   try {
-//     const response = await axios.get('https://api.ipify.org?format=json');
-//     let publicIp = response.data.ip;
-//     req.publicIp=publicIp;
-//     // console.log('Detected IP:', req.ip);
-//     // console.log('Forwarded IPs:', req.headers['x-forwarded-for']);
-//     // console.log(`Public IP Address: ${publicIp}`);
-//   } catch (error) {
-//     console.error('Error fetching public IP:', error.message);
-//   }
+app.use(async (req, res, next) => {
+  try {
+    const response = await axios.get('https://api.ipify.org?format=json');
+    let publicIp = response.data.ip;
+    req.publicIp=publicIp;
+  } catch (error) {
+    console.error('Error fetching public IP:', error.message);
+  }
 
-//   next();
-// });
+  next();
+});
 
 app.use(express.json());//in order to attach application/json data coming from client into the request'body
 app.use(cookieParser());

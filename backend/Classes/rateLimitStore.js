@@ -36,10 +36,7 @@ class CustomStore {
     }
   }
 
-  async resetKey(key,req) {
-    console.log("logging all req headers",req.headers)
-    console.log("logging xforwarded for header",req.headers['x-forwarded-for']);
-    console.log("logging req.ip",req.ip);
+  async resetKey(key) {
     console.log(`Resetting hits for ${key}`);
     this.hits.delete(key); // Remove the entry for the IP
   }
@@ -55,14 +52,14 @@ let limiter = rateLimit({
   max: 20,
   windowMs: 5 * 60 * 1000,
   message: "We have already received too many login requests with wrong credentials from this IP address . Please try after some time.",
-  // There have been several failed attempts to sign in from this account or IP address. Please wait a while and try again later.
-  // keyGenerator: (req) => {
-  //   console.log(`Key Generator using req.ip: ${publicIp}`);
-  //   return publicIp;
-  // },
+  keyGenerator: (req) => {
+    // Use the public IP stored in the request object
+    return req.publicIp;  // This is used as the key for rate limiting
+  },
+
   store: new CustomStore(),
 });
 
-module.exports={ limiter, CustomStore };
+module.exports = { limiter, CustomStore };
 
 

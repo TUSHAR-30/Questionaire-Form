@@ -4,33 +4,59 @@ const Submission = require('../Models/submission');
 exports.submitForm = async (req, res) => {
   const { formId, userId, responses, deviceInfo } = req.body;
 
+  console.log(formId,userId)
+
   // Validate required fields
-  if (!formId || !responses || !Array.isArray(responses)) {
-    return res.status(400).json({ error: 'Invalid or missing data.' });
+  if (!formId || !responses || !userId || !Array.isArray(responses)) {
+    return res.status(400).json({ error: 'missing data.' });
   }
 
+  const isExistingUserEmailWithThisForm=await Submission.findOne({ userId: userId , formId:formId })
+  if(isExistingUserEmailWithThisForm){
+    return res.status(401).json({ error: 'Form is already submitted with this given email.Change email' });
+  }
+
+
   try {
-    const newSubmission = new Submission({
+    let newSubmission = new Submission({
       formId: formId,
       userId: userId,
-      submissionId: userId ? userId : `anon-${Date.now()}`,
       responses: responses,
-      ipAddress: req.publicIp || req.headers['x-forwarded-for'].split(',')[0] || req.connection.remoteAddress || null,
+      ipAddress: req.publicIp || req.connection.remoteAddress || null,
       deviceInfo
     });
 
-    const existingSubmission = await Submission.findOne({ submissionId: newSubmission.submissionId });
-    let submission;
-    if (existingSubmission) {
-      submission= await existingSubmission.updateOne({ $set: { responses: newSubmission.responses } });
-    } else {
-      submission = await newSubmission.save();
-    }
+   
+    newSubmission = await newSubmission.save();
 
-    return res.status(201).json({
-      message: 'Form submission saved successfully!',
-      submission: submission,
-    });
+    // return res.status(201).json({
+    //   message: 'Form submission saved successfully!',
+    //   submission: newSubmission,
+    // });
+
+    // Send Thank You page HTML
+    return res.status(201).send(`
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Thank You</title>
+        <style>
+          body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+          h1 { color: #4CAF50; }
+          p { font-size: 18px; color: #555; }
+        </style>
+      </head>
+      <body>
+        <h1>Thank You!</h1>
+        <p>Your form has been successfully submitted. We appreciate your response.</p>
+        <p>If you have any questions, feel free to contact us.</p>
+      </body>
+      </html>
+    `);
+
+
   } catch (err) {
     console.log(err)
     res.status(500).json({ error: err.message });

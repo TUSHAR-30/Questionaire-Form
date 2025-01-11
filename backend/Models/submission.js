@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
 
 const submissionSchema = new mongoose.Schema({
-  formId: { type: mongoose.Schema.Types.ObjectId, ref: 'Form', required: true },
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Optional: For logged-in users
-  submissionId: { type: String }, // To identify non-logged-in submissions
+  formId: { type: String },
+  userId: { type: String },
   ipAddress:{ type: String },
   deviceInfo: {
     userAgent: { type: String }, // Browser's User-Agent string

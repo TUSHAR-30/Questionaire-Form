@@ -1,24 +1,25 @@
 const express = require('express');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-require('../config/passport'); // Passport configuration file
-const router = express.Router();
+require('../config/authpassport'); // Passport configuration file
+const authRoutes = express.Router();
 
 
 // Google OAuth routes
-router.get('/google',
-  passport.authenticate('google', {
+authRoutes.get('/google',
+  passport.authenticate('google-auth', {
     scope: ['profile', 'email'],
-    session: false
+    prompt: 'select_account', // Forces Google to show account selection screen
   }));
 
-router.get('/google/callback',
-  passport.authenticate('google', {
+authRoutes.get('/google/callback', 
+  passport.authenticate('google-auth', {
     failureRedirect: `${process.env.FRONTEND_URL_DEPLOYED}/login`,
-    prompt: 'select_account', // Forces Google to show account selection screen
     session: false
   }),
   (req, res) => {
+
+    console.log(req.user);
     // Successful authentication, generate JWT
     const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, { expiresIn: process.env.LOGIN_EXPIRES });
 
@@ -36,4 +37,12 @@ router.get('/google/callback',
   }
 );
 
-module.exports = router;
+
+module.exports = { authRoutes };
+
+
+
+
+
+
+

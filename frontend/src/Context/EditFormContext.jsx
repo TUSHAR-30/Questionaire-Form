@@ -19,6 +19,7 @@ export function EditFormProvider({ children }) {
     const [updatedFormDescription, setUpdatedFormDescription] = useState('');
     const { formId } = useParams();
     const [formAuthorId, setFormAuthorId] = useState(null);
+    const [formSubmissionUserEmail, setFormSubmissionUserEmail] = useState(null);
 
     const handleAddQuestion = () => {
         setQuestions([
@@ -58,6 +59,23 @@ export function EditFormProvider({ children }) {
                 setLoading(false);
             }
         }
+        async function fetchFormSubmissionUserEmail() {
+            setLoading(true)
+            try {
+                const response = await axios.get(`${SERVER_URL}/formSubmissionUserEmail`, {
+                    withCredentials: true,
+                });
+                const data = response.data;
+                console.log(data);
+                setFormSubmissionUserEmail(data.formSubmissionUserEmail)
+            } catch (error) {
+                console.log('Error fetching profile:', error);
+            } finally {
+                setLoading(false); // Loading complete
+            }
+        }
+
+        fetchFormSubmissionUserEmail();
 
         getForm();
     }, [formId]);
@@ -85,6 +103,7 @@ export function EditFormProvider({ children }) {
                 updatedFormDescription,
                 formId,
                 formAuthorId,
+                formSubmissionUserEmail,
                 setQuestions,
                 setUpdatedQuestions,
                 setFormTitle,
@@ -100,3 +119,5 @@ export function EditFormProvider({ children }) {
 }
 
 export default EditFormContext;
+
+

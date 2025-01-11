@@ -7,8 +7,10 @@ const cors = require('cors');
 const morgan = require('morgan');
 const passport = require('passport');
 const axios = require('axios');
+const jwt = require('jsonwebtoken');
 const routes = require('./routes/routes');
-const authRoutes = require('./routes/authRoutes'); // New route for Google Auth
+const { authRoutes } = require('./routes/authRoutes'); // New route for Google Auth
+const { selectAccountRoutes } = require('./routes/selectAccountRoutes');
 
 mongoose.connect(process.env.CONN_STR, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
@@ -49,11 +51,30 @@ app.use(express.json());//in order to attach application/json data coming from c
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));  //in order to attach application/x-www-form-urlencoded data coming from client into the request'body (This middleware is added just for burpsuite testing)
 
-app.use(passport.initialize());
+// app.use(passport.initialize());
+
 
 // Use routes
-app.use('/api/auth', authRoutes); 
-app.use('/api', routes); 
+app.use('/api/formSubmissionUserEmail', async(req, res, next) => {
+  const token = req.cookies.formToken || req.headers.authorization?.split(' ')[1];
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      if (decoded) {
+        return res.status(200).json({ formSubmissionUserEmail:decoded.email });
+      }
+    } catch (err) {
+      return res.status(401).json({ message: 'Invalid or expired token.' });
+    }
+  }
+  else { 
+    return res.status(401).json({ message: 'Invalid or expired token.' });
+  }
+
+})
+app.use('/api/auth', authRoutes);
+app.use('/api/selectAccount', selectAccountRoutes);
+app.use('/api', routes);
 
 // Start server
 const port = process.env.PORT || 8000;

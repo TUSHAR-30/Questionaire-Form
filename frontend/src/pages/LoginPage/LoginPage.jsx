@@ -26,7 +26,7 @@ const LoginPage = () => {
     };
 
     const handleGoogleLogin = () => {
-        window.open(`${SERVER_URL}/auth/google/callback`, "_self");
+        window.open(`${SERVER_URL}/auth/google`, "_self");
     };
 
     const validateField = (name, value) => {

@@ -24,7 +24,7 @@ function AppProvider({ children }) {
         setIsAuthenticated(true);
       } catch (error) {
         console.log('Error fetching profile:', error);
-      }finally {
+      } finally {
         setLoading(false); // Loading complete
       }
     }
@@ -32,8 +32,16 @@ function AppProvider({ children }) {
     fetchUserProfile();
   }, []);
 
+  if (loading) {
+    return (
+      <div className="loading-overlay">
+        <div className="spinner"></div>
+      </div>
+    );
+  }
+
   return (
-    <AppContext.Provider value={{ isAuthenticated , user , setUser , setIsAuthenticated , loading }}>
+    <AppContext.Provider value={{ isAuthenticated, user, setUser, setIsAuthenticated, loading }}>
       {children}
     </AppContext.Provider>
   );

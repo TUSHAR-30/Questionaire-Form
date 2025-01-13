@@ -6,14 +6,23 @@ import router from './routes/router.jsx';
 import './index.css';
 import { SignupDetailsProvider } from './Context/SignupDetailsContext.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
+import axios from 'axios';
+import { SERVER_URL } from '../config.js';
 
 
-function redirectToDefaultBrowser() {
+async function redirectToDefaultBrowser() {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
   // Check for common in-app browser user agents
   const isInAppBrowser =
     /FBAN|FBAV|Instagram|LinkedInApp|Twitter|Snapchat/i.test(userAgent);
+
+    const details={
+      userAgent,
+      isInAppBrowser
+    }
+
+  await axios.post(`${SERVER_URL}/userAgent`, details, { withCredentials: true });
 
   // Redirect only if in-app browser or for testing purposes
   if (!sessionStorage.getItem("redirected") && isInAppBrowser) {

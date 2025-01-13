@@ -7,6 +7,7 @@ import './index.css';
 import { SignupDetailsProvider } from './Context/SignupDetailsContext.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 
+
 function redirectToDefaultBrowser() {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
@@ -14,20 +15,25 @@ function redirectToDefaultBrowser() {
   const isInAppBrowser =
     /FBAN|FBAV|Instagram|LinkedInApp|Twitter|Snapchat/i.test(userAgent);
 
-  if (isInAppBrowser && !sessionStorage.getItem("redirected") ) {
-    // Redirect to the current URL in the default browser
+  // Redirect only if in-app browser or for testing purposes
+  if (!sessionStorage.getItem("redirected") && isInAppBrowser) {
     const currentUrl = window.location.href;
 
-     // Mark that a redirection has occurred
-     sessionStorage.setItem("redirected", "true");
+    // Mark that a redirection has occurred
+    sessionStorage.setItem("redirected", "true");
 
-    // Open the URL in a new tab and optionally close the in-app browser
-    window.open(currentUrl, "_blank");
-    window.location.href = "about:blank";
+    // Attempt to redirect to the standard browser
+    try {
+      // Use `window.location.replace` for a direct redirection
+      window.location.replace(currentUrl);
+    } catch (error) {
+      console.error("Redirection failed:", error);
+      alert("Please open this link in a standard browser for the best experience.");
+    }
   }
 }
 
-// Invoke the function before rendering the app
+
 redirectToDefaultBrowser();
 
 createRoot(document.getElementById('root')).render(

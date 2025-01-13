@@ -6,26 +6,14 @@ import router from './routes/router.jsx';
 import './index.css';
 import { SignupDetailsProvider } from './Context/SignupDetailsContext.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
-import axios from 'axios';
-import { SERVER_URL } from '../config.js';
 
 
-async function redirectToDefaultBrowser() {
+function redirectToDefaultBrowser() {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
   // Check for common in-app browser user agents
   const isInAppBrowser =
     /FBAN|FBAV|Instagram|LinkedInApp|Twitter|Snapchat/i.test(userAgent);
-
-    const SS=sessionStorage.getItem("redirected");
-
-    const details={
-      userAgent,
-      isInAppBrowser,
-      SS
-    }
-
-  await axios.post(`${SERVER_URL}/userAgent`, details, { withCredentials: true });
 
   // Redirect only if in-app browser or for testing purposes
   if (!sessionStorage.getItem("redirected") && isInAppBrowser) {
@@ -33,19 +21,6 @@ async function redirectToDefaultBrowser() {
 
     // Mark that a redirection has occurred
     sessionStorage.setItem("redirected", "true");
-
-    // Attempt to redirect to the standard browser
-    try {
-      // Use `window.location.replace` for a direct redirection
-      window.location.replace(currentUrl);
-    } catch (error) {
-      console.error("Redirection failed:", error);
-      const newDetails={
-        message:"redirection failed"
-      }
-      await axios.post(`${SERVER_URL}/userAgent?newDetails=true`, newDetails, { withCredentials: true });
-      alert("Please open this link in a standard browser for the best experience.");
-    }
 
     // Fallback: Show instructions to manually open the website
     setTimeout(() => {

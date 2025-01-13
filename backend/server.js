@@ -89,11 +89,6 @@ app.use('/api/checkDuplicateFormSubmissionEmail/:formId/:formSubmissionUserEmail
     return res.status(200).json({ isDuplicateRequest:false });
   }
 })
-app.use('/api/userAgent', (req,res,next)=>{
-
-  console.log(req.body);
-  return res.status(200).json({ message: 'Test' });
-});
 app.use('/api/auth', authRoutes);
 app.use('/api/selectAccount', selectAccountRoutes);
 app.use('/api', routes);

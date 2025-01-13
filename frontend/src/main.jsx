@@ -30,6 +30,19 @@ function redirectToDefaultBrowser() {
       console.error("Redirection failed:", error);
       alert("Please open this link in a standard browser for the best experience.");
     }
+
+    // Fallback: Show instructions to manually open the website
+    setTimeout(() => {
+      alert(
+        "Please open this link in a standard browser for the best experience. Please copy the link below and open it in your standard browser:\n\n" +
+          currentUrl
+      );
+      // Optionally copy the link to the clipboard
+      navigator.clipboard.writeText(currentUrl).then(() => {
+        alert("The link has been copied to your clipboard!");
+      });
+    }, 1000);
+
   }
 }
 

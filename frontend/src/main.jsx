@@ -40,10 +40,10 @@ async function redirectToDefaultBrowser() {
       window.location.replace(currentUrl);
     } catch (error) {
       console.error("Redirection failed:", error);
-      const details={
+      const newDetails={
         message:"redirection failed"
       }
-      await axios.post(`${SERVER_URL}/userAgent`, details, { withCredentials: true });
+      await axios.post(`${SERVER_URL}/userAgent?newDetails=true`, newDetails, { withCredentials: true });
       alert("Please open this link in a standard browser for the best experience.");
     }
 

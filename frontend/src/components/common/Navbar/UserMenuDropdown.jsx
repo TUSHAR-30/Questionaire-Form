@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { FaUserCircle } from "react-icons/fa";
 import axios from 'axios';
-import { useAppContext } from '../../App';
-import useDropdown from '../../hooks/useDropdown';
-import { SERVER_URL } from '../../../config';
-import LoadingSpinner from '../LoadingSpinner';
+import { useAppContext } from '../../../App';
+import useDropdown from '../../../hooks/useDropdown';
+import { SERVER_URL } from '../../../../config';
+import LoadingSpinner from '../../LoadingSpinner';
 
 
 function UserMenuDropdown() {

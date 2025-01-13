@@ -11,6 +11,7 @@ const jwt = require('jsonwebtoken');
 const routes = require('./routes/routes');
 const { authRoutes } = require('./routes/authRoutes'); // New route for Google Auth
 const { selectAccountRoutes } = require('./routes/selectAccountRoutes');
+const Submission = require('./Models/submission');
 
 mongoose.connect(process.env.CONN_STR, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
@@ -64,13 +65,29 @@ app.use('/api/formSubmissionUserEmail', async(req, res, next) => {
         return res.status(200).json({ formSubmissionUserEmail:decoded.email });
       }
     } catch (err) {
-      return res.status(401).json({ message: 'Invalid or expired token.' });
+      return res.status(201).json({ message: 'Invalid or expired token.' });
     }
   }
   else { 
-    return res.status(401).json({ message: 'Invalid or expired token.' });
+    return res.status(202).json({ message: 'Invalid or expired token.' });
   }
 
+})
+app.use('/api/checkDuplicateFormSubmissionEmail/:formId/:formSubmissionUserEmail',async(req, res, next) => {
+  const { formId, formSubmissionUserEmail } = req.params;
+
+  // Validate required fields
+  if (!formId || !formSubmissionUserEmail ) {
+    return res.status(400).json({ error: 'missing data.' });
+  }
+
+  const isExistingUserEmailWithThisForm=await Submission.findOne({ userId: formSubmissionUserEmail , formId:formId })
+  if(isExistingUserEmailWithThisForm){
+    return res.status(200).json({ isDuplicateRequest:true });
+  }
+  else{
+    return res.status(200).json({ isDuplicateRequest:false });
+  }
 })
 app.use('/api/auth', authRoutes);
 app.use('/api/selectAccount', selectAccountRoutes);

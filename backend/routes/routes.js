@@ -7,6 +7,7 @@ const {
     getForm,
     deleteForm,
     getForms,
+    getFormAuthorId,
 } = require('../controllers/formController');
 const {
     getUserProfile,
@@ -26,6 +27,7 @@ const verifyOtp = require('../controllers/otpController');
 router.post('/form', authenticate, createForm);
 router.put('/form/:formId', authenticate, updateForm);
 router.put('/form/deploy/:formId', authenticate, deployForm);
+router.get('/form/formAuthorId/:formId',getFormAuthorId)
 router.get('/form/:formId', getForm);
 router.delete('/form/:formId', authenticate, deleteForm);
 router.get('/forms',authenticate, getForms)

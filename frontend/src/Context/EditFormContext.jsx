@@ -1,25 +1,32 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useEffect, useRef, useState } from 'react';
 import transformDataToFrontendFormat from '../utils/transformDataToFrontendFormat';
 import axios from 'axios';
 import { SERVER_URL } from '../../config';
 import { useParams } from 'react-router-dom';
 import Error404Page from '../pages/Error404Page/Error404Page';
+import { useAppContext } from '../App';
 
 const EditFormContext = createContext();
 
-// Create the provider component
 export function EditFormProvider({ children }) {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false); // State for error handling
+    const { user } = useAppContext();
+    const { formId } = useParams();
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
     const [formTitle, setFormTitle] = useState('');
     const [formDescription, setFormDescription] = useState('');
     const [questions, setQuestions] = useState([]);
     const [updatedQuestions, setUpdatedQuestions] = useState([]);
     const [updatedFormTitle, setUpdatedFormTitle] = useState('');
     const [updatedFormDescription, setUpdatedFormDescription] = useState('');
-    const { formId } = useParams();
     const [formAuthorId, setFormAuthorId] = useState(null);
     const [formSubmissionUserEmail, setFormSubmissionUserEmail] = useState(null);
+    const [continueWithSelectedEmail, setContinueWithSelectedEmail] = useState(false);
+    const [isDuplicateRequestForFormSubmissionEmail, setIsDuplicateRequestForFormSubmissionEmail] = useState(null)
+
+    const handleContinueBtnClick = () => {
+        setContinueWithSelectedEmail(true);
+    }
 
     const handleAddQuestion = () => {
         setQuestions([
@@ -36,49 +43,77 @@ export function EditFormProvider({ children }) {
         ]);
     };
 
+
     useEffect(() => {
-        async function getForm() {
+        async function fetchFormData() {
+            let duplicateResponse, formResponse, questions;
             setLoading(true);
             try {
-                const response = await axios.get(`${SERVER_URL}/form/${formId}`, { withCredentials: true });
-                const questions = transformDataToFrontendFormat(response.data.questions);
-                console.log(questions)
-                const formAuthorId = response.data.userId;
+                const [authorResponse, emailResponse] = await Promise.all([
+                    axios.get(`${SERVER_URL}/form/formAuthorId/${formId}`, { withCredentials: true }),
+                    axios.get(`${SERVER_URL}/formSubmissionUserEmail`, { withCredentials: true }),
+                ]);
 
-                setFormAuthorId(formAuthorId);
-                setQuestions(JSON.parse(JSON.stringify(questions)));
-                setUpdatedQuestions(JSON.parse(JSON.stringify(questions)));
-                setFormTitle(response.data.title);
-                setFormDescription(response.data.description);
-                setUpdatedFormTitle(response.data.title);
-                setUpdatedFormDescription(response.data.description);
+                if (emailResponse.data.formSubmissionUserEmail) {
+                    duplicateResponse = await axios.get(
+                        `${SERVER_URL}/checkDuplicateFormSubmissionEmail/${formId}/${emailResponse.data.formSubmissionUserEmail}`,
+                        { withCredentials: true }
+                    );
+                }
+
+                if (continueWithSelectedEmail || (user._id && authorResponse.data === user?._id)) {
+                    formResponse = await axios.get(`${SERVER_URL}/form/${formId}`, { withCredentials: true });
+                    questions = transformDataToFrontendFormat(formResponse.data.questions);
+                }
+
+                setFormAuthorId(authorResponse.data);
+                if (emailResponse.status == 200) {
+                    setFormSubmissionUserEmail(emailResponse.data.formSubmissionUserEmail);
+                }
+                if (emailResponse.data.formSubmissionUserEmail) {
+                    setIsDuplicateRequestForFormSubmissionEmail(duplicateResponse.data.isDuplicateRequest);
+                }
+                if (continueWithSelectedEmail || (user._id && authorResponse.data === user?._id)) {
+                    setQuestions(questions);
+                    setUpdatedQuestions(questions);
+                    setFormTitle(formResponse.data.title);
+                    setFormDescription(formResponse.data.description);
+                    setUpdatedFormTitle(formResponse.data.title);
+                    setUpdatedFormDescription(formResponse.data.description);
+                }
+
             } catch (err) {
-                console.error(err);
-                setError(true); // Set error state if an error occurs
+                console.error('Error during data fetching:', err);
+                setError(true);
             } finally {
                 setLoading(false);
             }
         }
-        async function fetchFormSubmissionUserEmail() {
-            setLoading(true)
-            try {
-                const response = await axios.get(`${SERVER_URL}/formSubmissionUserEmail`, {
-                    withCredentials: true,
-                });
-                const data = response.data;
-                console.log(data);
-                setFormSubmissionUserEmail(data.formSubmissionUserEmail)
-            } catch (error) {
-                console.log('Error fetching profile:', error);
-            } finally {
-                setLoading(false); // Loading complete
-            }
-        }
 
-        fetchFormSubmissionUserEmail();
+        fetchFormData();
+    }, [formId, user, continueWithSelectedEmail]);
 
-        getForm();
-    }, [formId]);
+    //Code for debugging
+
+    // const initialRef = useRef(false)
+    // console.log("editformcontext")
+    // if (initialRef.current) {
+    //     console.log('Loading state updated:', loading);
+    //     console.log('Form Author ID updated:', formAuthorId);
+    //     console.log('Form Submission User Email updated:', formSubmissionUserEmail);
+    //     console.log('Continue With Selected Email updated:', continueWithSelectedEmail);
+    //     console.log('Duplicate Request for Form Submission Email updated:', isDuplicateRequestForFormSubmissionEmail);
+    //     console.log("Questions",questions);
+    //     console.log("Questions",updatedQuestions);
+    //     console.log("Form Title",formTitle);
+    //     console.log("Updated Form Title",updatedFormTitle);
+    //     console.log("form description",formDescription);
+    //     console.log("Updated Form description",updatedFormDescription);
+    // }
+    // useEffect(() => {
+    //     initialRef.current = true
+    // }, [])
+
 
     if (loading) {
         return (
@@ -104,13 +139,16 @@ export function EditFormProvider({ children }) {
                 formId,
                 formAuthorId,
                 formSubmissionUserEmail,
+                continueWithSelectedEmail,
+                isDuplicateRequestForFormSubmissionEmail,
                 setQuestions,
                 setUpdatedQuestions,
                 setFormTitle,
                 setUpdatedFormTitle,
                 setFormDescription,
                 setUpdatedFormDescription,
-                handleAddQuestion
+                handleAddQuestion,
+                handleContinueBtnClick
             }}
         >
             {children}
@@ -118,6 +156,5 @@ export function EditFormProvider({ children }) {
     );
 }
 
+
 export default EditFormContext;
-
-

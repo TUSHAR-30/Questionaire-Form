@@ -9,7 +9,7 @@ export const useAppContext = () => useContext(AppContext);
 function AppProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState({});
-  const [loading, setLoading] = useState(true); // New loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
 
@@ -46,6 +46,7 @@ function AppProvider({ children }) {
     </AppContext.Provider>
   );
 }
+AppProvider.whyDidYouRender= true;
 
 export default AppProvider;
 

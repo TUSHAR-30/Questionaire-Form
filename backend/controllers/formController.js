@@ -133,6 +133,21 @@ exports.deployForm = async (req, res) => {
   }
 };
 
+// Get formAuthorId
+exports.getFormAuthorId = async (req, res) => {
+  try {
+    let form = await Form.findById(req.params.formId);
+    if (!form) {
+      return res.status(404).json({ message: `Form with ID ${req.params.formId} not found in your account` });
+    }
+    const formAuthorId = form.userId
+    res.status(200).json(formAuthorId);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
+
+
 // Get form
 exports.getForm = async (req, res) => {
   try {

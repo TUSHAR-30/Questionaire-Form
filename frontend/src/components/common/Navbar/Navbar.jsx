@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAppContext } from "../../App";
+import { useAppContext } from "../../../App";
 import UserMenuDropdown from "./UserMenuDropdown";
 import "./Navbar.css";
 

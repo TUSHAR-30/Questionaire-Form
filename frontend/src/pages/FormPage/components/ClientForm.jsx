@@ -1,20 +1,14 @@
 import React, { useContext, useState } from 'react'
-import EditFormContext from '../../Context/EditFormContext';
+import EditFormContext from '../../../Context/EditFormContext';
 import axios from 'axios';
-import { SERVER_URL } from '../../../config';
-import { FcGoogle } from "react-icons/fc";
-import FormMetaData from '../../components/FormMetaData';
-import PreviewMode from '../../components/PreviewMode/PreviewMode';
-import LoadingSpinner from '../../components/LoadingSpinner';
+import { SERVER_URL } from '../../../../config';
+import FormMetaData from '../../../components/FormMetaData';
+import PreviewMode from '../../../components/PreviewMode/PreviewMode';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 
-function ClientView() {
+function ClientForm() {
     const { questions, formTitle, formDescription, formId, formSubmissionUserEmail, setFormTitle, setFormDescription } = useContext(EditFormContext)
     const [loading, setLoading] = useState(false)
-
-
-    const handleSelectAccount = () => {
-        window.open(`${SERVER_URL}/selectAccount/google?accountSelectionOnly=true&formId=${formId}`, "_self");
-    }
 
     async function handleSubmitForm() {
         const deviceInfo = {
@@ -51,49 +45,16 @@ function ClientView() {
             setLoading(false)
         }
     }
+
     return (
         <>
-            {loading && <LoadingSpinner />}
-
             <FormMetaData formTitle={formTitle} setFormTitle={setFormTitle} formDescription={formDescription} setFormDescription={setFormDescription} isPreview={true} />
 
             <PreviewMode isDragEnabled={true} />
 
-            <div className='formSubmit-container'>
-                {!formSubmissionUserEmail && (
-                    <p>Select your Google account in order to submit the form</p>
-                )}
-                {formSubmissionUserEmail && (
-                    <p>You are submitting the form with this email id: {formSubmissionUserEmail}</p>
-                )}
-                <div className='formSubmit-btns'>
-                    <button onClick={handleSelectAccount} className="google-login-button">
-                        <FcGoogle size={20} />
-                        {formSubmissionUserEmail ? "Change Email" : " Select Account"}
-                    </button>
-                    {formSubmissionUserEmail && (
-                        <button className='formSubmit-btn' onClick={handleSubmitForm}>Submit Form</button>
-                    )}
-                </div>
-            </div>
+            <button className='formSubmit-btn' onClick={handleSubmitForm}>Submit Form</button>
         </>
     )
 }
 
-export default ClientView
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export default ClientForm

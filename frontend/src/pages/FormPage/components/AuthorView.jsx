@@ -1,19 +1,20 @@
-import React, { useContext, useState } from 'react'
-import EditFormContext from '../../Context/EditFormContext';
-import transformDataToBackendFormat from '../../utils/transformDataToBackendFormat';
+import React, { useContext , useState } from 'react'
+import EditFormContext from '../../../Context/EditFormContext';
+import transformDataToBackendFormat from '../../../utils/transformDataToBackendFormat';
 import axios from 'axios';
-import { SERVER_URL } from '../../../config';
-import ModeToggle from '../../components/ModeToggle';
-import FormMetaData from '../../components/FormMetaData';
-import CreateMode from '../../components/CreateMode/CreateMode';
-import PreviewMode from '../../components/PreviewMode/PreviewMode';
-import LoadingSpinner from '../../components/LoadingSpinner';
+import { SERVER_URL } from '../../../../config';
+import ModeToggle from '../../../components/ModeToggle';
+import FormMetaData from '../../../components/FormMetaData';
+import CreateMode from '../../../components/CreateMode/CreateMode';
+import PreviewMode from '../../../components/PreviewMode/PreviewMode';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 
 function AuthorView() {
     const { questions, updatedQuestions, formTitle, updatedFormTitle, formDescription, updatedFormDescription, formId, setQuestions, setUpdatedQuestions, setFormTitle, setUpdatedFormTitle, setFormDescription, setUpdatedFormDescription } = useContext(EditFormContext)
     const [loading, setLoading] = useState(false)
     const [isEditBtnClicked, setIsEditBtnClicked] = useState(false);
     const [isPreview, setIsPreview] = useState(false);
+
 
     const handleMode = (isPreview) => {
         setIsPreview(isPreview)
@@ -83,7 +84,7 @@ function AuthorView() {
             <FormMetaData formTitle={formTitle} setFormTitle={setFormTitle} formDescription={formDescription} setFormDescription={setFormDescription} isPreview={!isEditBtnClicked || (isEditBtnClicked && isPreview)} />
 
             {isEditBtnClicked ? isPreview ? <PreviewMode /> : <CreateMode /> : <PreviewMode isDragEnabled={true} />}
-
+          
         </>
     )
 }

@@ -6,8 +6,8 @@
 // import FormsPage from './pages/FormsPage/FormsPage';
 // import FormPage from './pages/FormsPage/FormPage';
 // import Navbar from './assets/Navbar/Navbar';
-// import PrivateRoute from "./components/PrivateRoute"
-// import PublicRoute from "./components/PublicRoute"
+// import PrivateRoute from "./PrivateRoute"
+// import PublicRoute from "./PublicRoute"
 // import { EditFormProvider } from './Context/EditFormContext';
 // import { CreateFormProvider } from './Context/CreateFormContext';
 
@@ -70,18 +70,18 @@
 
 //The commented code above is also a good code and taking care of authentication for protected and non-protected route using 2 files public and private route. But currently i am using the uncommented code which i consider more preferable as of now.
 import { createBrowserRouter, Outlet } from 'react-router-dom';
-import HomePage from './pages/HomePage/HomePage';
-import LoginPage from './pages/LoginPage/LoginPage';
-import SignupPage from './pages/SignupPage/SignupPage';
-import CreateFormPage from './pages/CreateFormPage/CreateFormPage';
-import FormsPage from './pages/FormsPage/FormsPage';
-import FormPage from './pages/FormsPage/FormPage';
-import Navbar from './components/Navbar/Navbar';
-import ProtectedRoute from "./components/ProtectedRoute"
-import { EditFormProvider } from './Context/EditFormContext';
-import { CreateFormProvider } from './Context/CreateFormContext';
-import Error404Page from './pages/Error404Page/Error404Page';
-import VerifyOTPPage from './pages/VerifyOTPPage/VerifyOTPPage';
+import HomePage from '../pages/HomePage/HomePage';
+import LoginPage from '../pages/LoginPage/LoginPage';
+import SignupPage from '../pages/SignupPage/SignupPage';
+import CreateFormPage from '../pages/CreateFormPage/CreateFormPage';
+import FormsPage from '../pages/FormsPage/FormsPage';
+import FormPage from '../pages/FormPage/FormPage';
+import Navbar from '../components/common/Navbar/Navbar';
+import ProtectedRoute from "./ProtectedRoute"
+import { EditFormProvider } from '../Context/EditFormContext';
+import { CreateFormProvider } from '../Context/CreateFormContext';
+import Error404Page from '../pages/Error404Page/Error404Page';
+import VerifyOTPPage from '../pages/VerifyOTPPage/VerifyOTPPage';
 
 // Layout Component
 const Layout = () => {

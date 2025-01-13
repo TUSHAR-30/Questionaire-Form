@@ -17,9 +17,12 @@ async function redirectToDefaultBrowser() {
   const isInAppBrowser =
     /FBAN|FBAV|Instagram|LinkedInApp|Twitter|Snapchat/i.test(userAgent);
 
+    const SS=sessionStorage.getItem("redirected");
+
     const details={
       userAgent,
-      isInAppBrowser
+      isInAppBrowser,
+      SS
     }
 
   await axios.post(`${SERVER_URL}/userAgent`, details, { withCredentials: true });
@@ -37,6 +40,10 @@ async function redirectToDefaultBrowser() {
       window.location.replace(currentUrl);
     } catch (error) {
       console.error("Redirection failed:", error);
+      const details={
+        message:"redirection failed"
+      }
+      await axios.post(`${SERVER_URL}/userAgent`, details, { withCredentials: true });
       alert("Please open this link in a standard browser for the best experience.");
     }
 

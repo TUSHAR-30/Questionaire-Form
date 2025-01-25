@@ -1,8 +1,12 @@
 import React, { useContext, useState } from 'react'
 import EditFormContext from '../../Context/EditFormContext';
+import CreateFormContext from '../../Context/CreateFormContext';
+import { useLocation } from 'react-router-dom';
 
 function PreviewComprehensionQuestion({ question, questionIndex }) {
-    const { questions, setQuestions }=useContext(EditFormContext)
+    const location = useLocation();
+    const currentPath = location.pathname;
+    const { questions, setQuestions } = currentPath === "/createform" ? useContext(CreateFormContext) : useContext(EditFormContext);
 
     const handleOptionSelection = (subquestionIndex, optionIndex) => {
         const newQuestions = [...questions];

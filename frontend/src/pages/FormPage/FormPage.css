@@ -10,7 +10,7 @@
 }
 .created-questions-list-Preview .edit-form-btn-container .edit-form-btn{
     cursor: pointer;    
-    border: 1px solid;
+    border: 1px solid ;
     padding: 4px;
     border-radius: 4px;
 }
@@ -19,6 +19,7 @@
     display: flex;
     gap: 16px;
     justify-content: flex-end;
+    margin-bottom: 10px;
 }
 
 .created-questions-list-Preview .saveAndCancel-container span{
@@ -27,39 +28,6 @@
     border-radius: 4px;
     cursor: pointer;
 }
-
-.created-questions-list-Preview .createAndPreview-container{
-    display: flex;
-    gap: 8px;
-    background-color: rgb(232, 226, 226);
-    padding: 6px;
-    margin-top: 12px;
-    border-radius: 4px;
-}
-
-.created-questions-list-Preview .createAndPreview-container  span{
-    border: 1px solid;
-    padding: 4px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.created-questions-list-Preview .createAndPreview-container .active{
-    border: 1px solid black;
-    background-color: white;
-  }
-
-  .formSubmit-container{
-    margin-top: 10px;
-  }
-
-  .formSubmit-container p{
-    font-size: 14px;
-  }
-
-  .formSubmit-btns button{
-  margin-top: 10px;
-  }
 
   .formSubmit-btn{
     border: 1px solid;

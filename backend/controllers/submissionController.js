@@ -1,33 +1,80 @@
 const Submission = require('../Models/submission');
+const Form = require('../Models/form');
+
+async function addAnswersInSubmission(form, responses) {
+
+  // Iterate through the submission responses
+ return responses.map((response, index) => {
+    const formQuestion = form.questions[index]
+    if (!formQuestion) return;
+
+    // Add correct answers based on question type
+    if (response.type === 'categorize') {
+      response.categorize.items.forEach((item) => {
+        const correctCategory = formQuestion.categorize.find((cat) =>
+          cat.items.includes(item.name)
+        );
+        if (correctCategory) {
+          item.correctCategory = correctCategory.categoryName;
+        }
+      });
+    }
+    else if (response.type === 'cloze') {
+      response.cloze.blanks.forEach((blank) => {
+        const correctBlank = formQuestion.cloze.blanks.find(
+          (b) => b.itemName === blank.text
+        );
+        if (correctBlank) {
+          blank.correctId = correctBlank.itemSerialNumber;
+        }
+      });
+    }
+    else if (response.type === 'comprehension') {
+      response.comprehension.questions.forEach((question) => {
+        const formComprehensionQuestion = formQuestion.comprehension.questions.find(
+          (q) => q.question === question.question
+        );
+        if (formComprehensionQuestion) {
+          question.correctAnswer = formComprehensionQuestion.answer;
+        }
+      });
+    }
+    return response;
+  });
+ 
+}
 
 // Submit form data
 exports.submitForm = async (req, res) => {
   const { formId, userId, responses, deviceInfo } = req.body;
-
-  console.log(formId,userId)
 
   // Validate required fields
   if (!formId || !responses || !userId || !Array.isArray(responses)) {
     return res.status(400).json({ error: 'missing data.' });
   }
 
-  const isExistingUserEmailWithThisForm=await Submission.findOne({ userId: userId , formId:formId })
-  if(isExistingUserEmailWithThisForm){
+  const isExistingUserEmailWithThisForm = await Submission.findOne({ userId: userId, formId: formId })
+  if (isExistingUserEmailWithThisForm) {
     return res.status(401).json({ error: 'Form is already submitted with this given email.Change email' });
   }
 
+  const form = await Form.findById(formId);
+  const updatedResponses = await addAnswersInSubmission(form, responses)
+  // console.log(updatedResponses);
 
   try {
     let newSubmission = new Submission({
       formId: formId,
       userId: userId,
-      responses: responses,
+      responses: updatedResponses,
       ipAddress: req.publicIp || req.connection.remoteAddress || null,
       deviceInfo
     });
 
-   
+
     newSubmission = await newSubmission.save();
+    form.submissionCount++;
+    await form.save();
 
     // return res.status(201).json({
     //   message: 'Form submission saved successfully!',
@@ -63,28 +110,3 @@ exports.submitForm = async (req, res) => {
   }
 };
 
-
-// Get form submissions
-exports.getSubmissions = async (req, res) => {
-  try {
-    // Fetch submissions for the form
-    const submissions = await Submission.find({ formId: req.params.formId });
-
-    // Return the submissions with some formatting
-    const formattedSubmissions = submissions.map(submission => ({
-      ...submission.toObject(),
-      // Format the answers for better readability
-      answers: submission.answers.map(answer => ({
-        questionId: answer.questionId,
-        correctAnswer: answer.correctAnswer,
-        submittedAnswer: answer.submittedAnswer,
-        isCorrect: answer.isCorrect,
-      })),
-    }));
-
-    res.status(200).json({ totalSubmissions: submissions.length, formattedSubmissions });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
-  }
-};

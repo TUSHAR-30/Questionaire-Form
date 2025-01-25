@@ -14,22 +14,24 @@ function ClientAuthentication() {
     }
 
     return (
-        <div className='formSubmit-container'>
-            {isDuplicateRequestForFormSubmissionEmail ? (
-                <>
-                <p>You have already filled this from with the {formSubmissionUserEmail}</p>
-                </>
-            ) : (
-                !formSubmissionUserEmail ? (<p>Select your Google account in order to submit the form</p>)
-                    : (<p>You are going to fill the form with this email id: {formSubmissionUserEmail}</p>)
-            )}
+        <div className='bg-gray-300 rounded-lg py-2 flex flex-col items-center p-1'>
+            <div className='text-[13px]'>
+                {isDuplicateRequestForFormSubmissionEmail ? (
+                    <p>You have already filled this from with the {formSubmissionUserEmail}</p>
+                ) : (
+                    !formSubmissionUserEmail ? (<p>Select your Google account in order to submit the form</p>)
+                        : (<p>The form will be submitted with this email id: {formSubmissionUserEmail}</p>)
+                )}
+            </div>
 
-            <div className='formSubmit-btns'>
-                <button onClick={handleSelectAccount} className="google-login-button">
+            <div className='flex gap-3 mt-2'>
+                <button onClick={handleSelectAccount} className="flex gap-2 border border-black px-1 py-1 bg-gray-300 items-center">
                     <FcGoogle size={20} />
                     {formSubmissionUserEmail ? "Change Email" : " Select Account"}
                 </button>
-                {isDuplicateRequestForFormSubmissionEmail==false && <button onClick={handleContinueBtnClick}>Continue</button>}
+                {isDuplicateRequestForFormSubmissionEmail == false && <button onClick={handleContinueBtnClick}
+                    className='border border-black px-1 py-1 bg-gray-300'
+                >Continue</button>}
             </div>
         </div>
     )

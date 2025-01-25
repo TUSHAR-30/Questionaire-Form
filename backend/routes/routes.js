@@ -16,11 +16,11 @@ const {
     loginUser,
     logoutUser
 } = require('../controllers/userController');
-const { submitForm, getSubmissions } = require('../controllers/submissionController');
+const { submitForm } = require('../controllers/submissionController');
 const { authenticate } = require('../middlewares/authMiddleware');
 const { decodeToken } = require('../middlewares/tokenDecodeMiddleware');
 const verifyOtp = require('../controllers/otpController');
-// const {limiter} = require("../Classes/rateLimitStore");
+const { getClientResponse,getFormResponses } = require('../controllers/responseController');
 
 
 // Form routes
@@ -42,9 +42,11 @@ router.get('/logout', authenticate, logoutUser);
 //Otp routes
 router.post('/verify-otp',verifyOtp)
 
-
 // Submission routes
 router.post('/submitForm/:formId', submitForm);
-router.get('/getSubmissions/:formId', authenticate, getSubmissions);
+
+// Responses routes
+router.get('/clientResponse/:submissionId',getClientResponse);
+router.get('/getFormResponses/:formId', authenticate, getFormResponses);
 
 module.exports = router;

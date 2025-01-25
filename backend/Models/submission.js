@@ -21,6 +21,7 @@ const submissionSchema = new mongoose.Schema({
           {
             name: { type: String, required: true },
             droppedAt: { type: Number, default: null }, // Index of the category the item was dropped in, or null if not dropped
+            correctCategory:{type:String}
           },
         ],
       },
@@ -32,6 +33,7 @@ const submissionSchema = new mongoose.Schema({
             id: { type: String, required: true }, // Unique blank identifier
             text: { type: String, required: true }, // Original text of the blank
             droppedAt: { type: Number, default: null }, // User's chosen position or null if not answered
+            correctId:{type:String}
           },
         ],
       },
@@ -51,6 +53,7 @@ const submissionSchema = new mongoose.Schema({
                 text: { type: String, required: true }, // Option text
               },
             ],
+            correctAnswer:{type:String}
           },
         ],
       },

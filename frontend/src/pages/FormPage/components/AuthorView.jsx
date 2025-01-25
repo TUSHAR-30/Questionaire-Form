@@ -1,89 +1,33 @@
-import React, { useContext , useState } from 'react'
-import EditFormContext from '../../../Context/EditFormContext';
-import transformDataToBackendFormat from '../../../utils/transformDataToBackendFormat';
-import axios from 'axios';
-import { SERVER_URL } from '../../../../config';
-import ModeToggle from '../../../components/ModeToggle';
-import FormMetaData from '../../../components/FormMetaData';
-import CreateMode from '../../../components/CreateMode/CreateMode';
-import PreviewMode from '../../../components/PreviewMode/PreviewMode';
+import React, { useState } from 'react'
 import LoadingSpinner from '../../../components/LoadingSpinner';
+import AuthorQuestionsView from './AuthorQuestionsView';
+import AuthorResponsesView from './AuthorResponsesView';
 
 function AuthorView() {
-    const { questions, updatedQuestions, formTitle, updatedFormTitle, formDescription, updatedFormDescription, formId, setQuestions, setUpdatedQuestions, setFormTitle, setUpdatedFormTitle, setFormDescription, setUpdatedFormDescription } = useContext(EditFormContext)
+   
     const [loading, setLoading] = useState(false)
     const [isEditBtnClicked, setIsEditBtnClicked] = useState(false);
     const [isPreview, setIsPreview] = useState(false);
+    const [pageMode,setPageMode]=useState(0)
 
-
-    const handleMode = (isPreview) => {
-        setIsPreview(isPreview)
-    }
-
-    const handleCancelFormUpdation = () => {
-        setQuestions(JSON.parse(JSON.stringify(updatedQuestions)));
-        setFormTitle(updatedFormTitle);
-        setFormDescription(updatedFormDescription);
-        setIsEditBtnClicked(false);
-    }
-
-    const handleEditBtnClick = () => {
-        setIsPreview(false);
-        setIsEditBtnClicked(true)
-    }
-
-    async function handleSaveUpdatedForm() {
-        const transformedQuestions = transformDataToBackendFormat(questions, formTitle, formDescription)
-        // Check if all questions were filtered out (invalid input)
-        if (transformedQuestions.length === 0) {
-            alert('Form cannot be submitted. Please ensure all fields are valid.');
-            return;
-        }
-
-        const formData = {
-            title: formTitle,
-            description: formDescription,
-            questions: transformedQuestions,
-            isDeployed: false,
-        };
-        setLoading(true)
-        try {
-            const response = await axios.put(`${SERVER_URL}/form/${formId}`, formData, { withCredentials: true });
-            console.log('Form submitted successfully:', response.data);
-            setIsEditBtnClicked(false);
-            setUpdatedQuestions(JSON.parse(JSON.stringify(questions)))
-            setUpdatedFormTitle(formTitle);
-            setUpdatedFormDescription(formDescription)
-            alert("Form edited successfully")
-        } catch (err) {
-            console.log(err);
-        } finally {
-            setLoading(false)
-        }
+    const handlePageMode=(pageMode)=>{
+        setPageMode(pageMode)
     }
 
     return (
         <>
             {loading && <LoadingSpinner />}
 
+            <div className='flex justify-center items-center gap-2 mb-3'>
+                <span className={`cursor-pointer flex justify-center h-7 w-24 ${pageMode==0?'border-b-2 border-black':''}`} onClick={()=>handlePageMode(0)}>Questions</span>
+                <span className={`cursor-pointer flex justify-center h-7 w-24 ${pageMode==1?'border-b-2 border-black':''}`} onClick={()=>handlePageMode(1)}>Responses</span>
+                {/* <span className={`cursor-pointer flex justify-center h-7 w-24  ${pageMode==2?'border-b-2 border-black':''}`} onClick={()=>handlePageMode(2)}>Settings</span> */}
+            </div>
+            {pageMode==0 && <AuthorQuestionsView setLoading={setLoading} isEditBtnClicked={isEditBtnClicked} setIsEditBtnClicked={setIsEditBtnClicked} isPreview={isPreview} setIsPreview={setIsPreview}/>}
+            {pageMode==1 && <AuthorResponsesView />}
 
-            {isEditBtnClicked ? (
-                <>
-                    <div className='saveAndCancel-container'>
-                        <span onClick={handleSaveUpdatedForm}>Save Changes</span>
-                        <span onClick={handleCancelFormUpdation}>Cancel</span>
-                    </div>
-                    <ModeToggle isPreview={isPreview} handleMode={handleMode} />
-                </>
-            ) : (
-                <div className='edit-form-btn-container'>
-                    <span className='edit-form-btn' onClick={handleEditBtnClick}>Edit</span>
-                </div>
-            )}
 
-            <FormMetaData formTitle={formTitle} setFormTitle={setFormTitle} formDescription={formDescription} setFormDescription={setFormDescription} isPreview={!isEditBtnClicked || (isEditBtnClicked && isPreview)} />
-
-            {isEditBtnClicked ? isPreview ? <PreviewMode /> : <CreateMode /> : <PreviewMode isDragEnabled={true} />}
+            
           
         </>
     )

@@ -46,6 +46,10 @@ function ClientForm() {
         }
     }
 
+    if(loading){
+        return <LoadingSpinner />
+    }
+
     return (
         <>
             <FormMetaData formTitle={formTitle} setFormTitle={setFormTitle} formDescription={formDescription} setFormDescription={setFormDescription} isPreview={true} />

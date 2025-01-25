@@ -7,7 +7,7 @@ import { dateConverter } from '../../utils/DateFormat';
 
 function FormsPage() {
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [forms, setForms] = useState([]);
 
     const handleFormClick = (formId) => {
@@ -30,9 +30,12 @@ function FormsPage() {
         getUserForms();
     }, []);
 
+    if(loading){
+        return <LoadingSpinner />
+    }
+
     return (
         <div className="min-h-screen bg-gray-50 p-6">
-            {loading && <LoadingSpinner />}
             <div className="max-w-6xl mx-auto">
                 <h2 className="text-3xl font-bold text-center mb-6">Your Forms</h2>
                 {forms.length === 0 ? (

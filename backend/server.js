@@ -1,4 +1,10 @@
 require('dotenv').config();
+if(process.env.DEV=="local"){
+  // process.env.CONN_STR=process.env.LOCAL_CONN_STR;
+  process.env.FRONTEND_URL=process.env.FRONTEND_URL_LOCAL;
+  process.env.BACKEND_URL=process.env.BACKEND_URL_LOCAL;
+}
+
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -27,7 +33,7 @@ app.use(morgan("dev"));
 
 // CORS setup
 app.use(cors({
-  origin: [process.env.FRONTEND_URL_LOCAL, process.env.FRONTEND_URL_DEPLOYED],
+  origin: [process.env.FRONTEND_URL],
   methods: ["GET", "PUT", "DELETE", "POST", "PATCH"],
   credentials: true,
 }));

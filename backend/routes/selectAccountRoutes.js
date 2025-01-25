@@ -18,7 +18,7 @@ selectAccountRoutes.get('/google',
 
   selectAccountRoutes.get('/google/callback', 
   passport.authenticate('google-select-account', {
-    failureRedirect: `${process.env.FRONTEND_URL_DEPLOYED}/login`,
+    failureRedirect: `${process.env.FRONTEND_URL}/login`,
     session: false
   }),
   (req, res) => {
@@ -36,7 +36,7 @@ selectAccountRoutes.get('/google',
      });
 
     // Redirect to frontend
-    res.redirect(`${process.env.FRONTEND_URL_DEPLOYED}/form/${formId}`);
+    res.redirect(`${process.env.FRONTEND_URL}/form/${formId}`);
   }
 );
 

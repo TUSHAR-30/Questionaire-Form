@@ -14,7 +14,7 @@ authRoutes.get('/google',
 
 authRoutes.get('/google/callback', 
   passport.authenticate('google-auth', {
-    failureRedirect: `${process.env.FRONTEND_URL_DEPLOYED}/login`,
+    failureRedirect: `${process.env.FRONTEND_URL}/login`,
     session: false
   }),
   (req, res) => {
@@ -33,7 +33,7 @@ authRoutes.get('/google/callback',
     });
 
     // Redirect to frontend
-    res.redirect(`${process.env.FRONTEND_URL_DEPLOYED}`);
+    res.redirect(`${process.env.FRONTEND_URL}`);
   }
 );
 

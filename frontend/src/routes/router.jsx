@@ -82,6 +82,7 @@ import { EditFormProvider } from '../Context/EditFormContext';
 import { CreateFormProvider } from '../Context/CreateFormContext';
 import Error404Page from '../pages/Error404Page/Error404Page';
 import VerifyOTPPage from '../pages/VerifyOTPPage/VerifyOTPPage';
+import ClientResponsePage from '../pages/ClientResponsePage/ClientResponsePage';
 
 // Layout Component
 const Layout = () => {
@@ -108,6 +109,7 @@ const router = createBrowserRouter([
         children: [
           { path: 'forms', element: <FormsPage /> }, // Renders FormsPage for '/forms'
           { path: 'createform', element: <CreateFormProvider><CreateFormPage /></CreateFormProvider> },
+          { path: 'response/:submissionId', element: <ClientResponsePage /> }, // Renders FormsPage for '/forms'
         ],
       },
       {

@@ -77,16 +77,16 @@ function PreviewCategorizeQuestion({ question, questionIndex , isDragEnabled }) 
         setQuestions(JSON.parse(JSON.stringify(questions)))
     },[])
     return (
-        <div className='categorize-container-Preview'>
+        <div className='flex flex-col gap-4'>
             <DragDropContext onDragEnd={handleDragEnd}>
-                <div className='category-container-Preview'>
+            <div className='flex gap-3 justify-center flex-wrap'>
                     {question.categorize.categories.map((category, index) => (
-                        category.trim() && <div key={index} className='category-Preview'>
-                            <div className='category-header-Preview'>{category}</div>
+                        category.trim() && <div key={index} className='rounded-lg w-[280px] shadow-md bg-white hover:shadow-lg transition-shadow'>
+                            <div className='text-center p-2 border-b border-blue-200 bg-blue-50 text-blue-800 font-medium rounded-t-lg'>{category}</div>
                             <Droppable droppableId={`category-${index}`} direction="vertical">
                                 {(provided) => (
                                     <div
-                                        className='category-item-Preview'
+                                        className='h-40 p-2 overflow-y-auto flex flex-col gap-2 items-center bg-white rounded-b-lg'
                                         ref={provided.innerRef}
                                         {...provided.droppableProps}
                                     >
@@ -117,7 +117,7 @@ function PreviewCategorizeQuestion({ question, questionIndex , isDragEnabled }) 
                 <Droppable droppableId={`item-container`} direction="vertical">
                     {(provided) => (
                         <div
-                            className='items-container-preview'
+                        className='bg-blue-50 flex flex-col gap-2 rounded-lg p-3 h-40 overflow-y-auto shadow-inner'
                             ref={provided.innerRef}
                             {...provided.droppableProps}
                         >
@@ -126,7 +126,7 @@ function PreviewCategorizeQuestion({ question, questionIndex , isDragEnabled }) 
                                     {(provided) => (
                                         <div
                                             key={index}
-                                            className={`draggable-item-preview ${item.droppedAt || item.droppedAt === 0 ? "hide" : ""} `}
+                                            className={`draggable-item-preview ${item.droppedAt || item.droppedAt === 0 ? "hidden" : ""} `}
                                             ref={provided.innerRef}
                                             {...provided.draggableProps}
                                             {...provided.dragHandleProps}

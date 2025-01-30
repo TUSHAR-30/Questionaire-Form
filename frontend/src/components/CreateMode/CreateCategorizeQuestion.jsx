@@ -51,23 +51,24 @@ function CreateCategorizeQuestion({ question, questionIndex }) {
     };
 
     return (
-        <div className="question-categorize">
-            <div className="category-container">
-                <div className='add-category-container'>
+        <div className="flex flex-col gap-5">
+            <div>
+                <div className='flex items-center justify-between mb-2 w-full max-w-[360px]'>
                     <h4>Categories</h4>
                     <button
-                        className="add-category-btn"
+                        className="text-white bg-[#4299E1] hover:bg-[#3182CE] rounded px-2 py-1"
                         onClick={() => handleAddCategory(questionIndex)}
                     >
                         Add New Category
                     </button>
                 </div>
 
-                <div className='input-category-container'>
+                <div className='flex flex-col gap-1'>
                     {question.categorize.categories.map((category, categoryIndex) => (
-                        <div  key={categoryIndex} className='input-category'>
+                        <div  key={categoryIndex} className='flex gap-2 items-center'>
                          <input
                             type="text"
+                            className='w-[90%] max-w-[440px]'
                             value={category}
                             onChange={(e) =>
                                 handleCategoryChange(
@@ -78,28 +79,29 @@ function CreateCategorizeQuestion({ question, questionIndex }) {
                             }
                             placeholder={`Category ${categoryIndex + 1}`}
                         />
-                        <span className='deleteItembtn' onClick={()=>handledeleteCategory(questionIndex,categoryIndex)}>-</span>
+                        <span className='w-4 h-4 rounded-full flex justify-center items-center text-2xl cursor-pointer shadow-[0_0_3px_gray]' onClick={()=>handledeleteCategory(questionIndex,categoryIndex)}>-</span>
                         </div>
                     ))}
 
                 </div>
             </div>
 
-            <div className="items-container">
-                <div className='add-item-container'>
+            <div>
+                <div className='flex items-center justify-between mb-2 w-full max-w-[360px]'>
                     <h4>Items</h4>
                     <button
-                        className="add-item-btn"
+                        className="text-white bg-[#4299E1] hover:bg-[#3182CE] rounded px-2 py-1"
                         onClick={() => handleAddItem(questionIndex)}
                     >
                         Add New Item
                     </button>
                 </div>
-                <div className='input-category-container'>
+                <div className='flex flex-col gap-1'>
                 {question.categorize.items.map((item, itemIndex) => (
-                    <div key={itemIndex} className="item-input">
+                    <div key={itemIndex} className="flex gap-2 items-center">
                         <input
                             type="text"
+                            className='!w-[48%] mr-[1%] inline-block'
                             value={item.name}
                             onChange={(e) =>
                                 handleItemNameChange(
@@ -111,6 +113,7 @@ function CreateCategorizeQuestion({ question, questionIndex }) {
                             placeholder={`Item ${itemIndex + 1}`}
                         />
                         <select
+                        className='!w-[48%] inline-block p-2 rounded border border-[#ccc]'
                             value={item.category}
                             onChange={(e) =>
                                 handleItemCategoryChange(
@@ -127,7 +130,7 @@ function CreateCategorizeQuestion({ question, questionIndex }) {
                                 </option>
                             ))}
                         </select>
-                        <span className='deleteItembtn' onClick={()=>handledeleteItem(questionIndex,itemIndex)}>-</span>
+                        <span className='w-4 h-4 rounded-full flex justify-center items-center text-2xl cursor-pointer shadow-[0_0_3px_gray]' onClick={()=>handledeleteItem(questionIndex,itemIndex)}>-</span>
 
                     </div>
                 ))}

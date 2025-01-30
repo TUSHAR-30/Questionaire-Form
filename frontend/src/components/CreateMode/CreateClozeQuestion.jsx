@@ -297,10 +297,11 @@ function CreateClozeQuestion({ question, questionIndex }) {
     };
 
     return (
-        <div className="question-cloze">
+        <div>
             <label>
                 Question Text:
                 <textarea
+                className='mt-3 selection:bg-[#bcb3b34d]'
                     ref={textareaRef}
                     value={question.cloze.originalText}
                     onChange={(e) =>
@@ -309,17 +310,17 @@ function CreateClozeQuestion({ question, questionIndex }) {
                     placeholder="Enter the question here. Select parts to fill in the blanks."
                 />
             </label>
-            <button className="add-blank-btn" onClick={() => handleAddBlank(questionIndex)}>
+            <button className=" text-white bg-[#4299E1] hover:bg-[#3182CE] rounded px-2 py-1" onClick={() => handleAddBlank(questionIndex)}>
                 Add Blank
             </button>
-            <h4>Preview:</h4>
+            <h4 className='mt-3'>Preview:</h4>
             <p>{question.cloze.displayText}</p>
-            <h4>Blanks:</h4>
+            <h4 className='mt-3'>Blanks:</h4>
             <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
                 <Droppable droppableId={`blanks-${questionIndex}`}>
                     {(provided) => (
                         <div
-                            className={`blanks-container `}
+                            className='mt-3 flex flex-col gap-2 p-2 min-h-10 max-h-40 overflow-y-auto bg-[#edfcfc]'
                             {...provided.droppableProps}
                             ref={provided.innerRef}
                         >
@@ -332,14 +333,15 @@ function CreateClozeQuestion({ question, questionIndex }) {
                                                 <div ref={provided.innerRef}
                                                     {...provided.draggableProps}
                                                     {...provided.dragHandleProps}
-                                                    className="draggable-blank"
+                                                    className="p-1 pl-2 rounded w-[100px] text-center overflow-auto text-[13px] bg-[#ADD8E6]  [&::-webkit-scrollbar]:h-0"
                                                 >
-                                                    <span className="draggable-blank">
+                                                    <span 
+                                                    >
                                                         {blank.text}
                                                     </span>
                                                 </div>
                                                 <span 
-                                                className={`deleteItembtn  ${isItemDragging?"hideDeletebtn":""} `} 
+                                                className={`w-4 h-4 rounded-full flex justify-center items-center text-2xl cursor-pointer shadow-[0_0_3px_gray]  ${isItemDragging?"hidden":""} `} 
                                                 onClick={()=>handleDeleteBlank(index)}
                                                 >-</span>
                                             </>

@@ -1,4 +1,4 @@
-const transformDataToFrontendFormat = (backendQuestions) => {
+const transformDataToFrontendFormat = (backendQuestions,viewResponse) => {
     return backendQuestions.map((backendQuestion) => {
       const { type, imageUrl, categorize, cloze, comprehension } = backendQuestion;
   
@@ -17,10 +17,15 @@ const transformDataToFrontendFormat = (backendQuestions) => {
           ...commonFields,
           cloze: transformClozeToFrontend(cloze),
         };
-      } else if (type === 'comprehension') {
+      } else if (type === 'comprehension' && !viewResponse) {
         return {
           ...commonFields,
           comprehension: transformComprehensionToFrontend(comprehension),
+        };
+      }else if (type === 'comprehension' && viewResponse) {
+        return {
+          ...commonFields,
+          comprehension: transformComprehensionToFrontendResponseMode(comprehension),
         };
       }
       return null; // For unsupported types
@@ -65,5 +70,18 @@ const transformDataToFrontendFormat = (backendQuestions) => {
     };
   };
   
+  const transformComprehensionToFrontendResponseMode=(comprehension)=>{
+    const { description, questions } = comprehension;
+  
+    return {
+      description: {
+        title: description.title,
+        content: description.content,
+      },
+      questions
+    };
+  }
+
+
   export default transformDataToFrontendFormat;
   

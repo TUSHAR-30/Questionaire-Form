@@ -1,14 +1,19 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { SERVER_URL } from '../../../../config';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Error404Page from '../../Error404Page/Error404Page';
 
 function AuthorResponsesView() {
+    const navigate = useNavigate();
     const [responses, setResponses] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const { formId } = useParams();
+
+    const handleResponseClick = (submissionId) => {
+        navigate(`/response/${submissionId}`);
+    };
 
 
     useEffect(() => {
@@ -60,7 +65,9 @@ function AuthorResponsesView() {
                     </div>
                     <div className='p-1 h-[55vh] overflow-y-auto'>
                         {responses.map((response, index) => (
-                            <div key={response.submissionId} className='flex gap-3 justify-between p-2 rounded-sm border-b border-black cursor-pointer hover:bg-gray-50'>
+                            <div key={response.submissionId}
+                                // onClick={() => handleResponseClick(response.submissionId)}
+                                className='flex gap-3 justify-between p-2 rounded-sm border-b border-black cursor-pointer hover:bg-gray-50'>
                                 <span>{index + 1}</span>
                                 <span className='text-[12px] sm:text-[14px]'>{response.userId}</span>
                                 <span className='text-[12px] sm:text-[14px]'>{response.createdAt}</span>

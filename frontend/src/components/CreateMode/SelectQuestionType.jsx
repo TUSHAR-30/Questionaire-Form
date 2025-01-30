@@ -40,7 +40,7 @@ function SelectQuestionType({ question, questionIndex , isExpanded, setIsExpande
 
     return (
             <select
-                className='selectquestiontype'
+                className='w-full p-2 borer border-solid border-[#ccc] rounded'
                 value={question.type}
                 onClick={handleSelectClick} // Stop propagation on click
                 onChange={handleSelectChange} // Allow propagation on value change

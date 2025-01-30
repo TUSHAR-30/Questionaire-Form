@@ -11,11 +11,11 @@ function PreviewMode({ isDragEnabled }) {
     const { questions } = currentPath == "/createform" ? useContext(CreateFormContext) : useContext(EditFormContext)
 
     return (
-            <div className="questions-list-Preview">
-                {questions.map((question, questionIndex) => (
-                    <PreviewQuestionItem key={questionIndex} question={question} questionIndex={questionIndex} isDragEnabled={isDragEnabled} />
-                ))}
-            </div>
+        <div className="flex flex-col gap-3 mb-3 rounded-lg">
+            {questions.map((question, questionIndex) => (
+                <PreviewQuestionItem key={questionIndex} question={question} questionIndex={questionIndex} isDragEnabled={isDragEnabled} />
+            ))}
+        </div>
     )
 }
 

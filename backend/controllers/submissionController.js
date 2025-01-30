@@ -4,7 +4,7 @@ const Form = require('../Models/form');
 async function addAnswersInSubmission(form, responses) {
 
   // Iterate through the submission responses
- return responses.map((response, index) => {
+  return responses.map((response, index) => {
     const formQuestion = form.questions[index]
     if (!formQuestion) return;
 
@@ -30,18 +30,17 @@ async function addAnswersInSubmission(form, responses) {
       });
     }
     else if (response.type === 'comprehension') {
-      response.comprehension.questions.forEach((question) => {
-        const formComprehensionQuestion = formQuestion.comprehension.questions.find(
-          (q) => q.question === question.question
-        );
-        if (formComprehensionQuestion) {
-          question.correctAnswer = formComprehensionQuestion.answer;
-        }
+      response.comprehension.questions.forEach((question,index) => {
+        const formComprehensionQuestion = formQuestion.comprehension.questions[index];
+        const answerIndex=formComprehensionQuestion.options.findIndex(
+          (option) => option == formComprehensionQuestion.answer
+        )
+        question.correctAnswer = answerIndex;
       });
     }
     return response;
   });
- 
+
 }
 
 // Submit form data

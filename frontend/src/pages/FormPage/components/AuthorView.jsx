@@ -21,8 +21,8 @@ function AuthorView() {
             <div className='flex justify-center items-center gap-2 mb-3'>
                 <span className={`cursor-pointer flex justify-center h-7 w-24 ${pageMode==0?'border-b-2 border-black':''}`} onClick={()=>handlePageMode(0)}>Questions</span>
                 <span className={`cursor-pointer flex justify-center h-7 w-24 ${pageMode==1?'border-b-2 border-black':''}`} onClick={()=>handlePageMode(1)}>Responses</span>
-                {/* <span className={`cursor-pointer flex justify-center h-7 w-24  ${pageMode==2?'border-b-2 border-black':''}`} onClick={()=>handlePageMode(2)}>Settings</span> */}
             </div>
+            
             {pageMode==0 && <AuthorQuestionsView setLoading={setLoading} isEditBtnClicked={isEditBtnClicked} setIsEditBtnClicked={setIsEditBtnClicked} isPreview={isPreview} setIsPreview={setIsPreview}/>}
             {pageMode==1 && <AuthorResponsesView />}
 

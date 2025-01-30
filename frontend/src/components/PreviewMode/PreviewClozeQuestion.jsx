@@ -47,7 +47,7 @@ function PreviewClozeQuestion({ question, questionIndex, isDragEnabled }) {
           <Droppable droppableId={`placeholder-${index}`} >
             {(provided, snapshot) => (
               <span
-                className={`placeholder ${snapshot.isDraggingOver ? "placeholder-hover" : ""} `}
+                className={`placeholder inline-block w-[93px] h-5 bg-[#f0f0f0] leading-5 border border-dashed border-[#ccc] rounded-[5px] select-none ${snapshot.isDraggingOver ? "bg-[#e0e0e0] border border-[#888]" : ""} `}
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
@@ -159,16 +159,16 @@ function PreviewClozeQuestion({ question, questionIndex, isDragEnabled }) {
   }, [])
 
   return (
-      <div className="cloze-container-preview">
+      <div className="flex flex-col gap-4">
         <DragDropContext onDragEnd={handleDragEnd}>
-          <p className="display-question-preview">
+          <p className="text-[18px] relative leading-[1.5]">
             {renderDisplayTextWithPlaceholders()}
           </p>
           <div>
             <Droppable droppableId="blanks-container" direction="vertical">
               {(provided) => (
                 <div
-                  className="items-container-preview"
+                  className="bg-[#edfcfc] flex flex-col gap-2 rounded p-1 h-40 overflow-y-auto "
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                 >
@@ -179,7 +179,7 @@ function PreviewClozeQuestion({ question, questionIndex, isDragEnabled }) {
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
-                          className={`draggable-item-preview ${(blank.droppedAt || blank.droppedAt === 0) ? "hide" : ""}`}
+                          className={`draggable-item-preview ${(blank.droppedAt || blank.droppedAt === 0) ? "hidden" : ""}`}
                         >
                           {blank.text}
                         </span>

@@ -1,4 +1,4 @@
-import React, { useContext , useState } from 'react'
+import React, { useContext, useState } from 'react'
 import EditFormContext from '../../../Context/EditFormContext';
 import transformDataToBackendFormat from '../../../utils/transformDataToBackendFormat';
 import axios from 'axios';
@@ -8,8 +8,9 @@ import FormMetaData from '../../../components/FormMetaData';
 import CreateMode from '../../../components/CreateMode/CreateMode';
 import PreviewMode from '../../../components/PreviewMode/PreviewMode';
 import LoadingSpinner from '../../../components/LoadingSpinner';
+import PreviewFormMetaData from '../../../components/PreviewMode/PreviewFormMetaData';
 
-function AuthorQuestionsView({setLoading,isEditBtnClicked,setIsEditBtnClicked,isPreview,setIsPreview}) {
+function AuthorQuestionsView({ setLoading, isEditBtnClicked, setIsEditBtnClicked, isPreview, setIsPreview }) {
     const { questions, updatedQuestions, formTitle, updatedFormTitle, formDescription, updatedFormDescription, formId, setQuestions, setUpdatedQuestions, setFormTitle, setUpdatedFormTitle, setFormDescription, setUpdatedFormDescription } = useContext(EditFormContext)
 
     const handleMode = (isPreview) => {
@@ -57,27 +58,35 @@ function AuthorQuestionsView({setLoading,isEditBtnClicked,setIsEditBtnClicked,is
             setLoading(false)
         }
     }
-  return (
-    <>
-    {isEditBtnClicked ? (
+    return (
+        <>
+            {isEditBtnClicked ? (
                 <>
-                    <div className='saveAndCancel-container'>
-                        <span onClick={handleSaveUpdatedForm}>Save Changes</span>
-                        <span onClick={handleCancelFormUpdation}>Cancel</span>
+                    <div className='flex gap-4 justify-end mb-3'>
+                        <span className='border border-black p-1 cursor-pointer rounded' onClick={handleSaveUpdatedForm}>Save Changes</span>
+                        <span className='border border-black p-1 cursor-pointer rounded' onClick={handleCancelFormUpdation}>Cancel</span>
                     </div>
                     <ModeToggle isPreview={isPreview} handleMode={handleMode} />
                 </>
             ) : (
-                <div className='edit-form-btn-container'>
-                    <span className='edit-form-btn' onClick={handleEditBtnClick}>Edit</span>
+                <div className='flex justify-end mb-3'>
+                    <span className='cursor-pointer border border-black p-1 rounded' onClick={handleEditBtnClick}>Edit</span>
                 </div>
             )}
 
-            <FormMetaData formTitle={formTitle} setFormTitle={setFormTitle} formDescription={formDescription} setFormDescription={setFormDescription} isPreview={!isEditBtnClicked || (isEditBtnClicked && isPreview)} />
+            {!isEditBtnClicked || (isEditBtnClicked && isPreview)?(
+                <PreviewFormMetaData formTitle={formTitle} formDescription={formDescription}/>
+            ):(
+                <FormMetaData formTitle={formTitle} setFormTitle={setFormTitle} formDescription={formDescription} setFormDescription={setFormDescription} />
+            )
+            }
+
+
+            
 
             {isEditBtnClicked ? isPreview ? <PreviewMode /> : <CreateMode /> : <PreviewMode isDragEnabled={true} />}
-    </>
-  )
+        </>
+    )
 }
 
 export default AuthorQuestionsView

@@ -1,6 +1,6 @@
 require('dotenv').config();
 if(process.env.DEV=="local"){
-  // process.env.CONN_STR=process.env.LOCAL_CONN_STR;
+  process.env.CONN_STR=process.env.LOCAL_CONN_STR;
   process.env.FRONTEND_URL=process.env.FRONTEND_URL_LOCAL;
   process.env.BACKEND_URL=process.env.BACKEND_URL_LOCAL;
 }

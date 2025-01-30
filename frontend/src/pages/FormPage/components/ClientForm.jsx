@@ -5,6 +5,7 @@ import { SERVER_URL } from '../../../../config';
 import FormMetaData from '../../../components/FormMetaData';
 import PreviewMode from '../../../components/PreviewMode/PreviewMode';
 import LoadingSpinner from '../../../components/LoadingSpinner';
+import PreviewFormMetaData from '../../../components/PreviewMode/PreviewFormMetaData';
 
 function ClientForm() {
     const { questions, formTitle, formDescription, formId, formSubmissionUserEmail, setFormTitle, setFormDescription } = useContext(EditFormContext)
@@ -51,13 +52,18 @@ function ClientForm() {
     }
 
     return (
-        <>
-            <FormMetaData formTitle={formTitle} setFormTitle={setFormTitle} formDescription={formDescription} setFormDescription={setFormDescription} isPreview={true} />
-
-            <PreviewMode isDragEnabled={true} />
-
-            <button className='formSubmit-btn' onClick={handleSubmitForm}>Submit Form</button>
-        </>
+        <div>
+        <PreviewFormMetaData formTitle={formTitle} formDescription={formDescription}/>
+        <PreviewMode isDragEnabled={true} />
+        <div className="flex justify-center mt-4">
+            <button 
+                className='bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg shadow-md hover:shadow-lg transition-all font-medium' 
+                onClick={handleSubmitForm}
+            >
+                Submit Form
+            </button>
+        </div>
+    </div>
     )
 }
 

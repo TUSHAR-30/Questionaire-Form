@@ -320,7 +320,7 @@ function CreateClozeQuestion({ question, questionIndex }) {
                 <Droppable droppableId={`blanks-${questionIndex}`}>
                     {(provided) => (
                         <div
-                            className='mt-3 flex flex-col gap-2 p-2 min-h-10 max-h-40 overflow-y-auto bg-[#edfcfc]'
+                            className='mt-3 flex flex-col gap-2 p-3 h-40 max-h-40 overflow-y-auto bg-blue-50 shadow-inner '
                             {...provided.droppableProps}
                             ref={provided.innerRef}
                         >

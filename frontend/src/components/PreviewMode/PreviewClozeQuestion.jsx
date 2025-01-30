@@ -168,7 +168,7 @@ function PreviewClozeQuestion({ question, questionIndex, isDragEnabled }) {
             <Droppable droppableId="blanks-container" direction="vertical">
               {(provided) => (
                 <div
-                  className="bg-[#edfcfc] flex flex-col gap-2 rounded p-1 h-40 overflow-y-auto "
+                  className="bg-blue-50 flex flex-col gap-2 rounded p-3 h-40 overflow-y-auto shadow-inner "
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                 >
